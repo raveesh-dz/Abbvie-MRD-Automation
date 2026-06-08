@@ -17,3 +17,6 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
+
+# Synthetic demo / format reference (not part of the project)
+_reference/

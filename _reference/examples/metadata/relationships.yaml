@@ -1,5 +1,0 @@
-relationships:
-  - left: rx_transactions.hcp_id
-    right: hcp_master.hcp_id
-    type: many-to-one
-    notes: All transaction HCPs exist in master; safe inner join.
