@@ -1,0 +1,14 @@
+# Copy this file to <csv_basename>.yaml — the name MUST match the CSV file name.
+# A CSV without a dictionary is INVISIBLE to the engine. This is by design.
+table: my_table_name            # must equal the CSV basename
+description: One sentence on what this dataset is and where it comes from
+grain: one row per <X> per <Y>  # the most important line in this file
+date_range: YYYY-MM-DD to YYYY-MM-DD
+refresh: weekly, Mondays        # cadence and day
+known_issues:
+  - "Describe any data quirks the analysis must respect"
+columns:
+  - name: column_name
+    type: string                # string | integer | float | date
+    description: What this column means in business terms
+    sample_values: [A, B, C]    # for categoricals only

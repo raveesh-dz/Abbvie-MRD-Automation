@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chain of Thought — design direction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#071D49; --teal:#07B2AC; --amber:#FFC000; --magenta:#E40D62;
+  --blue:#00B0F0; --red:#C00000; --green:#00B050; --purple:#7030A0;
+  --paper:#F4F0E6; --card:#FCFAF4; --ink:#0b1631; --muted:#5c667a; --line:#e0dccf;
+  --grad:linear-gradient(180deg,#7030A0,#E40D62,#C00000,#FFC000,#07B2AC,#00B0F0);
+  --gradh:linear-gradient(90deg,#7030A0,#E40D62,#C00000,#FFC000,#07B2AC,#00B0F0);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:'Hanken Grotesk',system-ui,sans-serif; font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(rgba(7,29,73,.035) 1px,transparent 1px);
+  background-size:22px 22px;
+}
+.spine{position:fixed;left:0;top:0;bottom:0;width:7px;background:var(--grad);z-index:50}
+.wrap{max-width:1120px;margin:0 auto;padding:0 40px 120px 56px}
+
+/* ---- kicker / labels ---- */
+.kick{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--teal);font-weight:500}
+.lab{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+
+/* ---- HERO ---- */
+.hero{padding:64px 0 30px;display:grid;grid-template-columns:1fr 230px;gap:40px;align-items:end;border-bottom:2px solid var(--ink)}
+.hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(46px,7vw,86px);line-height:.95;letter-spacing:-.02em;margin:18px 0 0}
+.hero h1 em{font-style:italic;font-weight:340;color:var(--magenta)}
+.dek{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:20px;color:#33405c;margin-top:18px;max-width:46ch;line-height:1.45}
+.meta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);text-align:right;line-height:1.9}
+.meta b{color:var(--ink);font-weight:700}
+.meta .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:6px;box-shadow:0 0 0 3px rgba(0,176,80,.18)}
+
+/* ---- sources scanned strip ---- */
+.scan{margin:26px 0 8px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.chip{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--card);border:1px solid var(--line);
+  border-radius:999px;padding:7px 13px 7px 11px;display:inline-flex;gap:7px;align-items:center;color:#2a3a5c}
+.chip .tick{color:var(--green);font-weight:700}
+.chip .n{color:var(--muted)}
+
+/* ---- section heading ---- */
+.sec{margin-top:88px}
+.sec-h{display:flex;align-items:baseline;gap:16px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.sec-h .num{font-family:'Fraunces',serif;font-size:22px;color:var(--teal);font-weight:500}
+.sec-h h2{font-family:'Fraunces',serif;font-weight:600;font-size:34px;letter-spacing:-.01em;margin:0}
+.sec-h .right{margin-left:auto}
+
+/* ---- WORKFLOW infographic ---- */
+.flow{margin-top:34px;position:relative;padding-left:8px}
+.flow:before{content:"";position:absolute;left:25px;top:14px;bottom:14px;width:2px;background:linear-gradient(180deg,var(--teal),var(--magenta))}
+.step{position:relative;display:grid;grid-template-columns:52px 1fr;gap:22px;padding:14px 0;opacity:0;animation:rise .6s ease forwards}
+.node{width:50px;height:50px;border-radius:50%;background:var(--card);border:2px solid var(--navy);color:var(--navy);
+  font-family:'Fraunces',serif;font-weight:600;font-size:20px;display:grid;place-items:center;z-index:2;position:relative}
+.step.live .node{background:var(--navy);color:#fff}
+.step h3{font-family:'Hanken Grotesk';font-weight:700;font-size:17px;margin:6px 0 3px;letter-spacing:-.01em}
+.step p{margin:0;color:#3a455e;font-size:14.5px;max-width:60ch}
+.step .tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+/* feasibility branches */
+.branch{grid-column:2;margin-top:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.br{border-radius:10px;padding:11px 13px;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--teal)}
+.br.warn{border-top-color:var(--amber)} .br.stop{border-top-color:var(--red)}
+.br b{display:block;font-size:13.5px;margin-bottom:2px}
+.br span{font-size:12px;color:#4a5570}
+
+/* ---- RULE explainer card ---- */
+.rule{margin-top:30px;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  box-shadow:0 20px 50px -30px rgba(7,29,73,.5)}
+.rule-top{padding:22px 26px 18px;display:flex;gap:16px;align-items:flex-start;border-bottom:1px solid var(--line);position:relative}
+.rule-top:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--gradh)}
+.rid{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;color:#fff;background:var(--navy);padding:5px 10px;border-radius:7px;white-space:nowrap}
+.rule-top h3{font-family:'Fraunces',serif;font-weight:600;font-size:25px;margin:0;letter-spacing:-.01em}
+.pills{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.pill{font-family:'JetBrains Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;padding:4px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill.metric{color:var(--teal);border-color:rgba(7,178,172,.5);background:rgba(7,178,172,.08)}
+.pill.ok{color:var(--green);border-color:rgba(0,176,80,.4);background:rgba(0,176,80,.08)}
+
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.cell{padding:22px 26px}
+.cell + .cell{border-left:1px solid var(--line)}
+.cell .lab{margin-bottom:9px;display:block}
+.cell.why{background:linear-gradient(180deg,rgba(228,13,98,.05),transparent)}
+.cell.why .lab{color:var(--magenta)}
+.cell p{margin:0;font-size:15px;color:#26324c}
+.defn{font-family:'Fraunces',serif;font-size:18px;line-height:1.5;color:var(--ink);font-weight:340}
+
+/* worked example infographic */
+.work{padding:24px 26px 28px;border-top:1px solid var(--line);background:#fbf8f0}
+.alloc{margin-top:16px;display:grid;grid-template-columns:1fr auto 1fr auto 1.2fr;align-items:center;gap:14px}
+.stage{text-align:center}
+.bar{height:46px;border-radius:8px;display:flex;overflow:hidden;font-family:'JetBrains Mono',monospace;font-weight:700;color:#fff;font-size:13px}
+.bar .seg{display:flex;align-items:center;justify-content:center;gap:6px}
+.b-total{background:var(--navy)}
+.seg-uc{background:var(--teal)} .seg-cd{background:var(--magenta)}
+.cap{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:7px;text-transform:uppercase;letter-spacing:.1em}
+.arrow{font-family:'JetBrains Mono',monospace;color:var(--teal);font-size:13px;text-align:center;line-height:1.2}
+.arrow b{display:block;color:var(--muted);font-size:9.5px;letter-spacing:.1em}
+.formula{margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--navy);color:#cfeeec;
+  padding:14px 16px;border-radius:10px;line-height:1.7;overflow-x:auto}
+.formula .k{color:var(--amber)} .formula .v{color:#7fe3df} .formula .c{color:#8aa0c8}
+
+.foot{margin-top:90px;border-top:2px solid var(--ink);padding-top:18px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.foot .wm{font-weight:700;color:var(--ink)}
+.foot .wm i{color:var(--magenta);font-style:normal}
+
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.step:nth-child(1){animation-delay:.05s}.step:nth-child(2){animation-delay:.13s}
+.step:nth-child(3){animation-delay:.21s}.step:nth-child(4){animation-delay:.29s}
+.step:nth-child(5){animation-delay:.37s}
+@media(max-width:760px){.hero,.rule-grid,.alloc{grid-template-columns:1fr}.cell+.cell{border-left:none;border-top:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<div class="spine"></div>
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div>
+      <div class="kick">Chain of Thought · auto-generated</div>
+      <h1>How the<br>engine <em>reasons</em>.</h1>
+      <p class="dek">A living account of the rules in force, why they exist, and the exact arithmetic they produce — rebuilt every time it runs by scanning the engine itself.</p>
+    </div>
+    <div class="meta">
+      <div><span class="dot"></span>in sync</div>
+      <div>generated<br><b>2026-06-08</b></div>
+      <div>sources<br><b>9 files</b></div>
+      <div>rules live<br><b>3</b></div>
+    </div>
+  </header>
+
+  <!-- sources scanned -->
+  <div class="scan">
+    <span class="lab" style="margin-right:4px">scanned&nbsp;→</span>
+    <span class="chip"><span class="tick">✓</span> CLAUDE.md <span class="n">workflow</span></span>
+    <span class="chip"><span class="tick">✓</span> semantic/ <span class="n">3 rules</span></span>
+    <span class="chip"><span class="tick">✓</span> metadata/ <span class="n">2 dict + joins</span></span>
+    <span class="chip"><span class="tick">✓</span> data/ <span class="n">examples computed</span></span>
+  </div>
+
+  <!-- WORKFLOW -->
+  <section class="sec">
+    <div class="sec-h"><span class="num">01</span><h2>The reasoning path</h2><span class="lab right">query → delivery</span></div>
+    <div class="flow">
+      <div class="step"><div class="node">1</div><div><span class="tag">Parse</span><h3>Read the question literally</h3><p>Entities, metric, time window, comparison, output grain. Time language resolved to explicit dates.</p></div></div>
+      <div class="step"><div class="node">2</div><div><span class="tag">Feasibility</span><h3>Can the data answer it?</h3><p>Checked against dictionaries, joins, and rules. Three ways it can go:</p>
+        <div class="branch">
+          <div class="br"><b>Feasible</b><span>Proceed silently to the plan.</span></div>
+          <div class="br warn"><b>With assumptions</b><span>State each, confirm before running.</span></div>
+          <div class="br stop"><b>Not feasible</b><span>Name the data or semantic gap, stop.</span></div>
+        </div>
+      </div></div>
+      <div class="step live"><div class="node">3</div><div><span class="tag">Execute</span><h3>Generate &amp; run pandas — never hand-math</h3><p>Joins copied verbatim from <code>relationships.yaml</code>; every standing filter applied up top.</p></div></div>
+      <div class="step"><div class="node">4</div><div><span class="tag">Validate</span><h3>Prove it before trusting it</h3><p>Row-count, null, join fan-out, and baseline reconciliation. A failure blocks delivery.</p></div></div>
+      <div class="step"><div class="node">5</div><div><span class="tag">Synthesize</span><h3>Takeaways traceable to a number</h3><p>2–4 takeaways, each tied to a cell in the result. Decks are opt-in, never automatic.</p></div></div>
+    </div>
+  </section>
+
+  <!-- RULE CATALOG -->
+  <section class="sec">
+    <div class="sec-h"><span class="num">02</span><h2>Rules in force</h2><span class="lab right">3 live · read from semantic/</span></div>
+
+    <article class="rule">
+      <div class="rule-top">
+        <span class="rid">RULE-004</span>
+        <h3>Indication allocation</h3>
+        <div class="pills"><span class="pill metric">metric</span><span class="pill">Weekly × Monthly</span><span class="pill ok">✓ reviewed</span></div>
+      </div>
+      <div class="rule-grid">
+        <div class="cell">
+          <span class="lab">What it does</span>
+          <p class="defn">Splits a product's full weekly volume across only the <em>reported</em> indication set, using that set's national monthly mix renormalised to sum to 1.</p>
+        </div>
+        <div class="cell why">
+          <span class="lab">Why it exists</span>
+          <p>The weekly panel carries no indication breakdown — only the monthly table does. Renormalising within the reported set guarantees the parts sum back to the true weekly total, so a UC/CD view never silently loses volume. <b>Trade-off, stated:</b> a subset like IBD then absorbs the whole total, so it overstates versus an on-label denominator.</p>
+        </div>
+      </div>
+      <div class="work">
+        <span class="lab">Worked example — computed from live data, week ending 2026-05-08</span>
+        <div class="alloc">
+          <div class="stage">
+            <div class="bar b-total"><div class="seg" style="width:100%">7,026 TRx</div></div>
+            <div class="cap">weekly total</div>
+          </div>
+          <div class="arrow"><b>monthly mix</b>→<br>UC 41 : CD 52</div>
+          <div class="stage">
+            <div class="bar"><div class="seg seg-uc" style="width:44%">44%</div><div class="seg seg-cd" style="width:56%">56%</div></div>
+            <div class="cap">renormalised {UC,CD}</div>
+          </div>
+          <div class="arrow"><b>apply</b>→</div>
+          <div class="stage">
+            <div class="bar"><div class="seg seg-uc" style="width:44.4%">UC 3,121</div><div class="seg seg-cd" style="width:55.6%">CD 3,905</div></div>
+            <div class="cap">allocated — sums to 7,026 ✓</div>
+          </div>
+        </div>
+        <div class="formula"><span class="c"># renormalise within reported set, then apply to the weekly total</span><br><span class="k">share_uc</span> = 41 / (41 + 52) = <span class="v">0.4409</span> &nbsp;&nbsp; <span class="k">share_cd</span> = 52 / (41 + 52) = <span class="v">0.5591</span><br><span class="k">UC</span> = 7026 × 0.4409 = <span class="v">3,121</span> &nbsp;&nbsp; <span class="k">CD</span> = 7026 × 0.5591 = <span class="v">3,905</span></div>
+      </div>
+    </article>
+  </section>
+
+  <footer class="foot">
+    <span>Query-to-Slide · reasoning ledger</span>
+    <span class="wm">▶ DataZymes<i>.</i></span>
+    <span>regenerate: py -3 scripts/build_cot.py</span>
+  </footer>
+
+</div>
+</body>
+</html>

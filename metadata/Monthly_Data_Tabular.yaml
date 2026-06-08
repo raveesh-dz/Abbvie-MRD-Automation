@@ -1,0 +1,38 @@
+table: Monthly_Data_Tabular
+description: Monthly TRx volumes by indication and product across 11 immunology specialty markets, sourced from IQVIA e-laad
+grain: one row per indication per product per month
+date_range: 2020-05-01 to 2026-04-01
+refresh: monthly
+known_issues:
+  - "MARKET_TOTAL rows (e.g. RA Market) are pre-aggregated market sums; exclude them when aggregating PRODUCT rows or volumes will double count"
+  - "Total Non-Approved Volume is itself a rollup of the NON_APPROVED_FLAG = Y products within each indication; do not sum it together with those products"
+  - "The same product appears under multiple indications and indication markets overlap, so volumes are not additive across indications"
+  - "Blank cells in the source (shown as '-') were dropped rather than written as zeros; true zeros are preserved, so absence of a row means no data, not zero"
+  - "Values are projected/adjusted volumes carried to 6 decimal places; they are not whole script counts"
+columns:
+  - name: INDICATION
+    type: string
+    description: Specialty market / disease indication section from the source rollup
+    sample_values: [RA / JIA, Total PsA, AS, Ps, CD, UC, GCA]
+  - name: METRIC
+    type: string
+    description: Measure type for the value column; single-valued in this extract
+    sample_values: [TRx Volume]
+  - name: PRODUCT
+    type: string
+    description: Brand, biosimilar, dosage form split (IV/SQ), or aggregate row label as named in the source
+    sample_values: [HUMIRA (Including Citrate Free), RINVOQ 15MG, Orencia IV, Total Non-Approved Volume]
+  - name: ROW_TYPE
+    type: string
+    description: Distinguishes the pre-aggregated indication market total from individual product rows
+    sample_values: [MARKET_TOTAL, PRODUCT]
+  - name: NON_APPROVED_FLAG
+    type: string
+    description: Y if the product was marked X in the source, meaning it does not have an approved indication within that specialty market
+    sample_values: [Y, N]
+  - name: MONTH_DATE
+    type: date
+    description: First day of the data month (YYYY-MM-01)
+  - name: TRX_VOLUME
+    type: float
+    description: Adjusted total prescription volume for the product in that indication and month

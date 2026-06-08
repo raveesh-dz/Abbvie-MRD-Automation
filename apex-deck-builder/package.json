@@ -1,0 +1,9 @@
+{
+  "name": "apex-deck-builder",
+  "version": "1.0.0",
+  "description": "APEX-template PPTX generator (pipeline output layer)",
+  "private": true,
+  "dependencies": {
+    "pptxgenjs": "^3.12.0"
+  }
+}

@@ -1,0 +1,114 @@
+<style>
+  :root{
+    --navy:#071D49; --teal:#07B2AC; --amber:#FFC000; --magenta:#E40D62;
+    --blue:#00B0F0; --ink:#1b2330; --muted:#7a8499; --line:#e3e8f0; --paper:#f7f9fc;
+  }
+  .intro{margin-bottom:8px}
+  .mini{font-family:Roboto,Arial,sans-serif;color:var(--ink)}
+  .frame{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;
+    box-shadow:0 6px 22px rgba(7,29,73,.08);height:300px;display:flex;flex-direction:column}
+  /* shared mock bits */
+  .hero{background:var(--navy);color:#fff;padding:12px 14px}
+  .grad{height:4px;background:linear-gradient(90deg,#7030A0,#E40D62,#C00000,#FFC000,#07B2AC,#00B0F0)}
+  .htitle{font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:13px;line-height:1.2}
+  .hdek{font-style:italic;font-size:9px;opacity:.8;margin-top:3px}
+  .kpis{display:flex;gap:6px;padding:8px 10px;background:var(--paper);border-bottom:1px solid var(--line)}
+  .kpi{flex:1;text-align:center;border-left:3px solid var(--teal);background:#fff;border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:4px;padding:4px}
+  .kpi b{display:block;color:var(--navy);font-size:12px;font-family:Montserrat,Arial}
+  .kpi span{font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+  .flow{display:flex;gap:3px;padding:8px 10px;align-items:center}
+  .chev{flex:1;background:var(--navy);color:#fff;font-size:6.5px;text-align:center;padding:5px 2px;
+    clip-path:polygon(0 0,88% 0,100% 50%,88% 100%,0 100%,12% 50%);font-family:Montserrat,Arial}
+  .chev:first-child{clip-path:polygon(0 0,88% 0,100% 50%,88% 100%,0 100%)}
+  .rcard{margin:6px 10px;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:5px;padding:6px 8px}
+  .rtag{display:inline-block;background:var(--magenta);color:#fff;font-size:7px;padding:1px 5px;border-radius:8px;font-family:Montserrat,Arial}
+  .rline{height:5px;background:#eef1f6;border-radius:3px;margin-top:5px}
+  .rline.s{width:70%}.rline.m{width:90%}
+  .mono{font-family:Consolas,monospace;font-size:7.5px;background:#0b1f3a;color:#7fe3df;padding:4px 6px;border-radius:4px;margin-top:5px}
+  /* B sidebar */
+  .row{display:flex;flex:1;min-height:0}
+  .side{width:34%;background:var(--navy);color:#fff;padding:10px 8px}
+  .navitem{font-size:8px;padding:5px 6px;border-radius:4px;margin-bottom:3px;font-family:Montserrat,Arial;opacity:.7}
+  .navitem.on{background:var(--teal);opacity:1}
+  .pane{flex:1;padding:10px;overflow:hidden}
+  /* C accordion */
+  .seg{display:flex;gap:4px;padding:8px 10px}
+  .segpill{font-size:8px;padding:4px 8px;border-radius:14px;font-family:Montserrat,Arial;border:1px solid var(--line);color:var(--muted)}
+  .segpill.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .acc{margin:4px 10px;border:1px solid var(--line);border-radius:5px;padding:5px 8px;display:flex;justify-content:space-between;align-items:center}
+  .acc.open{border-left:4px solid var(--amber)}
+  .accx{font-size:8px;font-family:Montserrat,Arial;color:var(--navy)}
+  .pendbadge{background:var(--amber);color:var(--navy);font-size:6.5px;padding:1px 4px;border-radius:6px}
+  .ftr{margin-top:auto;padding:5px 10px;font-size:7px;color:var(--muted);border-top:1px solid var(--line);display:flex;justify-content:space-between}
+  .options .content h3{margin-bottom:2px}
+</style>
+
+<h2>Chain-of-Thought report — pick a layout direction</h2>
+<p class="subtitle">All three use the DataZymes palette (navy / teal / amber / magenta, watercolor rule). Same content — engine workflow + live rule catalog (each rule: definition · how · <b>why</b> · worked example) + an optional run layer. They differ in <b>information architecture</b>: how you navigate as the rule catalog grows. Click the one that feels right.</p>
+
+<div class="options mini">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>The Dossier — single scroll</h3>
+      <p>Read top-to-bottom like an audit document. Best for trust/printing to PDF.</p>
+      <div class="frame">
+        <div class="grad"></div>
+        <div class="hero"><div class="htitle">How this engine reasons</div><div class="hdek">Query-to-Slide analytics · live as of run</div></div>
+        <div class="kpis"><div class="kpi"><b>2</b><span>rules</span></div><div class="kpi"><b>6</b><span>steps</span></div><div class="kpi"><b>1</b><span>join edge</span></div></div>
+        <div class="flow"><div class="chev">PARSE</div><div class="chev">FEASIBLE</div><div class="chev">EXECUTE</div><div class="chev">VALIDATE</div></div>
+        <div class="rcard"><span class="rtag">RULE-004</span> <span class="accx">Indication allocation</span><div class="rline m"></div><div class="rline s"></div><div class="mono">wk 7,026 → 44:56 → UC 3,121 / CD 3,905</div></div>
+        <div class="ftr"><span>&#9654; DataZymes</span><span>auto-generated</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>The Reference — sticky sidebar</h3>
+      <p>Left nav jumps to any rule/section. Scales best as the catalog grows.</p>
+      <div class="frame">
+        <div class="grad"></div>
+        <div class="row">
+          <div class="side">
+            <div class="htitle" style="font-size:10px;margin-bottom:8px">CoT Index</div>
+            <div class="navitem">Overview</div>
+            <div class="navitem on">Workflow</div>
+            <div class="navitem">RULE-003 crosswalk</div>
+            <div class="navitem">RULE-004 allocation</div>
+            <div class="navitem">This run</div>
+          </div>
+          <div class="pane">
+            <div class="htitle" style="color:var(--navy);font-size:11px">RULE-004 · Indication allocation</div>
+            <div class="rline m"></div><div class="rline s"></div>
+            <div style="font-size:7px;color:var(--magenta);margin-top:6px;font-family:Montserrat,Arial">WHY</div>
+            <div class="rline m"></div>
+            <div class="mono">wk 7,026 → 44:56 → UC 3,121 / CD 3,905</div>
+          </div>
+        </div>
+        <div class="ftr"><span>&#9654; DataZymes</span><span>auto-generated</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>The Console — sections + accordions</h3>
+      <p>Segmented (Workflow · Rules · Run); rules collapse to one line, expand for why+example. Densest catalog stays scannable.</p>
+      <div class="frame">
+        <div class="grad"></div>
+        <div class="hero"><div class="htitle">Engine reasoning console</div></div>
+        <div class="seg"><span class="segpill">Workflow</span><span class="segpill on">Rule Catalog</span><span class="segpill">This Run</span></div>
+        <div class="acc open"><span class="accx">RULE-004 · Indication allocation</span><span class="rtag">metric</span></div>
+        <div style="margin:0 10px"><div class="mono">wk 7,026 → 44:56 → UC 3,121 / CD 3,905</div></div>
+        <div class="acc"><span class="accx">RULE-003 · Brand crosswalk</span><span class="rtag">metric</span></div>
+        <div class="acc"><span class="accx">RULE-301 · IBD panel scope</span><span class="pendbadge">&#9888; why pending</span></div>
+        <div class="ftr"><span>&#9654; DataZymes</span><span>auto-generated</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>

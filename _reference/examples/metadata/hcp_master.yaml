@@ -1,0 +1,18 @@
+table: hcp_master
+description: Example HCP reference table (synthetic)
+grain: one row per HCP
+date_range: n/a (reference table)
+refresh: monthly
+known_issues: []
+columns:
+  - name: hcp_id
+    type: string
+    description: Prescriber identifier
+  - name: specialty
+    type: string
+    description: HCP specialty
+    sample_values: [PCP, NEURO]
+  - name: territory_id
+    type: string
+    description: Sales territory
+    sample_values: [T1, T2, T3]

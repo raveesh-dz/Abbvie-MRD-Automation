@@ -1,0 +1,40 @@
+table: Weekly_Data_Tabular
+description: Weekly adjusted TRx volumes by product for the SI Market + Oral gastro specialty market, sourced from IQVIA e-laad
+grain: one row per product per week
+date_range: 2024-05-03 to 2026-05-08
+refresh: monthly
+known_issues:
+  - "SCOPE: this panel covers the IBD / gastrointestinal market ONLY. Each product's weekly volume here represents its IBD (UC + CD) usage, even for products also used in dermatology/rheumatology. When splitting a weekly total by indication, split only across IBD indications (UC, CD) — never across a product's non-IBD indications."
+  - "Data is weekly grain but the file refreshes monthly, so each refresh appends roughly 4 to 5 new week-ending dates"
+  - "Per the source sheet, pediatric volumes for HUMIRA are not fully representative of actual pediatric volumes"
+  - "The MARKET_TOTAL row (SI Market + Oral) is a pre-aggregated market sum; exclude it when aggregating PRODUCT rows"
+  - "Total Non-Approved Volume is a rollup of the NON_APPROVED_FLAG = Y products; do not sum it together with those products"
+  - "Blank cells in the source were dropped rather than written as zeros (e.g. STELARA BIOSIMILARS TOTAL SQ has no rows); true zeros are preserved"
+  - "Values are projected/adjusted volumes carried to 6 decimal places; they are not whole script counts"
+columns:
+  - name: MARKET
+    type: string
+    description: Specialty market section from the source sheet; single-valued in this extract
+    sample_values: [SI Market + Oral]
+  - name: METRIC
+    type: string
+    description: Measure type for the value column; single-valued in this extract
+    sample_values: [TRx (Adjusted)]
+  - name: PRODUCT
+    type: string
+    description: Brand, biosimilar, or aggregate row label as named in the source
+    sample_values: [HUMIRA (Including Citrate Free), SKYRIZI OBI, STELARA SQ, Total Non-Approved Volume]
+  - name: ROW_TYPE
+    type: string
+    description: Distinguishes the pre-aggregated market total row from individual product rows
+    sample_values: [MARKET_TOTAL, PRODUCT]
+  - name: NON_APPROVED_FLAG
+    type: string
+    description: Y if the product was marked X in the source, meaning it does not currently have an approved indication within this specialty market
+    sample_values: [Y, N]
+  - name: WEEK_ENDING
+    type: date
+    description: Week-ending date of the data week (Fridays in the source)
+  - name: TRX_ADJUSTED
+    type: float
+    description: Adjusted total prescription volume for the product in that week

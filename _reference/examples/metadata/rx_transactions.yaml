@@ -1,0 +1,24 @@
+table: rx_transactions
+description: Example weekly prescription transactions at HCP level (synthetic)
+grain: one row per HCP per product per week
+date_range: 2026-01-03 to 2026-05-16
+refresh: weekly, Mondays
+known_issues:
+  - "Synthetic example data"
+columns:
+  - name: hcp_id
+    type: string
+    description: Prescriber identifier
+  - name: week_ending
+    type: date
+    description: Saturday week-ending date
+  - name: product
+    type: string
+    description: Product name
+    sample_values: [PRODUCT_A, COMPETITOR_X]
+  - name: trx
+    type: integer
+    description: Total prescriptions
+  - name: nrx
+    type: integer
+    description: New prescriptions
