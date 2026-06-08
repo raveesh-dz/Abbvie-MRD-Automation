@@ -1,0 +1,18 @@
+{
+  "date_column": "WEEK_ENDING",
+  "title": "Skyrizi (SQ + IV + OBI)\nIBD Performance",
+  "subtitle": "Weekly TRx split by indication (UC / CD), full series",
+  "series_columns": ["UC", "CD"],
+  "total_column": "SKYRIZI_TRx_total",
+  "eyebrow": "SKYRIZI · IBD MARKET",
+  "section_strip": "SKYRIZI IBD  ·  WEEKLY TRX BY INDICATION",
+  "statement_title": "Crohn's Dominates Skyrizi's IBD Mix — but Ulcerative Colitis Is Climbing",
+  "dek_template": "Skyrizi's weekly IBD volume has scaled from ~{first_total:,.0f} to ~{latest_total:,.0f} TRx since {first_month}. Crohn's has led in every week; ulcerative colitis has grown from ~{first_uc_pct:.0f}% to ~{latest_uc_pct:.0f}% of the mix since its 2024 launch.",
+  "chart_caption": "WEEKLY TRX — UC VS CD (FULL SERIES)",
+  "blocks": [
+    {"num": "01", "head": "Crohn's dominates", "body_template": "CD ~{latest_cd:,.0f} vs UC ~{latest_uc:,.0f} TRx in the latest week ({latest_label}) — about a {latest_cd_pct:.0f}/{latest_uc_pct:.0f} CD/UC split."},
+    {"num": "02", "head": "UC is the growth engine", "body_template": "Ulcerative colitis has risen from ~{first_uc_pct:.0f}% to ~{latest_uc_pct:.0f}% of Skyrizi's IBD mix since its 2024 launch."},
+    {"num": "03", "head": "~{ramp:,.0f}x ramp", "body_template": "Skyrizi's IBD volume rose from ~{first_total:,.0f} to ~{latest_total:,.0f} weekly TRx (OBI maintenance is ~99.9% of it)."}
+  ],
+  "tldr": "Within Skyrizi's IBD business, Crohn's is the dominant indication (~{latest_cd_pct:.0f}% of TRx) while ulcerative colitis is the faster-growing share since its 2024 launch."
+}

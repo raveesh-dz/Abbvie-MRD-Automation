@@ -296,6 +296,7 @@ def repo_copy(tmp_path, monkeypatch):
         src = REPO / d
         if src.exists():
             shutil.copytree(src, tmp_path / d)
+    (tmp_path / "web").mkdir(exist_ok=True)  # always present for the static mount
     # copy the existing run folders the seeder reads from
     out = tmp_path / "output"
     out.mkdir(exist_ok=True)
@@ -1126,8 +1127,10 @@ def api_deck(vid: str):
     return FileResponse(deck, filename=f"{vid}.pptx")
 
 
-# Static page LAST so explicit /api routes win.
-app.mount("/", StaticFiles(directory=str(config.web_dir()), html=True), name="web")
+# Static page LAST so explicit /api routes win. check_dir=False so importing the
+# app never crashes when web/ is absent (e.g. tests against a temp repo copy, or
+# before Task 9). The dir is read per-request at serve time.
+app.mount("/", StaticFiles(directory=str(config.web_dir()), html=True, check_dir=False), name="web")
 ```
 
 > Note: the `StaticFiles` mount requires `web/` to exist. Task 9 creates it. If you run `test_api.py` before Task 9, create an empty `web/` dir first (`mkdir web`), or run Task 9 first — the API tests don't depend on the page contents.
@@ -1197,6 +1200,7 @@ This task is verified by manual QA (Step 4), not pytest.
 
     <section id="result-section" class="hidden">
       <h2 id="result-title">Result</h2>
+      <div id="deck-link" class="deck-link"></div>
       <div class="result-wrap">
         <div id="chart"></div>
         <div id="takeaways" class="takeaways"></div>
@@ -1263,6 +1267,7 @@ section{margin-bottom:32px}
 .takeaways{font-size:13px;color:var(--gray);white-space:pre-wrap;
   background:#fff;border:1px solid var(--rule);border-radius:10px;padding:14px}
 #chart{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:12px}
+.deck-link{margin:0 0 12px} .deck-link a{text-decoration:none;display:inline-block}
 pre{background:#0d1530;color:#cfe3ff;padding:12px;border-radius:8px;overflow:auto;font-size:12px}
 table{border-collapse:collapse;width:100%;font-size:12px;margin-top:12px}
 th,td{border-bottom:1px solid var(--rule);padding:5px 8px;text-align:right}
@@ -1350,17 +1355,19 @@ async function runSelected(){
       const res = await api('POST',`/api/views/${id}/run`);
       if (rs){ rs.className='runstate '+(res.ok?'ok':'fail');
         rs.textContent = res.ok?`✓ ${res.row_count} rows · validation ${res.validation}`:'✗ failed'; }
-      if (res.ok) await showResult(id, res.log);
+      if (res.ok) await showResult(id, res.log, res.deck_available);
     }catch(e){ if (rs){rs.className='runstate fail'; rs.textContent='✗ '+e.message;} }
   }
   $('#btn-run').disabled = false;
   await loadViews();
 }
 
-async function showResult(id, log){
+async function showResult(id, log, deckAvailable){
   const data = await api('GET',`/api/views/${id}/result`);
   $('#result-section').classList.remove('hidden');
   $('#result-title').textContent = data.spec.title?.replace(/\n/g,' ') || id;
+  $('#deck-link').innerHTML = deckAvailable
+    ? `<a class="btn" href="/api/views/${id}/deck">⬇ Download deck (.pptx)</a>` : '';
   $('#takeaways').textContent = data.takeaways || '';
   $('#runlog').textContent = log || '';
   drawChart(data.rows, data.spec);
@@ -1412,7 +1419,7 @@ refreshAll();
 
 - [ ] **Step 4: Manual QA**
 
-Run the server (`py -3 run_dashboard.py` — created in Task 10) and open `http://127.0.0.1:8000`. Confirm:
+Launch the server. If you've already done Task 10, run `py -3 run_dashboard.py`; otherwise launch directly with `py -3 -m uvicorn server.app:app --host 127.0.0.1 --port 8000`. Open `http://127.0.0.1:8000`. Confirm:
 - Two dataset cards show correct grain + `2024-05-03 → 2026-05-08` (weekly) / `2020-05-01 → 2026-04-01` (monthly); no "data updated" badge on first load.
 - 2 selectable view cards (TREMFYA, SKYRIZI) + 5 greyed placeholders; placeholders aren't selectable; `Payer Mix` shows the `Data gap` tag.
 - "Simulate new month" → dataset dates advance, "data updated" badge + banner appear, stale flags on built views.

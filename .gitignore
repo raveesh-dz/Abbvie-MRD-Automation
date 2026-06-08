@@ -17,7 +17,3 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
-
-# Data & generated outputs (excluded from repo)
-data/
-output/
