@@ -10,7 +10,7 @@
 - **Python:** `python` is a broken Windows Store alias. Use **`py -3`** (Python 3.14.3, pandas 3.0.2, pyyaml installed).
 - **Node:** v25.8.1 / npm 11. `pptxgenjs` is installed LOCALLY in `apex-deck-builder/node_modules` (not global) — node resolves it from there, no NODE_PATH needed.
 - **LibreOffice:** NOT installed → the deck-builder's visual QA render (pptx→images) can't run on this machine. Verify decks via `deck_config.json` vs `result.csv` instead.
-- **Git:** NOT initialized — user chose to skip git for now. So **deletions/edits are NOT recoverable**. Confirm before destructive actions.
+- **Git:** initialised, remote = `github.com/raveesh-dz/Abbvie-MRD-Automation` (origin/main). Earlier MEMORY note said "not initialised" — stale, fixed 2026-06-09. Make a new commit per change to `/semantic/` or `/metadata/`; never `--amend` published commits.
 - Schema gate: `py -3 scripts/validate_schema.py` → currently **ALL CLEAR**, both tables active.
 
 ## Pipeline output → slides (apex-deck-builder)
