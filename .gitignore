@@ -27,3 +27,11 @@ _reference/
 # Data caches (parquet pulls from Snowflake)
 data/_cache/
 profiles/
+
+# Python build / install artifacts
+*.egg-info/
+build/
+dist/
+
+# Smoke-test run outputs (regenerable, not part of audited runs)
+output/run_*_smoke/

@@ -1,0 +1,41 @@
+table: ndc_brand_crosswalk
+fqn: ndc_brand_crosswalk.csv
+source:
+  connector: csv_local
+  type: csv_local
+  object: ndc_brand_crosswalk.csv
+  cache_path: data\_cache\ndc_brand_crosswalk.parquet
+  fetched_at: '2026-06-09T11:35:37.799796+00:00'
+  row_count_at_onboard: 60
+  column_hash: sha256:0ea50e7efd9e79296398d42b67137b58f1c5571dfe939c3eabafdc805d4ad1c9
+description: AUTO-GENERATED (heuristic). Replace with a one-sentence business description
+  of what ndc_brand_crosswalk represents.
+grain: AUTO-GUESS PENDING. Confirm the natural primary-key combination.
+row_count_at_onboard: 60
+onboarded_at: '2026-06-09T11:35:37.903382+00:00'
+known_issues:
+- '''PRODUCT'' contains rollup-like values (e.g. ''ACTEMRA BIOSIMILARS SQ TOTAL'')
+  -- verify whether to exclude when aggregating.'
+columns:
+- name: NDC_CD
+  type: integer
+  description: key -- dtype int64, 60 distinct, 0.0% null.
+  role_guess: key
+  synonyms: []
+  sample_values:
+  - '66993001968'
+  - '186037020'
+  - '93317431'
+  - '31722072610'
+  - '68180096301'
+- name: PRODUCT
+  type: string
+  description: dimension -- dtype object, 28 distinct, 0.0% null.
+  role_guess: dimension
+  synonyms: []
+  sample_values:
+  - ACTEMRA BIOSIMILARS SQ TOTAL
+  - SKYRIZI OBI
+  - SKYRIZI
+  - BIMZELX
+  - CIMZIA

@@ -1,0 +1,6 @@
+name: csv_local
+type: csv_local
+defaults:
+  row_cap: 10_000_000
+  cache_format: parquet
+  cache_dir: data/_cache/

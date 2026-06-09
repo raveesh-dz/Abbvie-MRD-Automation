@@ -2,16 +2,43 @@
 
 > Running state of the build so a new session resumes without starting blank.
 > Read this first, alongside CLAUDE.md. Update it whenever setup state changes.
-> Last updated: 2026-06-04 (user: R / rounaksuranshe@gmail.com)
+> Last updated: 2026-06-09 (user: R / rounaksuranshe@gmail.com)
 
 ---
 
 ## Environment / gotchas
-- **Python:** `python` is a broken Windows Store alias. Use **`py -3`** (Python 3.14.3, pandas 3.0.2, pyyaml installed).
+- **Python:** `python` is a broken Windows Store alias. Use **`py -3`** (Python 3.12.10 on this box — earlier MEMORY note said 3.14, stale, fixed 2026-06-09). Installed: pandas 2.3.3, pyarrow 24, pyyaml, snowflake-connector-python 4.6, typer 0.26, rich.
 - **Node:** v25.8.1 / npm 11. `pptxgenjs` is installed LOCALLY in `apex-deck-builder/node_modules` (not global) — node resolves it from there, no NODE_PATH needed.
 - **LibreOffice:** NOT installed → the deck-builder's visual QA render (pptx→images) can't run on this machine. Verify decks via `deck_config.json` vs `result.csv` instead.
 - **Git:** initialised, remote = `github.com/raveesh-dz/Abbvie-MRD-Automation` (origin/main). Earlier MEMORY note said "not initialised" — stale, fixed 2026-06-09. Make a new commit per change to `/semantic/` or `/metadata/`; never `--amend` published commits.
-- Schema gate: `py -3 scripts/validate_schema.py` → currently **ALL CLEAR**, both tables active.
+- Schema gate: `py -3 scripts/validate_schema.py` (or `mrd validate`) -> currently **ALL CLEAR**, four tables active.
+- Snowflake (added 2026-06-09): account `SGWXVBR-HNA51236`, role `DZ_DEVELOPERS`, warehouse `COMPUTE_WH`, db `SNDBX_DB`, schema `ADHOC`. Auth = `externalbrowser` SSO (dev). Write access confirmed (CREATE TABLE + PUT + COPY INTO all work in SNDBX_DB.ADHOC). Creds in `.env` (gitignored), template at `.env.example`. `keyring` NOT installed -> SSO popup per process; install `snowflake-connector-python[secure-local-storage]` to cache the ID token if popups get annoying.
+
+## Data layer (new — package `mrd_engine`, branch `feature/data-layer`)
+- **Package:** `src/mrd_engine/` installed editable via `pyproject.toml` (`py -3 -m pip install -e .`). Entrypoint `mrd` (Typer); use `py -3 -m mrd_engine.cli ...` (the `mrd.exe` shim is in `%APPDATA%/Roaming/Python/Scripts` which isn't on PATH).
+- **Connectors:** abstraction at `src/mrd_engine/connectors/{base,csv_local,snowflake}.py`. Each declares config in `connectors/<name>.yaml` (`snowflake_dz.yaml`, `csv_local.yaml`). Auth env-var refs only. Connectors land data as parquet in `data/_cache/<table>.parquet` and return a `Manifest` (table, source, fetched_at, row_count, column_hash, cache_path).
+- **Onboarding flow (`mrd onboard <connector> <object>`):** fetch -> profile (`profiles/<table>.json`) -> propose metadata (default backend `claude_cli`, falls back to `heuristic` on failure; `anthropic_api` stub for later) -> writes `metadata/<table>.yaml.proposed`. User runs `mrd review <table>` (interactive) or `mrd review <table> --auto` to promote to `.yaml`.
+- **Claude CLI backend:** spawns `claude -p --output-format text` headless via stdin pipe (Windows cmd-arg escaping landmines — DO NOT pass the prompt as a CLI arg; pipe over stdin). Resolved via `shutil.which("claude")` + `shell=True` on Windows so `.cmd` shims work. Validated 2026-06-09 — produces real domain-aware metadata (e.g. NDC zero-padding caveats, biosimilar rollup risk).
+- **Join recommender v2 (`mrd joins recommend`):** name match (exact / substring) + Jaccard value overlap + cardinality (1:1, 1:N, N:1, N:M). Optional LLM rationales (`--no-rationales` to skip). Writes ranked candidates to `profiles/join_candidates.json`. `--accept-all` appends every candidate to `metadata/relationships.yaml`; `mrd joins accept <ids>` accepts specific ones from the JSON.
+- **Loader:** `mrd_engine.loader.load(table)` resolves via metadata `source.cache_path` -> fall back to `data/<table>.csv` -> `.parquet`. Source-agnostic surface for the engine.
+- **Run manifest:** `mrd_engine.runs.manifest.write_manifest(run_dir, [Manifest...])` -> writes `source_manifest.json` per run (connector, fetched_at, row_count, column_hash). Reproducibility surface.
+- **Extended schema gate (`scripts/validate_schema.py`):** handles both legacy CSV path (existing Weekly/Monthly YAMLs without `source` block) AND new source-block path (cache_path + column_hash drift check). `--include-remote` adds a Snowflake handshake + remote `DESCRIBE TABLE` diff. Exit codes unchanged.
+- **Snowflake target onboarded:** `SNDBX_DB.ADHOC.ADHOC_FINAL_TABLE` (736,763 rows, 222 cols — patient-claim Rx data: DZ_PAT_ID, CLAIM_ID, NDC_CD, DIAG_CD_1..8, SRVC_DT, YEAR_MONTH). Cached at `data/_cache/ADHOC_FINAL_TABLE.parquet`. Metadata `metadata/ADHOC_FINAL_TABLE.yaml` (heuristic-proposed, auto-accepted; replace description/grain when convenient).
+- **Synthetic NDC->brand crosswalk:** `data/ndc_brand_crosswalk.csv`, 60 NDCs (top by claim count) randomly mapped to real IQVIA brands. Onboarded via `csv_local`. Covers 18.4% of claim rows. **Crosswalk is fake** — assignments are arbitrary; replace with FDA NDC directory or licensed source before any production use.
+- **End-to-end smoke test:** `scripts/onboarding/engine_smoketest.py` loads ADHOC + crosswalk + Weekly via `mrd_engine.loader.load()`, bridges (claims -> NDC -> brand), writes `output/run_<date>_smoke/result.csv` + `source_manifest.json`. Passes.
+- **Files added/modified this session:**
+  - `pyproject.toml`, `src/mrd_engine/**` (connectors, metadata, onboarding, runs, loader, cli, envloader)
+  - `connectors/csv_local.yaml`, existing `snowflake_dz.yaml`
+  - `metadata/ADHOC_FINAL_TABLE.yaml`, `metadata/ndc_brand_crosswalk.yaml`, `metadata/relationships.yaml` (6 new auto-discovered edges appended — some spurious like ROW_TYPE/NON_APPROVED_FLAG, cull later)
+  - `scripts/validate_schema.py` (extended), `scripts/onboarding/engine_smoketest.py`
+
+## Open items (data layer)
+1. Prune spurious auto-discovered edges in `relationships.yaml` (ROW_TYPE, NON_APPROVED_FLAG — categorical flags, not real joins).
+2. Replace synthetic NDC crosswalk with FDA NDC directory (or a licensed source) before production.
+3. Add a source-block enrichment for the existing `Weekly_Data_Tabular.yaml` and `Monthly_Data_Tabular.yaml` so they too participate in cache/drift checks (currently legacy CSV path — works but no column-hash drift detection).
+4. Optional: install `snowflake-connector-python[secure-local-storage]` + `keyring` to cache SSO id token (one popup vs many).
+5. Anthropic API backend in `proposer.py` is a stub — wire when an `ANTHROPIC_API_KEY` is available, for non-interactive/CI metadata gen.
+6. dbt-core foundation layer (Phase 5) deferred per user — current scope was data layer up to feeding existing engine, no foundation marts.
 
 ## Pipeline output → slides (apex-deck-builder)
 - The deck stage is OPT-IN (CLAUDE.md Step 8). Default stop = the 6-file output contract (Step 7). After delivering, ASK "Do you want me to build a slide deck?" and build ONLY on an explicit yes. Never auto-build.

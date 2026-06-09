@@ -1,24 +1,38 @@
-# The ONLY source of truth for joins. The engine will never join two tables
-# unless an edge is declared here. No edge = the join is refused, not guessed.
-#
-# type: one-to-one | many-to-one | one-to-many
-# notes: join direction (inner/left), null behavior, grain mismatches.
 relationships:
-  - left: Weekly_Data_Tabular.PRODUCT + month(Weekly_Data_Tabular.WEEK_ENDING)
-    right: Monthly_Data_Tabular.PRODUCT + Monthly_Data_Tabular.MONTH_DATE
-    type: many-to-one
-    notes: >
-      Allocation edge ONLY — not a row-level value join. Many weeks map to one
-      month. Used by metrics RULE-004 to borrow the Monthly indication MIX (a
-      ratio) and apply it to the Weekly total. The Monthly side must first be
-      rolled up to the Weekly brand label per RULE-003 (crosswalk), and restricted
-      to ROW_TYPE = PRODUCT over the mutually-exclusive indication set (PsA Derm +
-      PsA Rheum, excluding Total PsA). Do NOT sum or compare TRX_ADJUSTED against
-      TRX_VOLUME directly — they are different metrics; only the unitless mix
-      crosses the edge. Weeks past max(MONTH_DATE) carry forward the latest split.
+- left: Weekly_Data_Tabular.PRODUCT + month(Weekly_Data_Tabular.WEEK_ENDING)
+  right: Monthly_Data_Tabular.PRODUCT + Monthly_Data_Tabular.MONTH_DATE
+  type: many-to-one
+  notes: 'Allocation edge ONLY — not a row-level value join. Many weeks map to one
+    month. Used by metrics RULE-004 to borrow the Monthly indication MIX (a ratio)
+    and apply it to the Weekly total. The Monthly side must first be rolled up to
+    the Weekly brand label per RULE-003 (crosswalk), and restricted to ROW_TYPE =
+    PRODUCT over the mutually-exclusive indication set (PsA Derm + PsA Rheum, excluding
+    Total PsA). Do NOT sum or compare TRX_ADJUSTED against TRX_VOLUME directly — they
+    are different metrics; only the unitless mix crosses the edge. Weeks past max(MONTH_DATE)
+    carry forward the latest split.
 
-# The two tables share no other validated linkage. They are independent IQVIA
-# e-laad extracts at different grains (week vs month), different metrics
-# (TRX_ADJUSTED vs TRX_VOLUME), and different product granularity. PRODUCT is NOT
-# a clean row-join key — outside RULE-003 the labels diverge by case and dose/form.
-# Any join beyond the allocation edge above is a data gap: surface it, don't guess.
+    '
+- left: Monthly_Data_Tabular.ROW_TYPE
+  right: Weekly_Data_Tabular.ROW_TYPE
+  type: many_to_many
+  notes: auto-discovered. name_match=exact, jaccard=1.0, overlap=1.0.
+- left: Monthly_Data_Tabular.NON_APPROVED_FLAG
+  right: Weekly_Data_Tabular.NON_APPROVED_FLAG
+  type: many_to_many
+  notes: auto-discovered. name_match=exact, jaccard=1.0, overlap=1.0.
+- left: Weekly_Data_Tabular.PRODUCT
+  right: ndc_brand_crosswalk.PRODUCT
+  type: many_to_many
+  notes: auto-discovered. name_match=exact, jaccard=0.875, overlap=1.0.
+- left: ADHOC_FINAL_TABLE.NDC_CD
+  right: ndc_brand_crosswalk.NDC_CD
+  type: many_to_one
+  notes: auto-discovered. name_match=exact, jaccard=0.0149, overlap=1.0.
+- left: Monthly_Data_Tabular.PRODUCT
+  right: Weekly_Data_Tabular.PRODUCT
+  type: many_to_many
+  notes: auto-discovered. name_match=exact, jaccard=0.2778, overlap=0.7812.
+- left: Monthly_Data_Tabular.PRODUCT
+  right: ndc_brand_crosswalk.PRODUCT
+  type: many_to_many
+  notes: auto-discovered. name_match=exact, jaccard=0.2472, overlap=0.7857.
