@@ -1,0 +1,2260 @@
+table: ADHOC_FINAL_TABLE
+fqn: SNDBX_DB.ADHOC.ADHOC_FINAL_TABLE
+source:
+  connector: snowflake_dz
+  object: SNDBX_DB.ADHOC.ADHOC_FINAL_TABLE
+description: AUTO-GENERATED. Replace this with a one-sentence business description
+  of what ADHOC_FINAL_TABLE represents.
+grain: AUTO-GUESS PENDING. Confirm the natural primary-key combination after review.
+row_count_at_onboard: 736763
+onboarded_at: '2026-06-09T10:53:09.455383+00:00'
+known_issues:
+- '''BRD_NM'' contains rollup-like values (e.g. ''ALL OTHER BETA AGONIST-ORAL'') —
+  verify whether to exclude when aggregating.'
+- '''ACT_PLAN_NM'' contains rollup-like values (e.g. ''ALL OTHER THIRD PARTY'') —
+  verify whether to exclude when aggregating.'
+- '''REJT_GRP'' contains rollup-like values (e.g. ''All Other'') — verify whether
+  to exclude when aggregating.'
+- '''PLAN_NM'' contains rollup-like values (e.g. ''ALL OTHER THIRD PARTY'') — verify
+  whether to exclude when aggregating.'
+- '''PRCR_CD_DESC'' contains rollup-like values (e.g. ''OFFICE OR OTHER OUTPATIENT
+  VISIT FOR THE EVALUATION AND MANAGEMENT OF AN ESTABLISHED PATIENT, WHICH REQUIRES
+  A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND MODERATE LEVEL OF MEDICAL
+  DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF THE ENCOUNTER FOR CODE SELECTION,
+  30 MINUTES MUST BE MET OR EXCEEDED.'') — verify whether to exclude when aggregating.'
+columns:
+- name: DZ_PAT_ID
+  type: string
+  description: dimension — dtype str, 1,782 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - DZ-57548143
+  - DZ-57548143
+  - DZ-57548143
+  - DZ-57548143
+  - DZ-57548143
+- name: SRVC_DT
+  type: string
+  description: dimension — dtype object, 2,159 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '2022-03-14'
+  - '2022-07-14'
+  - '2022-03-02'
+  - '2022-09-26'
+  - '2022-06-16'
+- name: CLAIM_ID
+  type: float
+  description: metric — dtype float64, 139 distinct, 0.0% null.
+  role_guess: metric
+  sample_values:
+  - '1.09143e+19'
+  - '1.00173e+19'
+  - '1.09143e+19'
+  - '1.00173e+19'
+  - '515000000000.0'
+- name: VISIT_KEY
+  type: integer
+  description: metric — dtype int16, 135 distinct, 0.0% null.
+  role_guess: metric
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: CLAIM_FG
+  type: string
+  description: dimension — dtype str, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - Rx_Claim
+  - Rx_Claim
+  - Rx_Claim
+  - Rx_Claim
+  - Rx_Claim
+- name: CLAIM_STA
+  type: string
+  description: dimension — dtype str, 2 distinct, 74.62% null.
+  role_guess: dimension
+  sample_values:
+  - S
+  - S
+  - S
+  - S
+  - S
+- name: CLAIM_DSPN
+  type: string
+  description: dimension — dtype str, 4 distinct, 43.21% null.
+  role_guess: dimension
+  sample_values:
+  - PD
+  - PD
+  - PD
+  - PD
+  - PD
+- name: NDC_CD
+  type: string
+  description: dimension — dtype str, 4,028 distinct, 69.46% null.
+  role_guess: dimension
+  sample_values:
+  - '173088714'
+  - '16729011917'
+  - '173088714'
+  - '487020160'
+  - '59746017506'
+- name: SRC_PRVDR_ID
+  type: string
+  description: dimension — dtype str, 92,090 distinct, 2.0% null.
+  role_guess: dimension
+  sample_values:
+  - '10258020'
+  - '10258020'
+  - '10258020'
+  - '10258020'
+  - '11984130'
+- name: PRVDR_CUST_ID
+  type: string
+  description: dimension — dtype str, 91,833 distinct, 3.68% null.
+  role_guess: dimension
+  sample_values:
+  - '58223680'
+  - '58223680'
+  - '58223680'
+  - '58223680'
+  - '55126233'
+- name: SRC_PLAN_ID
+  type: string
+  description: dimension — dtype str, 2,967 distinct, 2.02% null.
+  role_guess: dimension
+  sample_values:
+  - '31210104'
+  - '24290627'
+  - '31210104'
+  - '24291895'
+  - '35710001'
+- name: DIAG_CD
+  type: string
+  description: dimension — dtype str, 8,623 distinct, 24.4% null.
+  role_guess: dimension
+  sample_values:
+  - R51.9
+  - R23.3
+  - R10.9
+  - J45.41
+  - R11.2
+- name: DIAG_CD_2
+  type: string
+  description: dimension — dtype str, 7,785 distinct, 41.83% null.
+  role_guess: dimension
+  sample_values:
+  - R42
+  - R30.0
+  - K92.1
+  - R42
+  - F12.90
+- name: DIAG_CD_3
+  type: string
+  description: dimension — dtype str, 6,802 distinct, 51.19% null.
+  role_guess: dimension
+  sample_values:
+  - J45.51
+  - J45.40
+  - J45.909
+  - J30.1
+  - I95.9
+- name: DIAG_CD_4
+  type: string
+  description: dimension — dtype str, 5,806 distinct, 59.89% null.
+  role_guess: dimension
+  sample_values:
+  - E66.3
+  - R52
+  - R11.10
+  - K21.9
+  - E86.0
+- name: DIAG_CD_5
+  type: string
+  description: dimension — dtype str, 2,108 distinct, 96.69% null.
+  role_guess: dimension
+  sample_values:
+  - M25.471
+  - E11.49
+  - G62.9
+  - N18.30
+  - I50.9
+- name: DIAG_CD_6
+  type: string
+  description: dimension — dtype str, 1,620 distinct, 97.62% null.
+  role_guess: dimension
+  sample_values:
+  - I48.0
+  - I50.30
+  - J44.1
+  - R76.8
+  - R76.8
+- name: DIAG_CD_7
+  type: string
+  description: dimension — dtype str, 1,418 distinct, 98.03% null.
+  role_guess: dimension
+  sample_values:
+  - I10
+  - I48.21
+  - E78.5
+  - J45.20
+  - R29.898
+- name: DIAG_CD_8
+  type: string
+  description: dimension — dtype str, 1,219 distinct, 98.34% null.
+  role_guess: dimension
+  sample_values:
+  - M25.472
+  - J45.909
+  - I25.2
+  - M19.90
+  - Z79.891
+- name: ICD_VER_TYP
+  type: string
+  description: dimension — dtype str, 3 distinct, 1.75% null.
+  role_guess: dimension
+  sample_values:
+  - '-1'
+  - '-1'
+  - '-1'
+  - '-1'
+  - '-1'
+- name: REJT_1_CD
+  type: string
+  description: dimension — dtype str, 182 distinct, 97.7% null.
+  role_guess: dimension
+  sample_values:
+  - '75'
+  - '70'
+  - '119'
+  - '79'
+  - '70'
+- name: DIST_CHAN_ID
+  type: string
+  description: dimension — dtype str, 4 distinct, 74.62% null.
+  role_guess: dimension
+  sample_values:
+  - Long-Term Care
+  - Long-Term Care
+  - Long-Term Care
+  - Long-Term Care
+  - Retail
+- name: SEC_PAYR_PLAN_ID
+  type: string
+  description: dimension — dtype str, 771 distinct, 94.87% null.
+  role_guess: dimension
+  sample_values:
+  - '20052'
+  - '20052'
+  - '20051'
+  - '24290718'
+  - '24290729'
+- name: INIT_CLAIM_ID
+  type: string
+  description: dimension — dtype str, 44 distinct, 95.25% null.
+  role_guess: dimension
+  sample_values:
+  - '1.03183E+19'
+  - '1.07403E+19'
+  - '1.05773E+19'
+  - '1.10613E+19'
+  - '1.06063E+19'
+- name: WRITN_DT
+  type: string
+  description: dimension — dtype str, 2,820 distinct, 74.86% null.
+  role_guess: dimension
+  sample_values:
+  - 3/2/2022 0:00
+  - 5/17/2022 0:00
+  - 3/2/2022 0:00
+  - 5/13/2022 0:00
+  - 1/5/2022 0:00
+- name: ECPN_TYP
+  type: string
+  description: dimension — dtype str, 1 distinct, 99.99% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: CPAY_CARD_FLG
+  type: string
+  description: dimension — dtype str, 2 distinct, 99.88% null.
+  role_guess: dimension
+  sample_values:
+  - P
+  - S
+  - P
+  - P
+  - S
+- name: DAW_CD
+  type: string
+  description: dimension — dtype str, 10 distinct, 76.58% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: LFCYCL_CLAIM_FLG
+  type: string
+  description: dimension — dtype str, 2 distinct, 74.62% null.
+  role_guess: dimension
+  sample_values:
+  - N
+  - Y
+  - N
+  - Y
+  - N
+- name: SEC_PAYR_FLG
+  type: string
+  description: dimension — dtype str, 2 distinct, 74.62% null.
+  role_guess: dimension
+  sample_values:
+  - N
+  - Y
+  - N
+  - Y
+  - N
+- name: STD_CPAY_FLG
+  type: string
+  description: dimension — dtype str, 2 distinct, 74.62% null.
+  role_guess: dimension
+  sample_values:
+  - Y
+  - N
+  - Y
+  - N
+  - N
+- name: RFIL_CD
+  type: string
+  description: dimension — dtype str, 54 distinct, 74.62% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '2'
+  - '0'
+  - '3'
+  - '0'
+- name: RFIL_AUTH
+  type: string
+  description: dimension — dtype str, 39 distinct, 74.62% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '3'
+  - '0'
+  - '3'
+  - '0'
+- name: QTY_DSPN
+  type: string
+  description: dimension — dtype str, 299 distinct, 74.63% null.
+  role_guess: dimension
+  sample_values:
+  - '28'
+  - '30'
+  - '28'
+  - '180'
+  - '14'
+- name: DAY_SUPL
+  type: string
+  description: dimension — dtype str, 116 distinct, 74.62% null.
+  role_guess: dimension
+  sample_values:
+  - '14'
+  - '30'
+  - '14'
+  - '20'
+  - '14'
+- name: BUY_DOWN
+  type: string
+  description: dimension — dtype str, 1,128 distinct, 99.25% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: OPC_PAID
+  type: string
+  description: dimension — dtype str, 6,297 distinct, 77.01% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '6.36'
+  - '0'
+- name: OPC_ASK
+  type: string
+  description: dimension — dtype str, 6,567 distinct, 77.01% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '6.36'
+  - '0'
+- name: STD_CPAY
+  type: string
+  description: dimension — dtype str, 376 distinct, 97.6% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '47'
+- name: ECPN_FLG
+  type: string
+  description: dimension — dtype str, 1 distinct, 99.99% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: ECPN_OFFSET_AMT
+  type: string
+  description: dimension — dtype str, 16 distinct, 99.99% null.
+  role_guess: dimension
+  sample_values:
+  - '9.85'
+  - '4.3'
+  - '40'
+  - '5'
+  - '9.85'
+- name: DAY_TO_ADJUD
+  type: string
+  description: dimension — dtype str, 388 distinct, 76.67% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '7'
+  - '0'
+- name: SRC_PROD_NM
+  type: string
+  description: dimension — dtype str, 337 distinct, 74.62% null.
+  role_guess: dimension
+  sample_values:
+  - TRELEGY ELLIPTA
+  - MONTELUKAST SOD
+  - TRELEGY ELLIPTA
+  - ALBUT SULF/IPRATROP BR
+  - PREDNISONE
+- name: PROD_ID
+  type: string
+  description: dimension — dtype str, 3,273 distinct, 70.1% null.
+  role_guess: dimension
+  sample_values:
+  - '883474'
+  - '818421'
+  - '883474'
+  - '568708'
+  - '517182'
+- name: BRD_NM
+  type: string
+  description: dimension — dtype str, 157 distinct, 78.24% null.
+  role_guess: dimension
+  sample_values:
+  - TRELEGY ELLIPTA
+  - MONTELUKAST SOD
+  - TRELEGY ELLIPTA
+  - ALBUT SULF/IPRATROP BR
+  - PREDNISONE TAB 20MG
+- name: PROD_LVL
+  type: string
+  description: dimension — dtype str, 1 distinct, 74.8% null.
+  role_guess: dimension
+  sample_values:
+  - NDC11
+  - NDC11
+  - NDC11
+  - NDC11
+  - NDC11
+- name: BRD_ID
+  type: string
+  description: dimension — dtype str, 155 distinct, 78.24% null.
+  role_guess: dimension
+  sample_values:
+  - '882494'
+  - '702709'
+  - '882494'
+  - '852780'
+  - '1099727'
+- name: PAT_SEQ_NUM
+  type: string
+  description: dimension — dtype str, 6 distinct, 74.62% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: ACT_PAYR_NM
+  type: string
+  description: dimension — dtype str, 704 distinct, 2.02% null.
+  role_guess: dimension
+  sample_values:
+  - 3RD PARTY UNSPEC
+  - UHC/PACIFICARE/AARP MED D
+  - 3RD PARTY UNSPEC
+  - UHC/PACIFICARE/AARP MED D
+  - GOODRX
+- name: ACT_PLAN_NM
+  type: string
+  description: dimension — dtype str, 2,872 distinct, 2.02% null.
+  role_guess: dimension
+  sample_values:
+  - 3RD PARTY UNSPEC PLAN 0104
+  - UHC/PAC/AARP MED D GENERAL (FL)
+  - 3RD PARTY UNSPEC PLAN 0104
+  - AARP WALGREENS MED ADV GNRL
+  - GOODRX
+- name: ACT_PBM_NM
+  type: string
+  description: dimension — dtype str, 67 distinct, 21.73% null.
+  role_guess: dimension
+  sample_values:
+  - OPTUMRX (PROC UNSPEC)
+  - OPTUMRX (PROC UNSPEC)
+  - GOODRX (PROC-UNSP)
+  - CARELONRX (PROC-UNSP)
+  - CARELONRX (PROC-UNSP)
+- name: ACT_PMT_TYP_DESC
+  type: string
+  description: dimension — dtype str, 7 distinct, 2.02% null.
+  role_guess: dimension
+  sample_values:
+  - COMMERCIAL
+  - MEDICARE
+  - COMMERCIAL
+  - MEDICARE
+  - ASSISTANCE
+- name: AUGMENTED_PAYR_NM
+  type: string
+  description: dimension — dtype str, 716 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - 3RD PARTY UNSPEC
+  - UHC/PACIFICARE/AARP MED D
+  - 3RD PARTY UNSPEC
+  - UHC/PACIFICARE/AARP MED D
+  - GOODRX
+- name: AUGMENTED_PLAN_NM
+  type: string
+  description: dimension — dtype str, 2,902 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - 3RD PARTY UNSPEC PLAN 0104
+  - UHC/PAC/AARP MED D GENERAL (FL)
+  - 3RD PARTY UNSPEC PLAN 0104
+  - AARP WALGREENS MED ADV GNRL
+  - GOODRX
+- name: AUGMENTED_PBM_NM
+  type: string
+  description: dimension — dtype str, 67 distinct, 19.05% null.
+  role_guess: dimension
+  sample_values:
+  - OPTUMRX (PROC UNSPEC)
+  - OPTUMRX (PROC UNSPEC)
+  - GOODRX (PROC-UNSP)
+  - OPTUMRX (PROC UNSPEC)
+  - CARELONRX (PROC-UNSP)
+- name: AUGMENTED_PMT_TYP_DESC
+  type: string
+  description: dimension — dtype str, 7 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - COMMERCIAL
+  - MEDICARE
+  - COMMERCIAL
+  - MEDICARE
+  - ASSISTANCE
+- name: AUGMENTED_PLAN_ID
+  type: integer
+  description: metric — dtype int64, 2,998 distinct, 0.0% null.
+  role_guess: metric
+  sample_values:
+  - '31210104'
+  - '24290627'
+  - '31210104'
+  - '24291895'
+  - '35710001'
+- name: SRVC_NUM
+  type: string
+  description: dimension — dtype str, 413 distinct, 25.38% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '4'
+  - '3'
+  - '55'
+- name: PRCR_CD
+  type: string
+  description: dimension — dtype str, 2,693 distinct, 31.11% null.
+  role_guess: dimension
+  sample_values:
+  - '71046'
+  - '99214'
+  - '85025'
+  - J1030
+  - G0378
+- name: PLAC_OF_SRVC_CD
+  type: string
+  description: dimension — dtype str, 27 distinct, 52.16% null.
+  role_guess: dimension
+  sample_values:
+  - '19'
+  - '11'
+  - '11'
+  - '11'
+  - '11'
+- name: PLAC_OF_SRVC_DESC
+  type: string
+  description: dimension — dtype str, 27 distinct, 52.16% null.
+  role_guess: dimension
+  sample_values:
+  - A PORTION OF AN OFF-CAMPUS HOSPITAL PROVIDER BASED DEPARTMENT WHICH PROVIDES DIAGNOSTIC,
+    THERAPEUTIC (BOTH SURGICAL AND NONSURGICAL), AND REHABILITATION SERVICES TO SICK
+    OR INJURED PERSONS WHO DO NOT REQUIRE HOSPITALIZATION OR INSTITUTIONALIZATION.
+  - LOCATION, OTHER THAN A HOSPITAL, SKILLED NURSING FACILITY (SNF), MILITARY TREATMENT
+    FACILITY, COMMUNITY HEALTH CENTER, STATE OR LOCAL PUBLIC HEALTH CLINIC, OR INTERMEDIATE
+    CARE FACILITY (ICF), WHERE THE HEALTH PROFESSIONAL ROUTINELY PROVIDES HEALTH EXAMINATIONS,
+    DIAGNOSIS, AND TREATMENT OF ILLNESS OR INJURY ON AN AMBULATORY BASIS.
+  - LOCATION, OTHER THAN A HOSPITAL, SKILLED NURSING FACILITY (SNF), MILITARY TREATMENT
+    FACILITY, COMMUNITY HEALTH CENTER, STATE OR LOCAL PUBLIC HEALTH CLINIC, OR INTERMEDIATE
+    CARE FACILITY (ICF), WHERE THE HEALTH PROFESSIONAL ROUTINELY PROVIDES HEALTH EXAMINATIONS,
+    DIAGNOSIS, AND TREATMENT OF ILLNESS OR INJURY ON AN AMBULATORY BASIS.
+  - LOCATION, OTHER THAN A HOSPITAL, SKILLED NURSING FACILITY (SNF), MILITARY TREATMENT
+    FACILITY, COMMUNITY HEALTH CENTER, STATE OR LOCAL PUBLIC HEALTH CLINIC, OR INTERMEDIATE
+    CARE FACILITY (ICF), WHERE THE HEALTH PROFESSIONAL ROUTINELY PROVIDES HEALTH EXAMINATIONS,
+    DIAGNOSIS, AND TREATMENT OF ILLNESS OR INJURY ON AN AMBULATORY BASIS.
+  - LOCATION, OTHER THAN A HOSPITAL, SKILLED NURSING FACILITY (SNF), MILITARY TREATMENT
+    FACILITY, COMMUNITY HEALTH CENTER, STATE OR LOCAL PUBLIC HEALTH CLINIC, OR INTERMEDIATE
+    CARE FACILITY (ICF), WHERE THE HEALTH PROFESSIONAL ROUTINELY PROVIDES HEALTH EXAMINATIONS,
+    DIAGNOSIS, AND TREATMENT OF ILLNESS OR INJURY ON AN AMBULATORY BASIS.
+- name: FCLT_TYP_CD
+  type: string
+  description: dimension — dtype str, 18 distinct, 81.0% null.
+  role_guess: dimension
+  sample_values:
+  - '13'
+  - '13'
+  - '13'
+  - '13'
+  - '77'
+- name: UNIT_ADM
+  type: string
+  description: dimension — dtype str, 522 distinct, 27.43% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '46'
+- name: SRC_REF_PSBR_ID
+  type: string
+  description: dimension — dtype str, 36,517 distinct, 27.39% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: REFR_CUST_ID
+  type: string
+  description: dimension — dtype str, 36,355 distinct, 69.76% null.
+  role_guess: dimension
+  sample_values:
+  - '58393983'
+  - '55135910'
+  - '57507837'
+  - '56966069'
+  - '56512593'
+- name: PRVDR_BILL_ID
+  type: string
+  description: dimension — dtype str, 14,329 distinct, 27.39% null.
+  role_guess: dimension
+  sample_values:
+  - '2522392'
+  - '18962128'
+  - '2522392'
+  - '2522392'
+  - '18291609'
+- name: PRVDR_FCLT_ID
+  type: string
+  description: dimension — dtype str, 7,819 distinct, 27.39% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '18962128'
+  - '0'
+  - '0'
+  - '0'
+- name: REMIT_RCVD_DT
+  type: string
+  description: dimension — dtype str, 2,156 distinct, 69.94% null.
+  role_guess: dimension
+  sample_values:
+  - 2/26/2024
+  - 1/5/2025
+  - 1/15/2024
+  - 3/27/2024
+  - 10/26/2021
+- name: REMIT_BILLED_AMT
+  type: string
+  description: dimension — dtype str, 29,501 distinct, 27.7% null.
+  role_guess: dimension
+  sample_values:
+  - '807'
+  - '200'
+  - '95'
+  - '46.28'
+  - '6762'
+- name: REMIT_ALLWD_AMT
+  type: string
+  description: dimension — dtype str, 22,851 distinct, 74.77% null.
+  role_guess: dimension
+  sample_values:
+  - '65.42'
+  - '19.13'
+  - '18.09'
+  - '108.54'
+  - '94.62'
+- name: SRC_PRI_PLAN_ID
+  type: string
+  description: dimension — dtype str, 1,295 distinct, 69.47% null.
+  role_guess: dimension
+  sample_values:
+  - '6149999'
+  - '4799999'
+  - '6149999'
+  - '6149999'
+  - '4390028'
+- name: PRI_PLAN_ID
+  type: string
+  description: dimension — dtype str, 1,004 distinct, 77.07% null.
+  role_guess: dimension
+  sample_values:
+  - '53204848'
+  - '53204003'
+  - '53204848'
+  - '53204848'
+  - '74269064'
+- name: PRI_PAID_DATE
+  type: string
+  description: dimension — dtype str, 2,115 distinct, 70.01% null.
+  role_guess: dimension
+  sample_values:
+  - 3/5/2024
+  - 1/28/2025
+  - 1/24/2024
+  - 4/3/2024
+  - 11/10/2021
+- name: PRI_PAYR_PAID_AMT
+  type: string
+  description: dimension — dtype str, 24,661 distinct, 69.94% null.
+  role_guess: dimension
+  sample_values:
+  - '65.42'
+  - '19.13'
+  - '18.09'
+  - '0'
+  - '86.83'
+- name: SEC_PLAN_ID
+  type: string
+  description: dimension — dtype str, 425 distinct, 95.79% null.
+  role_guess: dimension
+  sample_values:
+  - '53199053'
+  - '53199053'
+  - '53199052'
+  - '53214479'
+  - '53214490'
+- name: SEC_PAID_DT
+  type: string
+  description: dimension — dtype str, 1,745 distinct, 95.61% null.
+  role_guess: dimension
+  sample_values:
+  - 8/28/2023
+  - 11/27/2023
+  - 5/5/2025
+  - 8/14/2025
+  - 9/21/2023
+- name: SEC_PAYR_PD_AMT
+  type: string
+  description: dimension — dtype str, 4,097 distinct, 95.61% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '28.21'
+  - '11.3'
+- name: PAT_OWED_AMT
+  type: string
+  description: dimension — dtype str, 7,517 distinct, 68.62% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '21.71'
+- name: CLAIM_DATA_SRC_TYP
+  type: string
+  description: dimension — dtype str, 2 distinct, 25.38% null.
+  role_guess: dimension
+  sample_values:
+  - HX
+  - MX
+  - HX
+  - HX
+  - HX
+- name: CLAIM_DATA_SRC_DESC
+  type: string
+  description: dimension — dtype str, 2 distinct, 25.38% null.
+  role_guess: dimension
+  sample_values:
+  - Hospital/Institution
+  - Physician Office
+  - Hospital/Institution
+  - Hospital/Institution
+  - Hospital/Institution
+- name: BATCH_ID
+  type: string
+  description: dimension — dtype str, 1 distinct, 25.38% null.
+  role_guess: dimension
+  sample_values:
+  - '2.03E+13'
+  - '2.03E+13'
+  - '2.03E+13'
+  - '2.03E+13'
+  - '2.03E+13'
+- name: MOD_CD
+  type: string
+  description: dimension — dtype str, 180 distinct, 79.87% null.
+  role_guess: dimension
+  sample_values:
+  - QW
+  - U8
+  - '25'
+  - '25'
+  - '95'
+- name: MOD_CD_2
+  type: string
+  description: dimension — dtype str, 131 distinct, 97.7% null.
+  role_guess: dimension
+  sample_values:
+  - GC
+  - U5
+  - U8
+  - '97'
+  - '97'
+- name: MOD_CD_3
+  type: string
+  description: dimension — dtype str, 58 distinct, 99.68% null.
+  role_guess: dimension
+  sample_values:
+  - KX
+  - CR
+  - KX
+  - QS
+  - KX
+- name: MOD_CD_4
+  type: string
+  description: dimension — dtype str, 13 distinct, 99.99% null.
+  role_guess: dimension
+  sample_values:
+  - '59'
+  - '59'
+  - '59'
+  - '59'
+  - '59'
+- name: MOD_CD_ARRAY
+  type: string
+  description: dimension — dtype str, 1,012 distinct, 25.38% null.
+  role_guess: dimension
+  sample_values:
+  - '[]'
+  - '[]'
+  - '["QW"]'
+  - '["U8"]'
+  - '[]'
+- name: DIAG_CODES_ARRAY
+  type: string
+  description: dimension — dtype str, 192,821 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '[]'
+  - '[]'
+  - '[]'
+  - '[]'
+  - '[]'
+- name: FIRST_SRVC_DATE
+  type: date
+  description: date — dtype datetime64[ns], 415 distinct, 0.0% null.
+  role_guess: date
+  sample_values:
+  - '2016-02-21'
+  - '2016-02-21'
+  - '2016-02-21'
+  - '2016-02-21'
+  - '2016-02-21'
+- name: FIRST_RX_DATE
+  type: string
+  description: dimension — dtype str, 713 distinct, 0.14% null.
+  role_guess: dimension
+  sample_values:
+  - '2016-02-21T00:00:00.000Z'
+  - '2016-02-21T00:00:00.000Z'
+  - '2016-02-21T00:00:00.000Z'
+  - '2016-02-21T00:00:00.000Z'
+  - '2016-02-21T00:00:00.000Z'
+- name: FIRST_DX_DATE
+  type: string
+  description: dimension — dtype str, 1,102 distinct, 0.33% null.
+  role_guess: dimension
+  sample_values:
+  - '2016-10-31T00:00:00.000Z'
+  - '2016-10-31T00:00:00.000Z'
+  - '2016-10-31T00:00:00.000Z'
+  - '2016-10-31T00:00:00.000Z'
+  - '2016-10-31T00:00:00.000Z'
+- name: FIRST_PX_DATE
+  type: date
+  description: date — dtype datetime64[ns], 559 distinct, 0.0% null.
+  role_guess: date
+  sample_values:
+  - '2016-03-17'
+  - '2016-03-17'
+  - '2016-03-17'
+  - '2016-03-17'
+  - '2016-03-17'
+- name: REJT_REAS
+  type: string
+  description: dimension — dtype str, 144 distinct, 97.77% null.
+  role_guess: dimension
+  sample_values:
+  - Prior Auth Required
+  - Not Covered
+  - Refill Too Soon
+  - Not Covered
+  - M/I Prescription/Service Reference Number
+- name: REJT_GRP
+  type: string
+  description: dimension — dtype str, 7 distinct, 97.77% null.
+  role_guess: dimension
+  sample_values:
+  - Prior Authorization Required
+  - Product Not Covered
+  - Refill Restriction
+  - Product Not Covered
+  - All Other
+- name: PROD_NM
+  type: string
+  description: dimension — dtype str, 902 distinct, 69.46% null.
+  role_guess: dimension
+  sample_values:
+  - TRELEGY ELLIPTA
+  - MONTELUKAST SOD
+  - TRELEGY ELLIPTA
+  - ALBUT SULF/IPRATROP BR
+  - PREDNISONE
+- name: GNER_NM
+  type: string
+  description: dimension — dtype str, 673 distinct, 69.46% null.
+  role_guess: dimension
+  sample_values:
+  - FLUTICASONE-UMECLIDINIUM-VILANTEROL
+  - MONTELUKAST SODIUM
+  - FLUTICASONE-UMECLIDINIUM-VILANTEROL
+  - IPRATROPIUM-ALBUTEROL
+  - PREDNISONE
+- name: BRD_GNER_FLG
+  type: string
+  description: dimension — dtype str, 4 distinct, 69.46% null.
+  role_guess: dimension
+  sample_values:
+  - Brand
+  - Generic
+  - Brand
+  - Generic
+  - Generic
+- name: PROD_FORM
+  type: string
+  description: dimension — dtype str, 64 distinct, 69.48% null.
+  role_guess: dimension
+  sample_values:
+  - AEROSOL POWDER, BREATH ACTIVATED
+  - TABLET
+  - AEROSOL POWDER, BREATH ACTIVATED
+  - SOLUTION
+  - TABLET
+- name: PROD_STRG
+  type: string
+  description: dimension — dtype str, 534 distinct, 69.46% null.
+  role_guess: dimension
+  sample_values:
+  - 100-62.5-25 MCG/INH
+  - 10 MG
+  - 100-62.5-25 MCG/INH
+  - 0.5-2.5(3) MG/3ML
+  - 20 MG
+- name: PKG_SIZE
+  type: string
+  description: dimension — dtype str, 32 distinct, 69.48% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '60'
+  - '1'
+- name: MFGR
+  type: string
+  description: dimension — dtype str, 404 distinct, 69.46% null.
+  role_guess: dimension
+  sample_values:
+  - GLAXO SMITH KLINE
+  - ACCORD HEALTHCARE
+  - GLAXO SMITH KLINE
+  - NEPHRON PHARMACEUTICALS CORP.
+  - JUBILANT CADISTA
+- name: DRUG_CLASS
+  type: string
+  description: dimension — dtype str, 15 distinct, 71.24% null.
+  role_guess: dimension
+  sample_values:
+  - ICS/LABA/LAMA
+  - LEUKOTRIENE MODIFIERS
+  - ICS/LABA/LAMA
+  - SAMA/SABA
+  - OCS
+- name: DRUG_PACKAGE_DESC
+  type: string
+  description: dimension — dtype str, 338 distinct, 85.05% null.
+  role_guess: dimension
+  sample_values:
+  - 1 TRAY in 1 CARTON (0173-0887-14)  / 1 INHALER in 1 TRAY / 14 POWDER in 1 INHALER
+  - 1 TRAY in 1 CARTON (0173-0887-14)  / 1 INHALER in 1 TRAY / 14 POWDER in 1 INHALER
+  - 10 POUCH in 1 CARTON (0487-0201-60)  / 6 VIAL, SINGLE-USE in 1 POUCH / 3 mL in
+    1 VIAL, SINGLE-USE
+  - 1 POUCH in 1 CARTON (0310-7370-20)  / 1 CANISTER in 1 POUCH / 120 AEROSOL in 1
+    CANISTER
+  - 1 DOSE PACK in 1 CARTON (0603-4593-15)  / 21 TABLET in 1 DOSE PACK
+- name: DRUG_TRGT_DOSE
+  type: string
+  description: dimension — dtype str, 0 distinct, 100.0% null.
+  role_guess: dimension
+  sample_values: []
+- name: DRUG_OCS_ML
+  type: string
+  description: dimension — dtype str, 1 distinct, 99.95% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: DRUG_PREDNISONE_EQUV_FACTOR
+  type: string
+  description: dimension — dtype str, 5 distinct, 93.88% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1.25'
+  - '1.25'
+  - '6.666666667'
+- name: DRUG_CS_STRENGTH
+  type: string
+  description: dimension — dtype str, 42 distinct, 87.06% null.
+  role_guess: dimension
+  sample_values:
+  - '100'
+  - '100'
+  - '20'
+  - '160'
+  - '20'
+- name: DRUG_TOTAL_PUFFS
+  type: string
+  description: dimension — dtype str, 6 distinct, 93.18% null.
+  role_guess: dimension
+  sample_values:
+  - '14'
+  - '14'
+  - '120'
+  - '30'
+  - '30'
+- name: DRUG_HIGH_MEDIUM_CUTOFF
+  type: string
+  description: dimension — dtype str, 12 distinct, 93.18% null.
+  role_guess: dimension
+  sample_values:
+  - '90'
+  - '90'
+  - '600'
+  - '100'
+  - '90'
+- name: DIAG_CD_DESC
+  type: string
+  description: dimension — dtype str, 8,607 distinct, 24.4% null.
+  role_guess: dimension
+  sample_values:
+  - HEADACHE, UNSPECIFIED
+  - SPONTANEOUS ECCHYMOSES
+  - UNSPECIFIED ABDOMINAL PAIN
+  - MODERATE PERSISTENT ASTHMA WITH (ACUTE) EXACERBATION
+  - NAUSEA WITH VOMITING, UNSPECIFIED
+- name: DIAG_CD_2_DESC
+  type: string
+  description: dimension — dtype str, 7,772 distinct, 41.83% null.
+  role_guess: dimension
+  sample_values:
+  - DIZZINESS AND GIDDINESS
+  - DYSURIA
+  - MELENA
+  - DIZZINESS AND GIDDINESS
+  - CANNABIS USE, UNSPECIFIED, UNCOMPLICATED
+- name: DIAG_CD_3_DESC
+  type: string
+  description: dimension — dtype str, 6,794 distinct, 51.19% null.
+  role_guess: dimension
+  sample_values:
+  - SEVERE PERSISTENT ASTHMA WITH (ACUTE) EXACERBATION
+  - MODERATE PERSISTENT ASTHMA, UNCOMPLICATED
+  - UNSPECIFIED ASTHMA, UNCOMPLICATED
+  - ALLERGIC RHINITIS DUE TO POLLEN
+  - HYPOTENSION, UNSPECIFIED
+- name: DIAG_CD_4_DESC
+  type: string
+  description: dimension — dtype str, 5,798 distinct, 59.89% null.
+  role_guess: dimension
+  sample_values:
+  - OVERWEIGHT
+  - PAIN, UNSPECIFIED
+  - VOMITING, UNSPECIFIED
+  - GASTRO-ESOPHAGEAL REFLUX DISEASE WITHOUT ESOPHAGITIS
+  - DEHYDRATION
+- name: DIAG_CD_5_DESC
+  type: string
+  description: dimension — dtype str, 2,107 distinct, 96.69% null.
+  role_guess: dimension
+  sample_values:
+  - EFFUSION, RIGHT ANKLE
+  - TYPE 2 DIABETES MELLITUS WITH OTHER DIABETIC NEUROLOGICAL COMPLICATION
+  - POLYNEUROPATHY, UNSPECIFIED
+  - CHRONIC KIDNEY DISEASE, STAGE 3 UNSPECIFIED
+  - HEART FAILURE, UNSPECIFIED
+- name: DIAG_CD_6_DESC
+  type: string
+  description: dimension — dtype str, 1,620 distinct, 97.62% null.
+  role_guess: dimension
+  sample_values:
+  - PAROXYSMAL ATRIAL FIBRILLATION
+  - UNSPECIFIED DIASTOLIC (CONGESTIVE) HEART FAILURE
+  - CHRONIC OBSTRUCTIVE PULMONARY DISEASE WITH (ACUTE) EXACERBATION
+  - OTHER SPECIFIED ABNORMAL IMMUNOLOGICAL FINDINGS IN SERUM
+  - OTHER SPECIFIED ABNORMAL IMMUNOLOGICAL FINDINGS IN SERUM
+- name: DIAG_CD_7_DESC
+  type: string
+  description: dimension — dtype str, 1,418 distinct, 98.03% null.
+  role_guess: dimension
+  sample_values:
+  - ESSENTIAL (PRIMARY) HYPERTENSION
+  - PERMANENT ATRIAL FIBRILLATION
+  - HYPERLIPIDEMIA, UNSPECIFIED
+  - MILD INTERMITTENT ASTHMA, UNCOMPLICATED
+  - OTHER SYMPTOMS AND SIGNS INVOLVING THE MUSCULOSKELETAL SYSTEM
+- name: DIAG_CD_8_DESC
+  type: string
+  description: dimension — dtype str, 1,219 distinct, 98.34% null.
+  role_guess: dimension
+  sample_values:
+  - EFFUSION, LEFT ANKLE
+  - UNSPECIFIED ASTHMA, UNCOMPLICATED
+  - OLD MYOCARDIAL INFARCTION
+  - UNSPECIFIED OSTEOARTHRITIS, UNSPECIFIED SITE
+  - LONG TERM (CURRENT) USE OF OPIATE ANALGESIC
+- name: PRVDR_CUST_NM
+  type: string
+  description: dimension — dtype str, 2,361 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - Dr. Andrew Harris
+  - Dr. Andrew Harris
+  - Dr. Andrew Harris
+  - Dr. Andrew Harris
+  - Dr. Henry Rao
+- name: PRVDR_CUST_TYP_DESC
+  type: string
+  description: dimension — dtype str, 18 distinct, 3.69% null.
+  role_guess: dimension
+  sample_values:
+  - HEALTH CARE PRESCRIBER
+  - HEALTH CARE PRESCRIBER
+  - HEALTH CARE PRESCRIBER
+  - HEALTH CARE PRESCRIBER
+  - HEALTH CARE PRESCRIBER
+- name: PRVDR_GNDR_CD
+  type: string
+  description: dimension — dtype str, 3 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - M
+  - M
+  - M
+  - M
+  - M
+- name: PRVDR_PRI_SPEC_DESC
+  type: string
+  description: dimension — dtype str, 253 distinct, 5.68% null.
+  role_guess: dimension
+  sample_values:
+  - SURGERY
+  - SURGERY
+  - SURGERY
+  - SURGERY
+  - INTERNAL MEDICINE - PULMONARY DISEASE
+- name: PRVDR_SEC_SPEC_DESC
+  type: string
+  description: dimension — dtype str, 174 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - GENERAL PRACTICE
+  - GENERAL PRACTICE
+  - GENERAL PRACTICE
+  - GENERAL PRACTICE
+  - INTERNAL MEDICINE
+- name: PRVDR_TER_SPEC_DESC
+  type: string
+  description: dimension — dtype str, 158 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - SINGLE SPECIALTY
+  - SINGLE SPECIALTY
+  - SINGLE SPECIALTY
+  - SINGLE SPECIALTY
+  - INTERNAL MEDICINE - PULMONARY DISEASE
+- name: PRVDR_CUST_STA_CD
+  type: string
+  description: dimension — dtype str, 4 distinct, 3.69% null.
+  role_guess: dimension
+  sample_values:
+  - A
+  - A
+  - A
+  - A
+  - A
+- name: PRVDR_PSBR_IND
+  type: string
+  description: dimension — dtype str, 2 distinct, 3.69% null.
+  role_guess: dimension
+  sample_values:
+  - Y
+  - Y
+  - Y
+  - Y
+  - Y
+- name: PRVDR_PDRP_OPT_OUT_IND
+  type: string
+  description: dimension — dtype str, 2 distinct, 3.69% null.
+  role_guess: dimension
+  sample_values:
+  - N
+  - N
+  - N
+  - N
+  - N
+- name: PRVDR_AMA_NO_CONTACT_IND
+  type: string
+  description: dimension — dtype str, 2 distinct, 3.69% null.
+  role_guess: dimension
+  sample_values:
+  - N
+  - N
+  - N
+  - N
+  - N
+- name: PRVDR_DEL_IND
+  type: string
+  description: dimension — dtype str, 1 distinct, 3.69% null.
+  role_guess: dimension
+  sample_values:
+  - N
+  - N
+  - N
+  - N
+  - N
+- name: REFR_CUST_NM
+  type: string
+  description: dimension — dtype str, 36,326 distinct, 69.76% null.
+  role_guess: dimension
+  sample_values:
+  - WILLIAM ALLEN YODER
+  - MICHAEL H ZEIHEN
+  - ZONAIRA M GUL
+  - CHARLES JAMESEDWARD COLE
+  - PRASAD POLISETTY
+- name: REFR_CUST_TYP_DESC
+  type: string
+  description: dimension — dtype str, 11 distinct, 69.76% null.
+  role_guess: dimension
+  sample_values:
+  - HEALTH CARE PRESCRIBER
+  - HEALTH CARE PRESCRIBER
+  - HEALTH CARE PRESCRIBER
+  - HEALTH CARE PRESCRIBER
+  - HEALTH CARE PRESCRIBER
+- name: REFR_GNDR_CD
+  type: string
+  description: dimension — dtype str, 2 distinct, 69.91% null.
+  role_guess: dimension
+  sample_values:
+  - M
+  - M
+  - F
+  - M
+  - M
+- name: REFR_PRI_SPEC_DESC
+  type: string
+  description: dimension — dtype str, 187 distinct, 69.78% null.
+  role_guess: dimension
+  sample_values:
+  - PODIATRIST
+  - INTERNAL MEDICINE
+  - INTERNAL MEDICINE - INFECTIOUS DISEASE
+  - FAMILY MEDICINE
+  - INTERNAL MEDICINE
+- name: REFR_SEC_SPEC_DESC
+  type: string
+  description: dimension — dtype str, 154 distinct, 69.91% null.
+  role_guess: dimension
+  sample_values:
+  - SINGLE SPECIALTY
+  - SINGLE SPECIALTY
+  - INTERNAL MEDICINE
+  - EMERGENCY MEDICINE
+  - SINGLE SPECIALTY
+- name: REFR_TER_SPEC_DESC
+  type: string
+  description: dimension — dtype str, 135 distinct, 69.91% null.
+  role_guess: dimension
+  sample_values:
+  - SINGLE SPECIALTY
+  - SINGLE SPECIALTY
+  - INTERNAL MEDICINE - GERIATRIC MEDICINE
+  - SINGLE SPECIALTY
+  - SINGLE SPECIALTY
+- name: REFR_CUST_STA_CD
+  type: string
+  description: dimension — dtype str, 4 distinct, 69.76% null.
+  role_guess: dimension
+  sample_values:
+  - A
+  - A
+  - A
+  - A
+  - A
+- name: REFR_PSBR_IND
+  type: string
+  description: dimension — dtype str, 2 distinct, 69.76% null.
+  role_guess: dimension
+  sample_values:
+  - Y
+  - Y
+  - Y
+  - Y
+  - Y
+- name: REFR_PDRP_OPT_OUT_IND
+  type: string
+  description: dimension — dtype str, 2 distinct, 69.76% null.
+  role_guess: dimension
+  sample_values:
+  - N
+  - N
+  - N
+  - N
+  - N
+- name: REFR_AMA_NO_CONTACT_IND
+  type: string
+  description: dimension — dtype str, 2 distinct, 69.76% null.
+  role_guess: dimension
+  sample_values:
+  - N
+  - N
+  - N
+  - N
+  - N
+- name: REFR_DEL_IND
+  type: string
+  description: dimension — dtype str, 1 distinct, 69.76% null.
+  role_guess: dimension
+  sample_values:
+  - N
+  - N
+  - N
+  - N
+  - N
+- name: PLAN_ID
+  type: string
+  description: dimension — dtype str, 2,430 distinct, 16.18% null.
+  role_guess: dimension
+  sample_values:
+  - '1003584539'
+  - '53214392'
+  - '1003584539'
+  - '1009155208'
+  - '83679337'
+- name: PLAN_NM
+  type: string
+  description: dimension — dtype str, 2,872 distinct, 2.02% null.
+  role_guess: dimension
+  sample_values:
+  - 3RD PARTY UNSPEC PLAN 0104
+  - UHC/PAC/AARP MED D GENERAL (FL)
+  - 3RD PARTY UNSPEC PLAN 0104
+  - AARP WALGREENS MED ADV GNRL
+  - GOODRX
+- name: PAYR_NM
+  type: string
+  description: dimension — dtype str, 704 distinct, 2.02% null.
+  role_guess: dimension
+  sample_values:
+  - 3RD PARTY UNSPEC
+  - UHC/PACIFICARE/AARP MED D
+  - 3RD PARTY UNSPEC
+  - UHC/PACIFICARE/AARP MED D
+  - GOODRX
+- name: PBM_NM
+  type: string
+  description: dimension — dtype str, 67 distinct, 21.73% null.
+  role_guess: dimension
+  sample_values:
+  - OPTUMRX (PROC UNSPEC)
+  - OPTUMRX (PROC UNSPEC)
+  - GOODRX (PROC-UNSP)
+  - CARELONRX (PROC-UNSP)
+  - CARELONRX (PROC-UNSP)
+- name: SRC_PBM_ID
+  type: string
+  description: dimension — dtype str, 67 distinct, 21.73% null.
+  role_guess: dimension
+  sample_values:
+  - '65000'
+  - '65000'
+  - '990542'
+  - '990382'
+  - '990382'
+- name: SRC_RPTG_PLAN_ID
+  type: string
+  description: dimension — dtype str, 2,872 distinct, 2.02% null.
+  role_guess: dimension
+  sample_values:
+  - '31210104'
+  - '24290627'
+  - '31210104'
+  - '24291895'
+  - '35710001'
+- name: PLAN_TYP_DESC
+  type: string
+  description: dimension — dtype str, 51 distinct, 2.02% null.
+  role_guess: dimension
+  sample_values:
+  - UNKNOWN
+  - MED UNSP
+  - UNKNOWN
+  - MED ADVG
+  - DISC CRD
+- name: PRCR_CD_DESC
+  type: string
+  description: dimension — dtype str, 2,346 distinct, 32.24% null.
+  role_guess: dimension
+  sample_values:
+  - RADIOLOGIC EXAMINATION, CHEST; 2 VIEWS
+  - OFFICE OR OTHER OUTPATIENT VISIT FOR THE EVALUATION AND MANAGEMENT OF AN ESTABLISHED
+    PATIENT, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND
+    MODERATE LEVEL OF MEDICAL DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF
+    THE ENCOUNTER FOR CODE SELECTION, 30 MINUTES MUST BE MET OR EXCEEDED.
+  - BLOOD COUNT; COMPLETE (CBC), AUTOMATED (HGB, HCT, RBC, WBC AND PLATELET COUNT)
+    AND AUTOMATED DIFFERENTIAL WBC COUNT
+  - INJECTION, METHYLPREDNISOLONE ACETATE, 40 MG
+  - HOSPITAL OBSERVATION SERVICE, PER HOUR
+- name: PROC_CLASS
+  type: string
+  description: dimension — dtype str, 15 distinct, 46.39% null.
+  role_guess: dimension
+  sample_values:
+  - Urgent Care
+  - INJECTION CS
+  - Observation
+  - Urgent Care
+  - Urgent Care
+- name: PROC_PREDNISONE_EQUV_FACTOR
+  type: string
+  description: dimension — dtype str, 3 distinct, 97.87% null.
+  role_guess: dimension
+  sample_values:
+  - '1.25'
+  - '6.666666667'
+  - '6.666666667'
+  - '1'
+  - '6.666666667'
+- name: PROC_CS_STRENGTH
+  type: string
+  description: dimension — dtype str, 9 distinct, 97.87% null.
+  role_guess: dimension
+  sample_values:
+  - '40'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: PROC_PROD_STRENGTH
+  type: string
+  description: dimension — dtype str, 11 distinct, 97.13% null.
+  role_guess: dimension
+  sample_values:
+  - 40 MG
+  - 1 MG
+  - 1 MG
+  - 1 MG
+  - 1 MG
+- name: PAT_BIRTH_YR
+  type: integer
+  description: metric — dtype int16, 74 distinct, 0.0% null.
+  role_guess: metric
+  sample_values:
+  - '1953'
+  - '1953'
+  - '1953'
+  - '1953'
+  - '1953'
+- name: PAT_GNDR
+  type: string
+  description: dimension — dtype str, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - F
+  - F
+  - F
+  - F
+  - F
+- name: PAT_LONGITUDINAL_USE_FLG
+  type: string
+  description: dimension — dtype str, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - Y
+  - Y
+  - Y
+  - Y
+  - Y
+- name: PROV_STATE
+  type: string
+  description: dimension — dtype str, 56 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - FL
+  - FL
+  - FL
+  - FL
+  - MO
+- name: PROV_STATE_NAME
+  type: string
+  description: dimension — dtype str, 56 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - FLORIDA
+  - FLORIDA
+  - FLORIDA
+  - FLORIDA
+  - MISSOURI
+- name: PROV_CITY
+  type: string
+  description: dimension — dtype str, 4,713 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - ZEPHYRHILLS
+  - ZEPHYRHILLS
+  - ZEPHYRHILLS
+  - ZEPHYRHILLS
+  - SAINT LOUIS
+- name: PROV_ZIP
+  type: string
+  description: dimension — dtype str, 9,078 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - '33542'
+  - '33542'
+  - '33542'
+  - '33542'
+  - '63117'
+- name: PROV_GENDER
+  type: string
+  description: dimension — dtype str, 3 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - M
+  - M
+  - M
+  - M
+  - M
+- name: PROV_STATUS
+  type: string
+  description: dimension — dtype str, 4 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - A
+  - A
+  - A
+  - A
+  - A
+- name: PROV_CUSTOMER_TYPE
+  type: string
+  description: dimension — dtype str, 3 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - HCPR
+  - HCPR
+  - HCPR
+  - HCPR
+  - HCPR
+- name: PROV_NPI
+  type: string
+  description: dimension — dtype str, 89,956 distinct, 7.74% null.
+  role_guess: dimension
+  sample_values:
+  - '1730372467'
+  - '1730372467'
+  - '1730372467'
+  - '1730372467'
+  - '1033485156'
+- name: PROV_TERRITORY_CODE
+  type: string
+  description: dimension — dtype str, 33 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - '20122591'
+  - '20122591'
+  - '20122591'
+  - '20122591'
+  - '20122590'
+- name: PROV_TERRITORY_NAME
+  type: string
+  description: dimension — dtype str, 34 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - Michigan
+  - Michigan
+  - Michigan
+  - Michigan
+  - North Dakota
+- name: PROV_DISTRICT_CODE
+  type: string
+  description: dimension — dtype str, 4 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - '20122731'
+  - '20122731'
+  - '20122731'
+  - '20122731'
+  - '20122733'
+- name: PROV_DISTRICT_NAME
+  type: string
+  description: dimension — dtype str, 4 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - South Carolina
+  - South Carolina
+  - South Carolina
+  - South Carolina
+  - Virginia
+- name: PROV_REGION_CODE
+  type: string
+  description: dimension — dtype str, 2 distinct, 7.54% null.
+  role_guess: dimension
+  sample_values:
+  - '20075061'
+  - '20075061'
+  - '20075061'
+  - '20075061'
+  - '20075061'
+- name: PROV_REGION_NAME
+  type: string
+  description: dimension — dtype str, 3 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - Midwest
+  - Midwest
+  - Midwest
+  - Midwest
+  - Midwest
+- name: REF_ZIP
+  type: string
+  description: dimension — dtype str, 6,453 distinct, 69.91% null.
+  role_guess: dimension
+  sample_values:
+  - '53142'
+  - '53143'
+  - '7601'
+  - '22920'
+  - '24970'
+- name: REF_TERRITORY_CODE
+  type: string
+  description: dimension — dtype str, 33 distinct, 69.91% null.
+  role_guess: dimension
+  sample_values:
+  - '20122596'
+  - '20122596'
+  - '20122577'
+  - '20122571'
+  - '20122579'
+- name: REF_TERRITORY_NAME
+  type: string
+  description: dimension — dtype str, 33 distinct, 69.91% null.
+  role_guess: dimension
+  sample_values:
+  - Oklahoma
+  - Oklahoma
+  - Pennsylvania
+  - New York
+  - Georgia
+- name: REF_DISTRICT_CODE
+  type: string
+  description: dimension — dtype str, 4 distinct, 69.91% null.
+  role_guess: dimension
+  sample_values:
+  - '20122733'
+  - '20122733'
+  - '20122731'
+  - '20122731'
+  - '20122733'
+- name: REF_DISTRICT_NAME
+  type: string
+  description: dimension — dtype str, 3 distinct, 69.91% null.
+  role_guess: dimension
+  sample_values:
+  - Virginia
+  - Virginia
+  - South Carolina
+  - South Carolina
+  - Virginia
+- name: REF_REGION_CODE
+  type: string
+  description: dimension — dtype str, 2 distinct, 69.91% null.
+  role_guess: dimension
+  sample_values:
+  - '20075061'
+  - '20075061'
+  - '20075061'
+  - '20075061'
+  - '20075061'
+- name: REF_REGION_NAME
+  type: string
+  description: dimension — dtype str, 2 distinct, 69.91% null.
+  role_guess: dimension
+  sample_values:
+  - Midwest
+  - Midwest
+  - Midwest
+  - Midwest
+  - Midwest
+- name: LIS_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: PRIORITY
+  type: string
+  description: dimension — dtype str, 4 distinct, 3.68% null.
+  role_guess: dimension
+  sample_values:
+  - Non Target
+  - Non Target
+  - Non Target
+  - Non Target
+  - Tier 3
+- name: 2023Q3_severe_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2023Q4_severe_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2024Q1_severe_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2024Q2_severe_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2024Q3_severe_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2024Q4_severe_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2025Q1_severe_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2025Q2_severe_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2023Q3_Uncontrolled_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2023Q4_Uncontrolled_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2024Q1_Uncontrolled_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2024Q2_Uncontrolled_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2024Q3_Uncontrolled_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2024Q4_Uncontrolled_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2025Q1_Uncontrolled_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: 2025Q2_Uncontrolled_new_flag
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: DIAG_CD_DESC_ARRAY
+  type: string
+  description: dimension — dtype str, 192,807 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '[]'
+  - '[]'
+  - '[]'
+  - '[]'
+  - '[]'
+- name: DIAGNOSIS_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: DERM_GI_ENT_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: HCP_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+  - '1'
+- name: PAY_TYPE
+  type: string
+  description: dimension — dtype str, 5 distinct, 4.22% null.
+  role_guess: dimension
+  sample_values:
+  - Medicare
+  - Medicare
+  - Medicare
+  - Medicare
+  - Medicare
+- name: PAT_ZIP
+  type: string
+  description: dimension — dtype str, 2,890 distinct, 7.18% null.
+  role_guess: dimension
+  sample_values:
+  - '33542'
+  - '33542'
+  - '33542'
+  - '33542'
+  - '33542'
+- name: PAT_STATE_NAME
+  type: string
+  description: dimension — dtype str, 49 distinct, 7.18% null.
+  role_guess: dimension
+  sample_values:
+  - FLORIDA
+  - FLORIDA
+  - FLORIDA
+  - FLORIDA
+  - FLORIDA
+- name: PAT_STATE
+  type: string
+  description: dimension — dtype str, 49 distinct, 7.18% null.
+  role_guess: dimension
+  sample_values:
+  - FL
+  - FL
+  - FL
+  - FL
+  - FL
+- name: PAT_TERRITORY_CODE
+  type: string
+  description: dimension — dtype str, 32 distinct, 7.18% null.
+  role_guess: dimension
+  sample_values:
+  - '20122591'
+  - '20122591'
+  - '20122591'
+  - '20122591'
+  - '20122591'
+- name: PAT_TERRITORY_NAME
+  type: string
+  description: dimension — dtype str, 33 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - Michigan
+  - Michigan
+  - Michigan
+  - Michigan
+  - Michigan
+- name: PAT_DISTRICT_CODE
+  type: string
+  description: dimension — dtype str, 3 distinct, 7.18% null.
+  role_guess: dimension
+  sample_values:
+  - '20122731'
+  - '20122731'
+  - '20122731'
+  - '20122731'
+  - '20122731'
+- name: PAT_DISTRICT_NAME
+  type: string
+  description: dimension — dtype str, 4 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - South Carolina
+  - South Carolina
+  - South Carolina
+  - South Carolina
+  - South Carolina
+- name: PAT_REGION_CODE
+  type: string
+  description: dimension — dtype str, 1 distinct, 7.18% null.
+  role_guess: dimension
+  sample_values:
+  - '20075061'
+  - '20075061'
+  - '20075061'
+  - '20075061'
+  - '20075061'
+- name: PAT_REGION_NAME
+  type: string
+  description: dimension — dtype str, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - Midwest
+  - Midwest
+  - Midwest
+  - Midwest
+  - Midwest
+- name: PRVDR_CUST_CLAS
+  type: string
+  description: dimension — dtype str, 2 distinct, 3.69% null.
+  role_guess: dimension
+  sample_values:
+  - HCP
+  - HCP
+  - HCP
+  - HCP
+  - HCP
+- name: YEAR_MONTH
+  type: integer
+  description: metric — dtype int32, 71 distinct, 0.0% null.
+  role_guess: metric
+  sample_values:
+  - '202203'
+  - '202207'
+  - '202203'
+  - '202209'
+  - '202206'
+- name: SCS_TYPE
+  type: string
+  description: dimension — dtype str, 5 distinct, 93.67% null.
+  role_guess: dimension
+  sample_values:
+  - METHYLPREDNISOLONE
+  - TRIAMCINOLONE
+  - DEXAMETHASONE
+  - DEXAMETHASONE
+  - TRIAMCINOLONE
+- name: TOTAL_SCS_DOSE
+  type: string
+  description: dimension — dtype str, 125 distinct, 98.39% null.
+  role_guess: dimension
+  sample_values:
+  - '50'
+  - '400'
+  - '100'
+  - '150'
+  - '200'
+- name: OSTEOPOROSIS_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: HYPERTENSION_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: DIABETES_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: CATARACT_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: HOSP_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: ER_VISIT_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: OP_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: OCS_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '1'
+- name: CHRONIC_STATUS
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+  - '0'
+- name: OCS_DOSE
+  type: string
+  description: dimension — dtype str, 272 distinct, 96.16% null.
+  role_guess: dimension
+  sample_values:
+  - '280'
+  - '300'
+  - '105'
+  - '280'
+  - '200'
+- name: ICS_HIGH_MEDIUM_DOSE_FLAG
+  type: integer
+  description: dimension — dtype int8, 2 distinct, 0.0% null.
+  role_guess: dimension
+  sample_values:
+  - '1'
+  - '0'
+  - '1'
+  - '0'
+  - '0'
+- name: PAT_AGE
+  type: integer
+  description: metric — dtype int8, 74 distinct, 0.0% null.
+  role_guess: metric
+  sample_values:
+  - '72'
+  - '72'
+  - '72'
+  - '72'
+  - '72'

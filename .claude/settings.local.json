@@ -3,7 +3,17 @@
     "allow": [
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(py -3 -m pip show snowflake-connector-python)",
+      "Bash(py -3 -m pip install snowflake-connector-python pyarrow)",
+      "Bash(py -3 --version)",
+      "Bash(py -3 scripts/onboarding/snowflake_handshake.py)",
+      "Bash(py -3 -c \"import sys; print\\(sys.executable\\); print\\(sys.version\\)\")",
+      "Bash(py -3 -m pip show pandas)",
+      "Bash(where py *)",
+      "Bash(py -0)",
+      "Bash(py -3 -m pip install pandas pyyaml python-dotenv)",
+      "Bash(py *)"
     ]
   }
 }

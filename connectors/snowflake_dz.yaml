@@ -1,0 +1,16 @@
+name: snowflake_dz
+type: snowflake
+# Auth resolved from .env at runtime — never commit literal credentials.
+auth:
+  account: ${SNOWFLAKE_ACCOUNT}
+  user: ${SNOWFLAKE_USER}
+  authenticator: ${SNOWFLAKE_AUTHENTICATOR}    # externalbrowser (dev SSO) | snowflake_jwt (prod key-pair)
+  role: ${SNOWFLAKE_ROLE}
+  warehouse: ${SNOWFLAKE_WAREHOUSE}
+  database: ${SNOWFLAKE_DATABASE}
+  schema: ${SNOWFLAKE_SCHEMA}
+defaults:
+  row_cap: 10_000_000
+  query_timeout_sec: 60
+  cache_format: parquet
+  cache_dir: data/_cache/

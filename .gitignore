@@ -20,3 +20,10 @@ Thumbs.db
 
 # Synthetic demo / format reference (not part of the project)
 _reference/
+
+# Secrets — never commit
+.env
+
+# Data caches (parquet pulls from Snowflake)
+data/_cache/
+profiles/
