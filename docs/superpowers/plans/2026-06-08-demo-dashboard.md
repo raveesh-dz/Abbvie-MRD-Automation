@@ -183,7 +183,9 @@ Expected: PASS (2 passed)
 # tests/test_datasets.py
 from server import datasets
 
-def test_weekly_table_info_against_real_data():
+def test_weekly_table_info_against_real_data(repo_copy):
+    # repo_copy points QTS_ROOT at a temp copy, so this never reads the mutable
+    # real /data (simulate.py appends to it when QTS_ROOT is unset).
     info = {t["name"]: t for t in datasets.all_tables()}
     w = info["Weekly_Data_Tabular"]
     assert w["grain"] == "one row per product per week"
@@ -192,7 +194,7 @@ def test_weekly_table_info_against_real_data():
     assert w["max_date"] == "2026-05-08"
     assert w["row_count"] > 0
 
-def test_monthly_min_max():
+def test_monthly_min_max(repo_copy):
     info = {t["name"]: t for t in datasets.all_tables()}
     m = info["Monthly_Data_Tabular"]
     assert m["date_column"] == "MONTH_DATE"
@@ -506,9 +508,9 @@ def simulate() -> dict:
             lambda m: [m + pd.Timedelta(days=7 * k) for k in range(1, 5)])
     _append(MONTHLY, "MONTH_DATE", "TRX_VOLUME",
             lambda m: [m + pd.offsets.MonthBegin(1)])
-    from . import datasets
-    return {t["name"]: {"min": t["min_date"], "max": t["max_date"]}
-            for t in datasets.all_tables()}
+    # The frontend immediately calls refreshAll()/refresh-check, which re-reads
+    # min/max via datasets.all_tables(); no need to re-parse both CSVs here.
+    return {"ok": True}
 
 
 def reset() -> bool:
@@ -687,6 +689,8 @@ views:
 import subprocess, sys
 from pathlib import Path
 
+from server import runner
+
 REPO = Path(__file__).resolve().parents[1]
 
 def test_seed_creates_normalized_folders(repo_copy):
@@ -705,6 +709,38 @@ def test_seed_creates_normalized_folders(repo_copy):
         plan = (folder / "analysis_plan.md").read_text(encoding="utf-8")
         assert "full grain" in plan.lower()
         assert "expected_row_count: 106" not in plan
+
+def test_validate_result_exit_codes_end_to_end(tmp_path):
+    """Drive the REAL scripts/validate_result.py — not just validation_ok on bare
+    ints — to prove the seed normalization + exit-code contract: a >15-row plan
+    with no 'full grain' warns (exit 2 = pass); a normalized full-grain plan passes
+    (exit 0/2); an un-normalized pinned count that mismatches fails (exit 1)."""
+    import scripts.seed_views as seed
+    vr = str(REPO / "scripts" / "validate_result.py")
+
+    def _folder(name, rows, plan_text):
+        f = tmp_path / name
+        f.mkdir()
+        body = "WEEK_ENDING,TRX\n" + "".join(f"2026-01-{i + 1:02d},{i}\n" for i in range(rows))
+        (f / "result.csv").write_text(body, encoding="utf-8")
+        (f / "analysis_plan.md").write_text(plan_text, encoding="utf-8")
+        return f
+
+    # >15 rows, no 'full grain', no pinned count -> warning -> exit 2 (treated as pass)
+    warn = _folder("warn", 20, "analysis of weekly trx\n")
+    assert runner.run_script([vr, str(warn)])[0] == 2
+    assert runner.validation_ok(2) is True
+
+    # normalized full-grain plan -> pass (exit 0 or 2)
+    fg = _folder("fg", 20, seed.normalize_plan("expected_row_count: 106\n"))
+    assert "full grain" in (fg / "analysis_plan.md").read_text().lower()
+    assert runner.validation_ok(runner.run_script([vr, str(fg)])[0]) is True
+
+    # un-normalized pinned count that mismatches the row count -> exit 1 (fail)
+    pinned = _folder("pinned", 3, "expected_row_count: 106\n")
+    rc = runner.run_script([vr, str(pinned)])[0]
+    assert rc == 1
+    assert runner.validation_ok(rc) is False
 ```
 
 - [ ] **Step 3: Run test to verify it fails**
@@ -768,7 +804,7 @@ if __name__ == "__main__":
 - [ ] **Step 5: Run test to verify it passes**
 
 Run: `py -3 -m pytest tests/test_seed_views.py -v`
-Expected: PASS (1 passed)
+Expected: PASS (2 passed)
 
 - [ ] **Step 6: Seed the real repo** (so the dashboard has live folders to run)
 
@@ -877,14 +913,14 @@ def read_run_meta(v) -> dict:
     return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
 
 
-def view_status(v) -> dict:
+def view_status(v, weekly_max=None) -> dict:
     base = {"id": v["id"], "title": v["title"], "status": v["status"],
             "tag": v.get("tag"), "brand": v.get("brand"),
             "description": v.get("description", ""), "note": v.get("note")}
     if v["status"] != "built":
         return base
     meta = read_run_meta(v)
-    wk = _weekly_max()
+    wk = weekly_max if weekly_max is not None else _weekly_max()
     base.update({
         "last_run_at": meta.get("last_run_at"),
         "validation": meta.get("validation_status"),
@@ -898,8 +934,15 @@ def view_status(v) -> dict:
     return base
 
 
-def all_view_status() -> list:
-    return [view_status(v) for v in load_registry()]
+def _weekly_max_from(tables):
+    return next((t["max_date"] for t in tables
+                 if t["name"] == "Weekly_Data_Tabular"), None)
+
+
+def all_view_status(tables=None) -> list:
+    # Weekly max is identical for every view; parse the CSVs once, not N times.
+    wk = _weekly_max_from(tables) if tables is not None else _weekly_max()
+    return [view_status(v, wk) for v in load_registry()]
 
 
 def _finish(v, folder, ok, validation, deck, log):
@@ -979,8 +1022,11 @@ def _client(repo_copy):
         vy.write_text((REPO / "views.yaml").read_text(encoding="utf-8"), encoding="utf-8")
     subprocess.run([sys.executable, str(REPO / "scripts" / "seed_views.py")],
                    env={**os.environ, "QTS_ROOT": str(repo_copy)}, check=True)
-    from server.app import app
-    return TestClient(app)   # `with` triggers lifespan (snapshot init)
+    # Build a FRESH app per fixture so its StaticFiles mount (which captures
+    # config.web_dir() at construction) is bound to THIS test's QTS_ROOT. Importing
+    # the cached module-level `app` would leak the first test's temp copy into later ones.
+    from server.app import create_app
+    return TestClient(create_app())   # `with` triggers lifespan (snapshot init)
 
 def test_tables_endpoint(repo_copy):
     with _client(repo_copy) as c:
@@ -1036,108 +1082,117 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="Query-to-Slide Dashboard", lifespan=lifespan)
+def create_app() -> FastAPI:
+    """Build a fresh app. Used by the launcher (module-level `app` below) AND by
+    tests, which call create_app() AFTER setting QTS_ROOT so the StaticFiles mount
+    — which binds its directory at construction, not per request — points at that
+    test's temp copy instead of leaking the first import's path into every test."""
+    app = FastAPI(title="Query-to-Slide Dashboard", lifespan=lifespan)
+
+    @app.get("/api/tables")
+    def api_tables():
+        tables = datasets.all_tables()       # one parse of each CSV
+        snap = snapshot.read_snapshot()      # snapshot file only — no CSV parse
+        for t in tables:
+            t["updated"] = snap.get(t["name"], {}).get("max") != t["max_date"]
+        return tables
+
+    @app.get("/api/views")
+    def api_views():
+        return views.all_view_status()
+
+    @app.post("/api/data/refresh-check")
+    def api_refresh_check():
+        rc, out, err = runner.run_script(
+            [str(config.scripts_dir() / "validate_schema.py"), "--root", str(config.get_root())])
+        schema = {0: "clear", 1: "drift", 2: "warnings"}.get(rc, "unknown")
+        tables = datasets.all_tables()       # parse once; reuse for both checks below
+        snap = snapshot.read_snapshot()
+        cmp = {t["name"]: {"snapshot_max": snap.get(t["name"], {}).get("max"),
+                           "current_max": t["max_date"],
+                           "changed": snap.get(t["name"], {}).get("max") != t["max_date"]}
+               for t in tables}
+        stale = [s["id"] for s in views.all_view_status(tables=tables) if s.get("stale")]
+        return {"schema": schema, "schema_log": (out + err).strip(), "tables": cmp,
+                "changed_tables": [k for k, v in cmp.items() if v["changed"]],
+                "stale_views": stale}
+
+    @app.post("/api/data/acknowledge")
+    def api_acknowledge():
+        return snapshot.acknowledge()
+
+    @app.post("/api/data/simulate")
+    def api_simulate():
+        try:
+            with runner.run_lock():
+                return simulate.simulate()
+        except runner.Busy:
+            raise HTTPException(409, "busy")
+
+    @app.post("/api/data/reset")
+    def api_reset():
+        try:
+            with runner.run_lock():
+                ok = simulate.reset()
+        except runner.Busy:
+            raise HTTPException(409, "busy")
+        if not ok:
+            raise HTTPException(400, "no backup to reset from")
+        return {"reset": True}
+
+    @app.post("/api/views/{vid}/run")
+    def api_run(vid: str):
+        try:
+            return views.run_view(vid)
+        except runner.Busy:
+            raise HTTPException(409, "busy")
+
+    @app.get("/api/views/{vid}/result")
+    def api_result(vid: str):
+        v = views.view_by_id(vid)
+        if not v or v.get("status") != "built":
+            raise HTTPException(404, "no such built view")
+        folder = config.get_root() / v["folder"]
+        rp = folder / "result.csv"
+        if not rp.exists():
+            raise HTTPException(404, "not run yet")
+        with open(rp, encoding="utf-8") as fh:
+            rows = list(csv.DictReader(fh))
+        spec = json.loads((folder / "deck_spec.json").read_text(encoding="utf-8"))
+        tk = folder / "takeaways.md"
+        meta = views.read_run_meta(v)
+        return {"rows": rows, "spec": spec,
+                "data_max_at_run": meta.get("data_max_at_run") if meta else None,
+                "takeaways": tk.read_text(encoding="utf-8") if tk.exists() else ""}
+
+    @app.get("/api/views/{vid}/deck")
+    def api_deck(vid: str):
+        v = views.view_by_id(vid)
+        if not v:
+            raise HTTPException(404, "no such view")
+        deck = config.get_root() / v["folder"] / "deck.pptx"
+        if not deck.exists():
+            raise HTTPException(404, "no deck")
+        return FileResponse(deck, filename=f"{vid}.pptx")
+
+    # Static page mounted LAST so explicit /api routes win. check_dir=False so
+    # construction never fails when web/ is absent (temp repo copy, or before Task 9).
+    app.mount("/", StaticFiles(directory=str(config.web_dir()), html=True, check_dir=False), name="web")
+    return app
 
 
-@app.get("/api/tables")
-def api_tables():
-    tables = datasets.all_tables()
-    cmp = snapshot.compare()
-    for t in tables:
-        t["updated"] = cmp.get(t["name"], {}).get("changed", False)
-    return tables
-
-
-@app.get("/api/views")
-def api_views():
-    return views.all_view_status()
-
-
-@app.post("/api/data/refresh-check")
-def api_refresh_check():
-    rc, out, err = runner.run_script(
-        [str(config.scripts_dir() / "validate_schema.py"), "--root", str(config.get_root())])
-    schema = {0: "clear", 1: "drift", 2: "warnings"}.get(rc, "unknown")
-    cmp = snapshot.compare()
-    stale = [s["id"] for s in views.all_view_status() if s.get("stale")]
-    return {"schema": schema, "schema_log": (out + err).strip(), "tables": cmp,
-            "changed_tables": [k for k, v in cmp.items() if v["changed"]],
-            "stale_views": stale}
-
-
-@app.post("/api/data/acknowledge")
-def api_acknowledge():
-    return snapshot.acknowledge()
-
-
-@app.post("/api/data/simulate")
-def api_simulate():
-    try:
-        with runner.run_lock():
-            return simulate.simulate()
-    except runner.Busy:
-        raise HTTPException(409, "busy")
-
-
-@app.post("/api/data/reset")
-def api_reset():
-    try:
-        with runner.run_lock():
-            ok = simulate.reset()
-    except runner.Busy:
-        raise HTTPException(409, "busy")
-    if not ok:
-        raise HTTPException(400, "no backup to reset from")
-    return {"reset": True}
-
-
-@app.post("/api/views/{vid}/run")
-def api_run(vid: str):
-    try:
-        return views.run_view(vid)
-    except runner.Busy:
-        raise HTTPException(409, "busy")
-
-
-@app.get("/api/views/{vid}/result")
-def api_result(vid: str):
-    v = views.view_by_id(vid)
-    if not v or v.get("status") != "built":
-        raise HTTPException(404, "no such built view")
-    folder = config.get_root() / v["folder"]
-    rp = folder / "result.csv"
-    if not rp.exists():
-        raise HTTPException(404, "not run yet")
-    with open(rp, encoding="utf-8") as fh:
-        rows = list(csv.DictReader(fh))
-    spec = json.loads((folder / "deck_spec.json").read_text(encoding="utf-8"))
-    tk = folder / "takeaways.md"
-    return {"rows": rows, "spec": spec,
-            "takeaways": tk.read_text(encoding="utf-8") if tk.exists() else ""}
-
-
-@app.get("/api/views/{vid}/deck")
-def api_deck(vid: str):
-    v = views.view_by_id(vid)
-    if not v:
-        raise HTTPException(404, "no such view")
-    deck = config.get_root() / v["folder"] / "deck.pptx"
-    if not deck.exists():
-        raise HTTPException(404, "no deck")
-    return FileResponse(deck, filename=f"{vid}.pptx")
-
-
-# Static page LAST so explicit /api routes win. check_dir=False so importing the
-# app never crashes when web/ is absent (e.g. tests against a temp repo copy, or
-# before Task 9). The dir is read per-request at serve time.
-app.mount("/", StaticFiles(directory=str(config.web_dir()), html=True, check_dir=False), name="web")
+# Module-level instance for the launcher (run_dashboard.py imports this).
+app = create_app()
 ```
 
-> Note: the `StaticFiles` mount requires `web/` to exist. Task 9 creates it. If you run `test_api.py` before Task 9, create an empty `web/` dir first (`mkdir web`), or run Task 9 first — the API tests don't depend on the page contents.
+> Note: with `check_dir=False`, importing the module never crashes when `web/` is
+> absent. The API tests use `create_app()` after setting `QTS_ROOT` (and the
+> `repo_copy` fixture always creates `tmp/web`), so they don't depend on the page
+> contents.
 
-- [ ] **Step 4: Ensure `web/` exists, then run tests**
+- [ ] **Step 4: Run the API tests**
 
-Run: `py -3 -c "import os; os.makedirs('web', exist_ok=True)"` then `py -3 -m pytest tests/test_api.py -v`
+Run: `py -3 -m pytest tests/test_api.py -v`
 Expected: PASS (4 passed)
 
 - [ ] **Step 5: Checkpoint.**
@@ -1267,7 +1322,9 @@ section{margin-bottom:32px}
 .takeaways{font-size:13px;color:var(--gray);white-space:pre-wrap;
   background:#fff;border:1px solid var(--rule);border-radius:10px;padding:14px}
 #chart{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:12px}
-.deck-link{margin:0 0 12px} .deck-link a{text-decoration:none;display:inline-block}
+.deck-link{margin:0 0 12px;display:flex;gap:14px;align-items:center}
+.deck-link a{text-decoration:none;display:inline-block}
+.run-against{font-size:12px;color:var(--gray)}
 pre{background:#0d1530;color:#cfe3ff;padding:12px;border-radius:8px;overflow:auto;font-size:12px}
 table{border-collapse:collapse;width:100%;font-size:12px;margin-top:12px}
 th,td{border-bottom:1px solid var(--rule);padding:5px 8px;text-align:right}
@@ -1366,8 +1423,9 @@ async function showResult(id, log, deckAvailable){
   const data = await api('GET',`/api/views/${id}/result`);
   $('#result-section').classList.remove('hidden');
   $('#result-title').textContent = data.spec.title?.replace(/\n/g,' ') || id;
-  $('#deck-link').innerHTML = deckAvailable
-    ? `<a class="btn" href="/api/views/${id}/deck">⬇ Download deck (.pptx)</a>` : '';
+  $('#deck-link').innerHTML =
+    (data.data_max_at_run ? `<span class="run-against">Run against data through <b>${data.data_max_at_run}</b></span>` : '') +
+    (deckAvailable ? `<a class="btn" href="/api/views/${id}/deck">⬇ Download deck (.pptx)</a>` : '');
   $('#takeaways').textContent = data.takeaways || '';
   $('#runlog').textContent = log || '';
   drawChart(data.rows, data.spec);

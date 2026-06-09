@@ -1,0 +1,7 @@
+{
+  "date_column": "WEEK_ENDING",
+  "title": "Tremfya SQ\nIBD Performance",
+  "subtitle": "Weekly TRx split by indication (UC / CD), full series",
+  "series_columns": ["UC", "CD"],
+  "total_column": "TREMFYA_TRx_total"
+}

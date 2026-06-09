@@ -1,0 +1,50 @@
+views:
+  - id: tremfya_ibd_split
+    title: "TREMFYA — IBD Indication Split"
+    brand: TREMFYA
+    description: "Weekly TRx split across UC / CD, full series."
+    status: built
+    kind: indication_split
+    folder: output/tremfya_ibd_split
+
+  - id: skyrizi_ibd_split
+    title: "SKYRIZI (SQ+IV+OBI) — IBD Indication Split"
+    brand: SKYRIZI
+    description: "Combined Skyrizi weekly TRx split across UC / CD, full series."
+    status: built
+    kind: indication_split
+    folder: output/skyrizi_ibd_split
+
+  - id: humira_ibd_split
+    title: "HUMIRA — IBD Indication Split"
+    brand: HUMIRA
+    description: "Same indication-split method, applied to Humira."
+    status: placeholder
+    tag: capability-ready
+
+  - id: stelara_ibd_split
+    title: "STELARA — IBD Indication Split"
+    brand: STELARA
+    description: "Same indication-split method, applied to Stelara."
+    status: placeholder
+    tag: capability-ready
+
+  - id: tremfya_by_doseform
+    title: "TREMFYA — by Dose / Form (SQ 100 / 200 / Induction)"
+    brand: TREMFYA
+    description: "Weekly TRx broken out by dosage presentation."
+    status: placeholder
+    tag: capability-ready
+
+  - id: monthly_indication_trend
+    title: "Monthly Indication Trend — all brands"
+    description: "Monthly TRx by indication across the immunology markets."
+    status: placeholder
+    tag: capability-ready
+
+  - id: payer_mix
+    title: "Payer Mix"
+    description: "Needs payer data not present in any current table."
+    status: placeholder
+    tag: data-gap
+    note: "Honest boundary — no payer dimension exists in the data."

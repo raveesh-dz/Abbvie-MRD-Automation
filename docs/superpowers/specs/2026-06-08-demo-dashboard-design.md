@@ -59,17 +59,17 @@ One local app, two halves:
 ```
 run_dashboard.py            # launches uvicorn on 127.0.0.1:8000
 server/
-  app.py                    # FastAPI app + routes
+  app.py                    # FastAPI app + routes (create_app factory)
+  config.py                 # QTS_ROOT-based path helpers (every module imports this)
   datasets.py               # read tables + dictionaries, compute min/max
   views.py                  # load views.yaml, run a view, staleness
-  snapshot.py               # data_snapshot.json read/compare/update
+  snapshot.py               # data/.snapshot.json read/compare/update
   simulate.py               # clone-last-period append + backup/reset
   runner.py                 # subprocess wrapper + in-flight lock + exit-code map
 web/
   index.html                # single page
   app.js                    # fetch() calls + render + SVG chart
   styles.css                # DataZymes brand tokens
-  fonts/                    # vendored Montserrat + Roboto woff2
 views.yaml                  # the view registry (source of truth for cards)
 output/<view_id>/           # canonical per-view folders (seeded)
 data/_original/             # untouched backup of the real CSVs (created on first simulate)
@@ -78,7 +78,7 @@ data/.snapshot.json         # last-acknowledged min/max per table
 
 The backend is the only component that touches the filesystem or runs Python.
 The frontend is pure presentation: it calls JSON endpoints and renders. No node
-build step; fonts and chart are local (offline-safe).
+build step; the chart is local, but fonts load from the Google Fonts CDN (Segoe UI fallback when offline) — see Task 9's index.html.
 
 Each backend module has one job and a narrow interface, so each can be tested in
 isolation (Section 9).
@@ -109,32 +109,36 @@ views:
   - id: humira_ibd_split
     title: "HUMIRA — IBD Indication Split"
     brand: HUMIRA
+    description: "Same indication-split method, applied to Humira."
     status: placeholder
     tag: capability-ready
-    note: "Same indication-split method; not yet built."
 
   - id: stelara_ibd_split
     title: "STELARA — IBD Indication Split"
     brand: STELARA
+    description: "Same indication-split method, applied to Stelara."
     status: placeholder
     tag: capability-ready
 
   - id: tremfya_by_doseform
     title: "TREMFYA — by Dose / Form (SQ 100 / 200 / Induction)"
     brand: TREMFYA
+    description: "Weekly TRx broken out by dosage presentation."
     status: placeholder
     tag: capability-ready
 
   - id: monthly_indication_trend
     title: "Monthly Indication Trend — all brands"
+    description: "Monthly TRx by indication across the immunology markets."
     status: placeholder
     tag: capability-ready
 
   - id: payer_mix
     title: "Payer Mix"
+    description: "Needs payer data not present in any current table."
     status: placeholder
     tag: data-gap
-    note: "Honest boundary — needs payer data not in any current table."
+    note: "Honest boundary — no payer dimension exists in the data."
 ```
 
 Two tags distinguish honest capability (`capability-ready`) from an honest
@@ -171,10 +175,10 @@ All JSON, all under `/api`. Single in-flight run lock guards mutation endpoints
 | `GET /api/views` | From `views.yaml`: each view's status/tag/title/brand + (built only) last_run_at, last validation status, row count, **stale** flag, deck availability. |
 | `POST /api/data/refresh-check` | Runs `validate_schema.py`; re-reads each CSV's min/max; compares to snapshot. Returns per-table change + count of stale built views + schema verdict. Does NOT mutate snapshot. |
 | `POST /api/data/acknowledge` | Writes current min/max into the snapshot (clears the "data updated" banner). |
-| `POST /api/data/simulate` | Clone-last-period append to both CSVs (Section 7); backs up to `data/_original/` first. Returns new min/max. |
+| `POST /api/data/simulate` | Clone-last-period append to both CSVs (Section 7); backs up to `data/_original/` first. Returns `{ok: true}` (frontend re-reads min/max via refresh-check). |
 | `POST /api/data/reset` | Restores both CSVs byte-identical from `data/_original/`. |
-| `POST /api/views/{id}/run` | **Synchronous, one view**: ① `py -3 output/{id}/analysis_code.py` → fresh `result.csv`; ② `py -3 scripts/validate_result.py output/{id}` (0/2 ok, 1 fail); ③ if `kind == indication_split`, `py -3 scripts/build_deck_pptx.py output/{id}`. Writes `run_meta.json`. Returns status, log, row count, result data, deck path. |
-| `GET /api/views/{id}/result` | `result.csv` as JSON + the view's `deck_spec.json` chart config. |
+| `POST /api/views/{id}/run` | **Synchronous, one view** (all steps spawned via `sys.executable` — the same `py -3` interpreter running the server, so one pandas/pptx install): ① run `analysis_code.py` → fresh `result.csv`; ② run `scripts/validate_result.py output/{id}` (0/2 ok, 1 fail); ③ if `kind == indication_split`, run `scripts/build_deck_pptx.py output/{id}`. Writes `run_meta.json`. Returns `ok, validation, log, row_count, deck_available` (result data fetched separately via `GET /api/views/{id}/result`). |
+| `GET /api/views/{id}/result` | `result.csv` as JSON (`rows`) + the view's `deck_spec.json` chart config (`spec`) + `takeaways` markdown + `data_max_at_run`. |
 | `GET /api/views/{id}/deck` | Downloads `deck.pptx`. |
 
 "Run selected" / "Run all" is a **frontend loop** over `POST /run` — each card
@@ -205,7 +209,7 @@ This keeps the live demo repeatable and never permanently mutates the real CSVs.
 ## 8. Frontend (single branded page)
 
 Brand tokens: navy `071D49`, teal `07B2AC`, magenta `E40D62`, gray `50535A`,
-white; Montserrat Medium (headings) + Roboto (body), vendored. Design bar:
+white; Montserrat Medium (headings) + Roboto (body), loaded from the Google Fonts CDN (Segoe UI fallback offline). Design bar:
 clean, infographic, no generic AI-dashboard aesthetic.
 
 Sections:

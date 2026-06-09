@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Query-to-Slide · Control Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="mark">▶</span> DataZymes <span class="sep">·</span> Query-to-Slide</div>
+    <div id="freshness" class="freshness"></div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Datasets</h2>
+      <div id="tables" class="grid"></div>
+    </section>
+
+    <section>
+      <div class="controls">
+        <button id="btn-refresh" class="btn primary">Data Refresh</button>
+        <button id="btn-simulate" class="btn">Simulate new month</button>
+        <button id="btn-reset" class="btn ghost">Reset demo data</button>
+      </div>
+      <div id="banner" class="banner hidden"></div>
+    </section>
+
+    <section>
+      <div class="views-head">
+        <h2>Views</h2>
+        <div class="views-actions">
+          <label class="selall"><input type="checkbox" id="select-all" /> Select all</label>
+          <button id="btn-run" class="btn primary">Run selected</button>
+        </div>
+      </div>
+      <div id="views" class="grid"></div>
+    </section>
+
+    <section id="result-section" class="hidden">
+      <h2 id="result-title">Result</h2>
+      <div id="deck-link" class="deck-link"></div>
+      <div class="result-wrap">
+        <div id="chart"></div>
+        <div id="takeaways" class="takeaways"></div>
+      </div>
+      <details><summary>Run log</summary><pre id="runlog"></pre></details>
+      <div id="result-table"></div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
