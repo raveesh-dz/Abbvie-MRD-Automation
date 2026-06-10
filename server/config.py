@@ -40,3 +40,7 @@ def snapshot_file() -> Path:
 
 def original_backup_dir() -> Path:
     return data_dir() / "_original"
+
+
+def engine_inbox_dir() -> Path:
+    return get_root() / "engine_inbox"

@@ -7,7 +7,7 @@ from fastapi import Body, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import config, datasets, jobs, pipeline, runner, simulate, snapshot, views
+from . import config, datasets, engine, jobs, pipeline, runner, simulate, snapshot, views
 
 
 @asynccontextmanager
@@ -158,6 +158,24 @@ def create_app() -> FastAPI:
         if not j:
             raise HTTPException(404, "no such job")
         return j
+
+    @app.post("/api/engine/ask")
+    def api_engine_ask(body: dict):
+        q = ((body or {}).get("question") or "").strip()
+        if not q:
+            raise HTTPException(400, "question is required")
+        return engine.ask(q, bool((body or {}).get("build_deck")))
+
+    @app.get("/api/engine")
+    def api_engine_list():
+        return engine.list_items()
+
+    @app.get("/api/engine/{qid}")
+    def api_engine_get(qid: str):
+        item = engine.get(qid)
+        if not item:
+            raise HTTPException(404, "no such question")
+        return item
 
     # Static page mounted LAST so explicit /api routes win. check_dir=False so
     # construction never fails when web/ is absent (temp repo copy, or before Task 9).

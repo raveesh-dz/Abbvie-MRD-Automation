@@ -87,6 +87,12 @@ Trigger: the user explicitly asked for a deck/slides (either up front or in answ
 ### Follow-up queries
 A follow-up ("now break that by payer") gets a NEW run_id but inherits the previous plan as base. The new plan states only the deltas and does not re-confirm anything already confirmed. The new run folder is still complete and standalone.
 
+### Engine inbox (dashboard-queued questions)
+When asked to "check the inbox" (or running an inbox loop), process queued
+dashboard questions per `ENGINE_INBOX.md`: run the standard workflow with
+documented defaults applied silently, build a deck only if the item requests
+it, register the run in `views.yaml`, and update the item file with the outcome.
+
 ## 3. AUTO-SAVE PROTOCOL (new semantic rules)
 
 When you and the user agree on a new rule:
