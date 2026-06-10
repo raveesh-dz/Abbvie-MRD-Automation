@@ -3,11 +3,11 @@ import csv
 import json
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Body, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import config, datasets, runner, simulate, snapshot, views
+from . import config, datasets, jobs, pipeline, runner, simulate, snapshot, views
 
 
 @asynccontextmanager
@@ -37,19 +37,7 @@ def create_app() -> FastAPI:
 
     @app.post("/api/data/refresh-check")
     def api_refresh_check():
-        rc, out, err = runner.run_script(
-            [str(config.scripts_dir() / "validate_schema.py"), "--root", str(config.get_root())])
-        schema = {0: "clear", 1: "drift", 2: "warnings"}.get(rc, "unknown")
-        tables = datasets.all_tables()       # parse once; reuse for both checks below
-        snap = snapshot.read_snapshot()
-        cmp = {t["name"]: {"snapshot_max": snap.get(t["name"], {}).get("max"),
-                           "current_max": t["max_date"],
-                           "changed": snap.get(t["name"], {}).get("max") != t["max_date"]}
-               for t in tables}
-        stale = [s["id"] for s in views.all_view_status(tables=tables) if s.get("stale")]
-        return {"schema": schema, "schema_log": (out + err).strip(), "tables": cmp,
-                "changed_tables": [k for k, v in cmp.items() if v["changed"]],
-                "stale_views": stale}
+        return pipeline.check()
 
     @app.post("/api/data/acknowledge")
     def api_acknowledge():
@@ -108,6 +96,33 @@ def create_app() -> FastAPI:
         if not deck.exists():
             raise HTTPException(404, "no deck")
         return FileResponse(deck, filename=f"{vid}.pptx")
+
+    @app.post("/api/pipeline/run")
+    def api_pipeline(body: dict | None = Body(None)):
+        mode = (body or {}).get("mode", "check")
+        if mode == "check":
+            return pipeline.check()
+        if mode == "data":
+            return pipeline.data_refresh()
+        if mode == "full":
+            job = pipeline.full_refresh_job((body or {}).get("views") or None)
+            return {"job_id": job["id"]}
+        raise HTTPException(400, "mode must be check|data|full")
+
+    @app.post("/api/views/run")
+    def api_run_batch(body: dict | None = Body(None)):
+        ids = (body or {}).get("views") or []
+        if not ids:
+            raise HTTPException(400, "no views given")
+        job = pipeline.run_views_job(ids)
+        return {"job_id": job["id"]}
+
+    @app.get("/api/jobs/{jid}")
+    def api_job(jid: str):
+        j = jobs.get_job(jid)
+        if not j:
+            raise HTTPException(404, "no such job")
+        return j
 
     # Static page mounted LAST so explicit /api routes win. check_dir=False so
     # construction never fails when web/ is absent (temp repo copy, or before Task 9).
