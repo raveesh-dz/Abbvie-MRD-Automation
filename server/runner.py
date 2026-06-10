@@ -13,8 +13,13 @@ _LOCK = threading.Lock()
 
 
 class run_lock:
+    """Non-blocking by default (raises Busy). block=True waits — used by the
+    job worker so queued jobs run after, not instead of, the active one."""
+    def __init__(self, block: bool = False):
+        self.block = block
+
     def __enter__(self):
-        if not _LOCK.acquire(blocking=False):
+        if not _LOCK.acquire(blocking=self.block):
             raise Busy("another run is in progress")
         return self
 
