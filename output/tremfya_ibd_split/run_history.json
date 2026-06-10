@@ -1,0 +1,24 @@
+[
+  {
+    "last_run_at": "2026-06-10T11:54:36",
+    "data_max_at_run": {
+      "Weekly_Data_Tabular": "2026-05-22",
+      "Monthly_Data_Tabular": "2026-05-01"
+    },
+    "validation_status": "pass",
+    "row_count": 108,
+    "deck_available": true,
+    "ok": true
+  },
+  {
+    "last_run_at": "2026-06-10T11:56:52",
+    "data_max_at_run": {
+      "Weekly_Data_Tabular": "2026-05-08",
+      "Monthly_Data_Tabular": "2026-04-01"
+    },
+    "validation_status": "pass",
+    "row_count": 106,
+    "deck_available": true,
+    "ok": true
+  }
+]
