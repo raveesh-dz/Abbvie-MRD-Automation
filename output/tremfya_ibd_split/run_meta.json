@@ -1,13 +1,13 @@
 {
-  "last_run_at": "2026-06-10T11:56:52",
+  "last_run_at": "2026-06-10T12:04:25",
   "data_max_at_run": {
-    "Weekly_Data_Tabular": "2026-05-08",
-    "Monthly_Data_Tabular": "2026-04-01"
+    "Weekly_Data_Tabular": "2026-06-05",
+    "Monthly_Data_Tabular": "2026-05-01"
   },
   "validation_status": "pass",
   "validation_detail": {
     "verdict": "pass",
-    "rows": 106,
+    "rows": 110,
     "checks": [],
     "ran": [
       "result.csv exists & non-empty",
@@ -17,6 +17,6 @@
       "duplicate-row check"
     ]
   },
-  "row_count": 106,
+  "row_count": 110,
   "deck_available": true
 }
