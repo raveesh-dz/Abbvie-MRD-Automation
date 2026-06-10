@@ -1,0 +1,5674 @@
+{
+  "row_count": 736763,
+  "column_count": 222,
+  "columns": [
+    {
+      "name": "DZ_PAT_ID",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 1782,
+      "distinct_pct": 0.24,
+      "top_values": {
+        "DZ-92954865": 3238,
+        "DZ-85640455": 2517,
+        "DZ-82388142": 2179,
+        "DZ-67193162": 2108,
+        "DZ-92938764": 1864,
+        "DZ-54172382": 1640,
+        "DZ-48260866": 1609,
+        "DZ-58431327": 1593,
+        "DZ-28747712": 1545,
+        "DZ-76716591": 1535
+      },
+      "sample": [
+        "DZ-57548143",
+        "DZ-57548143",
+        "DZ-57548143",
+        "DZ-57548143",
+        "DZ-57548143"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SRVC_DT",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2159,
+      "distinct_pct": 0.29,
+      "top_values": {
+        "2024-06-04": 751,
+        "2023-12-11": 723,
+        "2023-12-12": 717,
+        "2024-08-01": 699,
+        "2024-10-14": 692,
+        "2023-11-06": 691,
+        "2023-11-08": 685,
+        "2023-10-10": 672,
+        "2023-09-05": 671,
+        "2024-10-01": 669
+      },
+      "sample": [
+        "2022-03-14",
+        "2022-07-14",
+        "2022-03-02",
+        "2022-09-26",
+        "2022-06-16"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "CLAIM_ID",
+      "dtype": "float64",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 139,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "1.04203e+19": 157535,
+        "1.04903e+19": 80005,
+        "1.09923e+19": 59857,
+        "1.10483e+19": 57486,
+        "1.04902e+19": 56853,
+        "1.04202e+19": 29355,
+        "1.08453e+19": 22258,
+        "1.07403e+19": 18053,
+        "1.06063e+19": 17295,
+        "1.05773e+19": 14917
+      },
+      "sample": [
+        "1.09143e+19",
+        "1.00173e+19",
+        "1.09143e+19",
+        "1.00173e+19",
+        "515000000000.0"
+      ],
+      "role_guess": "metric",
+      "min": 510000000000.0,
+      "max": 1.10773e+19,
+      "mean": 1.057418490540457e+19
+    },
+    {
+      "name": "VISIT_KEY",
+      "dtype": "int16",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 135,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "1": 599012,
+        "2": 51731,
+        "3": 17361,
+        "4": 10806,
+        "5": 7970,
+        "6": 6459,
+        "7": 5378,
+        "8": 4677,
+        "9": 4089,
+        "10": 3626
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "metric",
+      "min": 1.0,
+      "max": 135.0,
+      "mean": 2.072549788738034
+    },
+    {
+      "name": "CLAIM_FG",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Mx_Claim": 549738,
+        "Rx_Claim": 187025
+      },
+      "sample": [
+        "Rx_Claim",
+        "Rx_Claim",
+        "Rx_Claim",
+        "Rx_Claim",
+        "Rx_Claim"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "CLAIM_STA",
+      "dtype": "object",
+      "null_count": 549738,
+      "null_pct": 74.62,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "S": 152033,
+        "F": 34992
+      },
+      "sample": [
+        "S",
+        "S",
+        "S",
+        "S",
+        "S"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "CLAIM_DSPN",
+      "dtype": "object",
+      "null_count": 318387,
+      "null_pct": 43.21,
+      "distinct_count": 4,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "PC": 225047,
+        "PD": 165950,
+        "RJ": 17951,
+        "RV": 9428
+      },
+      "sample": [
+        "PD",
+        "PD",
+        "PD",
+        "PD",
+        "PD"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "NDC_CD",
+      "dtype": "object",
+      "null_count": 511770,
+      "null_pct": 69.46,
+      "distinct_count": 4028,
+      "distinct_pct": 0.55,
+      "top_values": {
+        "66993001968": 10572,
+        "186037020": 7674,
+        "93317431": 7137,
+        "31722072610": 5942,
+        "68180096301": 5822,
+        "173068220": 5422,
+        "173088710": 4738,
+        "173089310": 4516,
+        "310737020": 4004,
+        "65862057490": 3607
+      },
+      "sample": [
+        "173088714",
+        "16729011917",
+        "173088714",
+        "487020160",
+        "59746017506"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SRC_PRVDR_ID",
+      "dtype": "object",
+      "null_count": 14758,
+      "null_pct": 2.0,
+      "distinct_count": 92090,
+      "distinct_pct": 12.5,
+      "top_values": {
+        "0": 8497,
+        "10464215": 2867,
+        "8114202": 2343,
+        "18020092": 1690,
+        "7736382": 1452,
+        "15564527": 1269,
+        "11995870": 962,
+        "18164105": 893,
+        "27772609": 707,
+        "18286923": 632
+      },
+      "sample": [
+        "10258020",
+        "10258020",
+        "10258020",
+        "10258020",
+        "11984130"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_CUST_ID",
+      "dtype": "object",
+      "null_count": 27146,
+      "null_pct": 3.68,
+      "distinct_count": 91833,
+      "distinct_pct": 12.46,
+      "top_values": {
+        "59218898": 2867,
+        "56327506": 2342,
+        "16220726": 1680,
+        "58048105": 1452,
+        "74853167": 1269,
+        "58768374": 960,
+        "15782831": 893,
+        "59139267": 760,
+        "1004123628": 707,
+        "20430858": 632
+      },
+      "sample": [
+        "58223680",
+        "58223680",
+        "58223680",
+        "58223680",
+        "55126233"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SRC_PLAN_ID",
+      "dtype": "object",
+      "null_count": 14909,
+      "null_pct": 2.02,
+      "distinct_count": 2967,
+      "distinct_pct": 0.4,
+      "top_values": {
+        "209999": 33171,
+        "129999": 27162,
+        "20006": 18359,
+        "669999": 10185,
+        "20860012": 9921,
+        "8888880001": 9788,
+        "39999": 8231,
+        "18160001": 7634,
+        "21130003": 6172,
+        "20860018": 5753
+      },
+      "sample": [
+        "31210104",
+        "24290627",
+        "31210104",
+        "24291895",
+        "35710001"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD",
+      "dtype": "object",
+      "null_count": 179762,
+      "null_pct": 24.4,
+      "distinct_count": 8623,
+      "distinct_pct": 1.17,
+      "top_values": {
+        "J44.1": 18293,
+        "J45.901": 17988,
+        "J45.909": 16696,
+        "J44.9": 14995,
+        "I10": 12813,
+        "J45.50": 11939,
+        "J45.40": 10901,
+        "J96.01": 7308,
+        "U07.1": 6708,
+        "J45.51": 6463
+      },
+      "sample": [
+        "R51.9",
+        "R23.3",
+        "R10.9",
+        "J45.41",
+        "R11.2"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_2",
+      "dtype": "object",
+      "null_count": 308172,
+      "null_pct": 41.83,
+      "distinct_count": 7785,
+      "distinct_pct": 1.06,
+      "top_values": {
+        "I10": 17850,
+        "J45.909": 14402,
+        "E11.9": 8658,
+        "J44.9": 7881,
+        "J44.1": 6661,
+        "J45.901": 6641,
+        "R06.02": 5873,
+        "J96.01": 5174,
+        "J18.9": 4248,
+        "G89.29": 3891
+      },
+      "sample": [
+        "R42",
+        "R30.0",
+        "K92.1",
+        "R42",
+        "F12.90"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_3",
+      "dtype": "object",
+      "null_count": 377139,
+      "null_pct": 51.19,
+      "distinct_count": 6802,
+      "distinct_pct": 0.92,
+      "top_values": {
+        "I10": 18999,
+        "J45.909": 17830,
+        "E11.9": 7801,
+        "J44.9": 6939,
+        "E78.5": 5031,
+        "K21.9": 4041,
+        "J44.1": 3721,
+        "J45.901": 3515,
+        "E66.01": 3505,
+        "I50.9": 2964
+      },
+      "sample": [
+        "J45.51",
+        "J45.40",
+        "J45.909",
+        "J30.1",
+        "I95.9"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_4",
+      "dtype": "object",
+      "null_count": 441226,
+      "null_pct": 59.89,
+      "distinct_count": 5806,
+      "distinct_pct": 0.79,
+      "top_values": {
+        "J45.909": 18254,
+        "I10": 13972,
+        "E11.9": 6244,
+        "E78.5": 5183,
+        "J44.9": 4705,
+        "K21.9": 4058,
+        "G47.33": 3526,
+        "J45.901": 3502,
+        "I25.10": 3360,
+        "E78.2": 2914
+      },
+      "sample": [
+        "E66.3",
+        "R52",
+        "R11.10",
+        "K21.9",
+        "E86.0"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_5",
+      "dtype": "object",
+      "null_count": 712391,
+      "null_pct": 96.69,
+      "distinct_count": 2108,
+      "distinct_pct": 0.29,
+      "top_values": {
+        "J45.909": 2773,
+        "I10": 1037,
+        "J45.40": 512,
+        "E11.9": 501,
+        "E78.5": 443,
+        "J44.9": 338,
+        "I25.10": 329,
+        "K21.9": 318,
+        "J45.20": 301,
+        "J96.20": 293
+      },
+      "sample": [
+        "M25.471",
+        "E11.49",
+        "G62.9",
+        "N18.30",
+        "I50.9"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_6",
+      "dtype": "object",
+      "null_count": 719232,
+      "null_pct": 97.62,
+      "distinct_count": 1620,
+      "distinct_pct": 0.22,
+      "top_values": {
+        "J45.909": 2125,
+        "I10": 611,
+        "J45.40": 428,
+        "K21.9": 420,
+        "J45.20": 332,
+        "J96.10": 302,
+        "E78.5": 300,
+        "J44.9": 285,
+        "G47.33": 225,
+        "E11.9": 224
+      },
+      "sample": [
+        "I48.0",
+        "I50.30",
+        "J44.1",
+        "R76.8",
+        "R76.8"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_7",
+      "dtype": "object",
+      "null_count": 722212,
+      "null_pct": 98.03,
+      "distinct_count": 1418,
+      "distinct_pct": 0.19,
+      "top_values": {
+        "J45.909": 1861,
+        "I10": 499,
+        "J45.50": 465,
+        "K21.9": 407,
+        "J45.40": 362,
+        "J44.9": 268,
+        "J45.20": 266,
+        "E78.5": 246,
+        "E03.9": 244,
+        "G47.33": 194
+      },
+      "sample": [
+        "I10",
+        "I48.21",
+        "E78.5",
+        "J45.20",
+        "R29.898"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_8",
+      "dtype": "object",
+      "null_count": 724501,
+      "null_pct": 98.34,
+      "distinct_count": 1219,
+      "distinct_pct": 0.17,
+      "top_values": {
+        "J45.909": 1502,
+        "K21.9": 358,
+        "I10": 323,
+        "R09.02": 302,
+        "J45.40": 301,
+        "E78.5": 298,
+        "J45.20": 216,
+        "E66.01": 182,
+        "E03.9": 182,
+        "J44.9": 165
+      },
+      "sample": [
+        "M25.472",
+        "J45.909",
+        "I25.2",
+        "M19.90",
+        "Z79.891"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "ICD_VER_TYP",
+      "dtype": "object",
+      "null_count": 12902,
+      "null_pct": 1.75,
+      "distinct_count": 3,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "10": 571456,
+        "-1": 152266,
+        "9": 139
+      },
+      "sample": [
+        "-1",
+        "-1",
+        "-1",
+        "-1",
+        "-1"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REJT_1_CD",
+      "dtype": "object",
+      "null_count": 719792,
+      "null_pct": 97.7,
+      "distinct_count": 182,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "79": 4598,
+        "70": 2934,
+        "75": 1471,
+        "MR": 1349,
+        "88": 1048,
+        "0": 902,
+        "27": 539,
+        "96": 506,
+        "76": 284,
+        "204": 219
+      },
+      "sample": [
+        "75",
+        "70",
+        "119",
+        "79",
+        "70"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIST_CHAN_ID",
+      "dtype": "object",
+      "null_count": 549738,
+      "null_pct": 74.62,
+      "distinct_count": 4,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Retail": 148716,
+        "Long-Term Care": 23207,
+        "Mail order": 8896,
+        "Atypical": 6206
+      },
+      "sample": [
+        "Long-Term Care",
+        "Long-Term Care",
+        "Long-Term Care",
+        "Long-Term Care",
+        "Retail"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SEC_PAYR_PLAN_ID",
+      "dtype": "object",
+      "null_count": 698956,
+      "null_pct": 94.87,
+      "distinct_count": 771,
+      "distinct_pct": 0.1,
+      "top_values": {
+        "18160001": 1114,
+        "11630004": 1089,
+        "20033": 1064,
+        "24290726": 718,
+        "20019": 699,
+        "20023": 648,
+        "200562": 553,
+        "339999": 551,
+        "6149999": 548,
+        "12790022": 521
+      },
+      "sample": [
+        "20052",
+        "20052",
+        "20051",
+        "24290718",
+        "24290729"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "INIT_CLAIM_ID",
+      "dtype": "object",
+      "null_count": 701771,
+      "null_pct": 95.25,
+      "distinct_count": 44,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "1.06063E+19": 5372,
+        "1.07403E+19": 4745,
+        "1.05773E+19": 3983,
+        "1.08543E+19": 3324,
+        "1.07402E+19": 2742,
+        "1.06062E+19": 1938,
+        "1.00473E+19": 1637,
+        "1.05772E+19": 1633,
+        "1.10613E+19": 1222,
+        "1.00472E+19": 1172
+      },
+      "sample": [
+        "1.03183E+19",
+        "1.07403E+19",
+        "1.05773E+19",
+        "1.10613E+19",
+        "1.06063E+19"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "WRITN_DT",
+      "dtype": "object",
+      "null_count": 551515,
+      "null_pct": 74.86,
+      "distinct_count": 2820,
+      "distinct_pct": 0.38,
+      "top_values": {
+        "11/21/2023 0:00": 239,
+        "11/27/2023 0:00": 239,
+        "4/13/2023 0:00": 231,
+        "11/8/2022 0:00": 225,
+        "5/6/2024 0:00": 216,
+        "6/28/2023 0:00": 209,
+        "11/6/2023 0:00": 207,
+        "11/28/2022 0:00": 204,
+        "7/19/2023 0:00": 204,
+        "4/12/2023 0:00": 203
+      },
+      "sample": [
+        "3/2/2022 0:00",
+        "5/17/2022 0:00",
+        "3/2/2022 0:00",
+        "5/13/2022 0:00",
+        "1/5/2022 0:00"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "ECPN_TYP",
+      "dtype": "object",
+      "null_count": 736705,
+      "null_pct": 99.99,
+      "distinct_count": 1,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 58
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "CPAY_CARD_FLG",
+      "dtype": "object",
+      "null_count": 735878,
+      "null_pct": 99.88,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "P": 496,
+        "S": 389
+      },
+      "sample": [
+        "P",
+        "S",
+        "P",
+        "P",
+        "S"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DAW_CD",
+      "dtype": "object",
+      "null_count": 564224,
+      "null_pct": 76.58,
+      "distinct_count": 10,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 154798,
+        "9": 7805,
+        "1": 4935,
+        "2": 4350,
+        "6": 224,
+        "5": 184,
+        "8": 90,
+        "7": 78,
+        "3": 43,
+        "4": 32
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "LFCYCL_CLAIM_FLG",
+      "dtype": "object",
+      "null_count": 549738,
+      "null_pct": 74.62,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Y": 128275,
+        "N": 58750
+      },
+      "sample": [
+        "N",
+        "Y",
+        "N",
+        "Y",
+        "N"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SEC_PAYR_FLG",
+      "dtype": "object",
+      "null_count": 549738,
+      "null_pct": 74.62,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Y": 161748,
+        "N": 25277
+      },
+      "sample": [
+        "N",
+        "Y",
+        "N",
+        "Y",
+        "N"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "STD_CPAY_FLG",
+      "dtype": "object",
+      "null_count": 549738,
+      "null_pct": 74.62,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "N": 155636,
+        "Y": 31389
+      },
+      "sample": [
+        "Y",
+        "N",
+        "Y",
+        "N",
+        "N"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "RFIL_CD",
+      "dtype": "object",
+      "null_count": 549742,
+      "null_pct": 74.62,
+      "distinct_count": 54,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "0": 101842,
+        "1": 31198,
+        "2": 19373,
+        "3": 12429,
+        "4": 6861,
+        "5": 5313,
+        "6": 2816,
+        "7": 1887,
+        "8": 1573,
+        "9": 1256
+      },
+      "sample": [
+        "1",
+        "2",
+        "0",
+        "3",
+        "0"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "RFIL_AUTH",
+      "dtype": "object",
+      "null_count": 549792,
+      "null_pct": 74.62,
+      "distinct_count": 39,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "0": 62738,
+        "3": 26828,
+        "1": 20083,
+        "5": 16240,
+        "11": 16214,
+        "2": 14753,
+        "4": 8988,
+        "6": 8611,
+        "12": 5041,
+        "99": 2245
+      },
+      "sample": [
+        "0",
+        "3",
+        "0",
+        "3",
+        "0"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "QTY_DSPN",
+      "dtype": "object",
+      "null_count": 549841,
+      "null_pct": 74.63,
+      "distinct_count": 299,
+      "distinct_pct": 0.04,
+      "top_values": {
+        "60": 28171,
+        "30": 22848,
+        "18": 14877,
+        "90": 14444,
+        "8.5": 13905,
+        "10.2": 11997,
+        "4": 8054,
+        "180": 5824,
+        "6.7": 5247,
+        "21": 4634
+      },
+      "sample": [
+        "28",
+        "30",
+        "28",
+        "180",
+        "14"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DAY_SUPL",
+      "dtype": "object",
+      "null_count": 549739,
+      "null_pct": 74.62,
+      "distinct_count": 116,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "30": 89272,
+        "90": 16446,
+        "25": 12201,
+        "16": 7815,
+        "5": 7790,
+        "17": 5586,
+        "6": 5525,
+        "28": 5352,
+        "7": 4867,
+        "15": 4456
+      },
+      "sample": [
+        "14",
+        "30",
+        "14",
+        "20",
+        "14"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "BUY_DOWN",
+      "dtype": "object",
+      "null_count": 731270,
+      "null_pct": 99.25,
+      "distinct_count": 1128,
+      "distinct_pct": 0.15,
+      "top_values": {
+        "0": 2220,
+        "12": 164,
+        "10": 119,
+        "5": 90,
+        "20": 73,
+        "1": 57,
+        "4": 51,
+        "30": 49,
+        "40": 45,
+        "25": 37
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "OPC_PAID",
+      "dtype": "object",
+      "null_count": 567413,
+      "null_pct": 77.01,
+      "distinct_count": 6297,
+      "distinct_pct": 0.85,
+      "top_values": {
+        "0": 116380,
+        "1": 2375,
+        "1.3": 1939,
+        "5": 1703,
+        "10": 1684,
+        "4": 1451,
+        "47": 1109,
+        "1.35": 972,
+        "3": 960,
+        "3.9": 947
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "6.36",
+        "0"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "OPC_ASK",
+      "dtype": "object",
+      "null_count": 567410,
+      "null_pct": 77.01,
+      "distinct_count": 6567,
+      "distinct_pct": 0.89,
+      "top_values": {
+        "0": 113890,
+        "1": 2388,
+        "1.3": 1982,
+        "10": 1794,
+        "5": 1656,
+        "4": 1526,
+        "47": 1139,
+        "1.35": 992,
+        "3.9": 991,
+        "3": 981
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "6.36",
+        "0"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "STD_CPAY",
+      "dtype": "object",
+      "null_count": 719093,
+      "null_pct": 97.6,
+      "distinct_count": 376,
+      "distinct_pct": 0.05,
+      "top_values": {
+        "0": 11568,
+        "47": 511,
+        "4": 508,
+        "3": 332,
+        "3.9": 298,
+        "45": 241,
+        "1.3": 221,
+        "40": 212,
+        "4.3": 178,
+        "4.6": 173
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "47"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "ECPN_FLG",
+      "dtype": "object",
+      "null_count": 736705,
+      "null_pct": 99.99,
+      "distinct_count": 1,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 58
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "ECPN_OFFSET_AMT",
+      "dtype": "object",
+      "null_count": 736705,
+      "null_pct": 99.99,
+      "distinct_count": 16,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "8.95": 11,
+        "5": 10,
+        "10": 9,
+        "9.85": 9,
+        "85": 3,
+        "25": 2,
+        "80": 2,
+        "40": 2,
+        "1": 2,
+        "82.51": 2
+      },
+      "sample": [
+        "9.85",
+        "4.3",
+        "40",
+        "5",
+        "9.85"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DAY_TO_ADJUD",
+      "dtype": "object",
+      "null_count": 564905,
+      "null_pct": 76.67,
+      "distinct_count": 388,
+      "distinct_pct": 0.05,
+      "top_values": {
+        "0": 129968,
+        "1": 10779,
+        "2": 8932,
+        "3": 3795,
+        "4": 2709,
+        "5": 2562,
+        "7": 2048,
+        "6": 1907,
+        "9": 1095,
+        "8": 896
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "7",
+        "0"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SRC_PROD_NM",
+      "dtype": "object",
+      "null_count": 549738,
+      "null_pct": 74.62,
+      "distinct_count": 337,
+      "distinct_pct": 0.05,
+      "top_values": {
+        "ALBUTEROL HFA": 29836,
+        "MONTELUKAST SOD": 23733,
+        "PREDNISONE": 22659,
+        "ALBUTEROL": 9765,
+        "TRELEGY ELLIPTA": 9547,
+        "SYMBICORT": 8567,
+        "ALBUT SULF/IPRATROP BR": 8282,
+        "BREO ELLIPTA": 5640,
+        "VENTOLIN HFA": 5488,
+        "FLUTICASONE PROP/SAL": 4816
+      },
+      "sample": [
+        "TRELEGY ELLIPTA",
+        "MONTELUKAST SOD",
+        "TRELEGY ELLIPTA",
+        "ALBUT SULF/IPRATROP BR",
+        "PREDNISONE"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROD_ID",
+      "dtype": "object",
+      "null_count": 516497,
+      "null_pct": 70.1,
+      "distinct_count": 3273,
+      "distinct_pct": 0.44,
+      "top_values": {
+        "1065467": 10572,
+        "361916": 7674,
+        "1065466": 7137,
+        "799945": 5942,
+        "1263394": 5822,
+        "304945": 5422,
+        "883475": 4738,
+        "1271347": 4516,
+        "1098262": 4004,
+        "704959": 3607
+      },
+      "sample": [
+        "883474",
+        "818421",
+        "883474",
+        "568708",
+        "517182"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "BRD_NM",
+      "dtype": "object",
+      "null_count": 576440,
+      "null_pct": 78.24,
+      "distinct_count": 157,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "MONTELUKAST SOD": 23733,
+        "ALBUTEROL-AEROSOL": 18970,
+        "ALBUTEROL-NEBULIZED": 12391,
+        "ALL OTHER BETA AGONIST-ORAL": 11135,
+        "TRELEGY ELLIPTA": 9547,
+        "SYMBICORT": 7683,
+        "BREO ELLIPTA MOLECULE": 5640,
+        "ALBUT SULF/IPRATROP BR": 5295,
+        "PREDNISONE TAB 20MG": 5150,
+        "SYMBICORT AG GENERIC": 4566
+      },
+      "sample": [
+        "TRELEGY ELLIPTA",
+        "MONTELUKAST SOD",
+        "TRELEGY ELLIPTA",
+        "ALBUT SULF/IPRATROP BR",
+        "PREDNISONE TAB 20MG"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROD_LVL",
+      "dtype": "object",
+      "null_count": 551110,
+      "null_pct": 74.8,
+      "distinct_count": 1,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "NDC11": 185653
+      },
+      "sample": [
+        "NDC11",
+        "NDC11",
+        "NDC11",
+        "NDC11",
+        "NDC11"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "BRD_ID",
+      "dtype": "object",
+      "null_count": 576440,
+      "null_pct": 78.24,
+      "distinct_count": 155,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "702709": 23733,
+        "223773": 18970,
+        "36266": 12391,
+        "281146": 11135,
+        "882494": 9547,
+        "362274": 7683,
+        "732274": 5640,
+        "852780": 5295,
+        "1099727": 5150,
+        "1101886": 4566
+      },
+      "sample": [
+        "882494",
+        "702709",
+        "882494",
+        "852780",
+        "1099727"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_SEQ_NUM",
+      "dtype": "object",
+      "null_count": 549738,
+      "null_pct": 74.62,
+      "distinct_count": 6,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 163089,
+        "2": 22888,
+        "3": 768,
+        "4": 261,
+        "5": 15,
+        "6": 4
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "ACT_PAYR_NM",
+      "dtype": "object",
+      "null_count": 14909,
+      "null_pct": 2.02,
+      "distinct_count": 704,
+      "distinct_pct": 0.1,
+      "top_values": {
+        "UNITED HEALTHCARE": 77672,
+        "MEDICARE B": 59474,
+        "HUMANA": 51245,
+        "MEDICAID": 43998,
+        "AETNA INC": 43738,
+        "UHC/PACIFICARE/AARP MED D": 38108,
+        "ELEVANCE HEALTH/ANTHEM/WELLPOINT": 35492,
+        "MOLINA HEALTHCARE INC": 22089,
+        "KEYSTONE AMERIHEALTH CARITAS": 16504,
+        "MEDICARE A": 15857
+      },
+      "sample": [
+        "3RD PARTY UNSPEC",
+        "UHC/PACIFICARE/AARP MED D",
+        "3RD PARTY UNSPEC",
+        "UHC/PACIFICARE/AARP MED D",
+        "GOODRX"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "ACT_PLAN_NM",
+      "dtype": "object",
+      "null_count": 14909,
+      "null_pct": 2.02,
+      "distinct_count": 2872,
+      "distinct_pct": 0.39,
+      "top_values": {
+        "UNITED HLTHCARE-UNSPECIFIED": 33174,
+        "HUMANA-UNSPECIFIED": 27162,
+        "MEDICAID CALIFORNIA (CA)": 18359,
+        "HEALTH NET UNSPECIFIED": 10185,
+        "MEDICARE B CALIFORNIA SOUTH (CA)": 9921,
+        "ALL OTHER THIRD PARTY": 9788,
+        "AETNA INC-UNSPECIFIED": 8231,
+        "KEYSTONE FIRST (PA)": 7634,
+        "CMMNWLTH CRE MED SNP GENERAL(MA)": 6172,
+        "MEDICARE B FLORIDA (FL)": 5753
+      },
+      "sample": [
+        "3RD PARTY UNSPEC PLAN 0104",
+        "UHC/PAC/AARP MED D GENERAL (FL)",
+        "3RD PARTY UNSPEC PLAN 0104",
+        "AARP WALGREENS MED ADV GNRL",
+        "GOODRX"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "ACT_PBM_NM",
+      "dtype": "object",
+      "null_count": 160082,
+      "null_pct": 21.73,
+      "distinct_count": 67,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "OPTUMRX (PROC UNSPEC)": 143620,
+        "CAREMARK (PROC-UNSP)": 105709,
+        "EXPRESS SCRIPTS  (PROC-UNSP)": 95577,
+        "SS&C HEALTH (PROC-UNSP)": 56130,
+        "CARELONRX (PROC-UNSP)": 34792,
+        "AETNA PHARMACY MGT (PROC-UNSP)": 22314,
+        "MEDIMPACT/MEDCARE (PROC-UNSP)": 19217,
+        "MAGELLAN RX MGT (PROC-UNSP)": 18423,
+        "PRIME THERAPEUTICS (PROC-UNSP)": 17696,
+        "ABARCA HEALTH (PROC-UNSP)": 16645
+      },
+      "sample": [
+        "OPTUMRX (PROC UNSPEC)",
+        "OPTUMRX (PROC UNSPEC)",
+        "GOODRX (PROC-UNSP)",
+        "CARELONRX (PROC-UNSP)",
+        "CARELONRX (PROC-UNSP)"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "ACT_PMT_TYP_DESC",
+      "dtype": "object",
+      "null_count": 14909,
+      "null_pct": 2.02,
+      "distinct_count": 7,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "COMMERCIAL": 291270,
+        "MEDICARE": 258176,
+        "MGD MEDICAID": 121041,
+        "FFS MEDICAID": 43998,
+        "CASH": 3599,
+        "ASSISTANCE": 2092,
+        "UNKNOWN MEDICAL": 1678
+      },
+      "sample": [
+        "COMMERCIAL",
+        "MEDICARE",
+        "COMMERCIAL",
+        "MEDICARE",
+        "ASSISTANCE"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "AUGMENTED_PAYR_NM",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 716,
+      "distinct_pct": 0.1,
+      "top_values": {
+        "UNITED HEALTHCARE": 80161,
+        "MEDICARE B": 62129,
+        "HUMANA": 52662,
+        "AETNA INC": 45278,
+        "MEDICAID": 45106,
+        "UHC/PACIFICARE/AARP MED D": 38703,
+        "ELEVANCE HEALTH/ANTHEM/WELLPOINT": 37410,
+        "MOLINA HEALTHCARE INC": 22648,
+        "KEYSTONE AMERIHEALTH CARITAS": 16877,
+        "MEDICARE A": 16446
+      },
+      "sample": [
+        "3RD PARTY UNSPEC",
+        "UHC/PACIFICARE/AARP MED D",
+        "3RD PARTY UNSPEC",
+        "UHC/PACIFICARE/AARP MED D",
+        "GOODRX"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "AUGMENTED_PLAN_NM",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2902,
+      "distinct_pct": 0.39,
+      "top_values": {
+        "UNITED HLTHCARE-UNSPECIFIED": 34457,
+        "HUMANA-UNSPECIFIED": 28162,
+        "MEDICAID CALIFORNIA (CA)": 18657,
+        "HEALTH NET UNSPECIFIED": 10543,
+        "MEDICARE B CALIFORNIA SOUTH (CA)": 10285,
+        "AETNA INC-UNSPECIFIED": 8514,
+        "KEYSTONE FIRST (PA)": 7743,
+        "CMMNWLTH CRE MED SNP GENERAL(MA)": 6228,
+        "MEDICARE B FLORIDA (FL)": 5854,
+        "HEALTHFIRST UNSP": 5748
+      },
+      "sample": [
+        "3RD PARTY UNSPEC PLAN 0104",
+        "UHC/PAC/AARP MED D GENERAL (FL)",
+        "3RD PARTY UNSPEC PLAN 0104",
+        "AARP WALGREENS MED ADV GNRL",
+        "GOODRX"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "AUGMENTED_PBM_NM",
+      "dtype": "object",
+      "null_count": 140329,
+      "null_pct": 19.05,
+      "distinct_count": 67,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "OPTUMRX (PROC UNSPEC)": 148404,
+        "CAREMARK (PROC-UNSP)": 109062,
+        "EXPRESS SCRIPTS  (PROC-UNSP)": 99561,
+        "SS&C HEALTH (PROC-UNSP)": 57719,
+        "CARELONRX (PROC-UNSP)": 36401,
+        "AETNA PHARMACY MGT (PROC-UNSP)": 23041,
+        "MEDIMPACT/MEDCARE (PROC-UNSP)": 20164,
+        "MAGELLAN RX MGT (PROC-UNSP)": 18722,
+        "PRIME THERAPEUTICS (PROC-UNSP)": 18386,
+        "ABARCA HEALTH (PROC-UNSP)": 17020
+      },
+      "sample": [
+        "OPTUMRX (PROC UNSPEC)",
+        "OPTUMRX (PROC UNSPEC)",
+        "GOODRX (PROC-UNSP)",
+        "OPTUMRX (PROC UNSPEC)",
+        "CARELONRX (PROC-UNSP)"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "AUGMENTED_PMT_TYP_DESC",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 7,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "COMMERCIAL": 293451,
+        "MEDICARE": 265659,
+        "MGD MEDICAID": 125064,
+        "FFS MEDICAID": 45106,
+        "CASH": 3852,
+        "ASSISTANCE": 2133,
+        "UNKNOWN MEDICAL": 1498
+      },
+      "sample": [
+        "COMMERCIAL",
+        "MEDICARE",
+        "COMMERCIAL",
+        "MEDICARE",
+        "ASSISTANCE"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "AUGMENTED_PLAN_ID",
+      "dtype": "int64",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2998,
+      "distinct_pct": 0.41,
+      "top_values": {
+        "209999": 34454,
+        "129999": 28162,
+        "20006": 18657,
+        "669999": 10543,
+        "20860012": 10285,
+        "39999": 8514,
+        "18160001": 7743,
+        "21130003": 6228,
+        "20860018": 5854,
+        "4399999": 5748
+      },
+      "sample": [
+        "31210104",
+        "24290627",
+        "31210104",
+        "24291895",
+        "35710001"
+      ],
+      "role_guess": "metric",
+      "min": 10001.0,
+      "max": 8888880015.0,
+      "mean": 147397668.63609737
+    },
+    {
+      "name": "SRVC_NUM",
+      "dtype": "object",
+      "null_count": 187025,
+      "null_pct": 25.38,
+      "distinct_count": 413,
+      "distinct_pct": 0.06,
+      "top_values": {
+        "1": 311656,
+        "2": 55576,
+        "3": 29735,
+        "4": 20047,
+        "0": 14758,
+        "5": 14674,
+        "6": 11748,
+        "7": 9465,
+        "8": 8003,
+        "9": 7079
+      },
+      "sample": [
+        "1",
+        "1",
+        "4",
+        "3",
+        "55"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRCR_CD",
+      "dtype": "object",
+      "null_count": 229205,
+      "null_pct": 31.11,
+      "distinct_count": 2693,
+      "distinct_pct": 0.37,
+      "top_values": {
+        "99214": 71359,
+        "99213": 49589,
+        "99232": 37816,
+        "99233": 29406,
+        "99285": 22106,
+        "G0463": 15439,
+        "99284": 13694,
+        "99309": 11824,
+        "99215": 10796,
+        "99223": 10748
+      },
+      "sample": [
+        "71046",
+        "99214",
+        "85025",
+        "J1030",
+        "G0378"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PLAC_OF_SRVC_CD",
+      "dtype": "object",
+      "null_count": 384280,
+      "null_pct": 52.16,
+      "distinct_count": 27,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "11": 134449,
+        "21": 97559,
+        "99": 34068,
+        "23": 27804,
+        "22": 21527,
+        "2": 8500,
+        "19": 7535,
+        "20": 6461,
+        "50": 3732,
+        "10": 3571
+      },
+      "sample": [
+        "19",
+        "11",
+        "11",
+        "11",
+        "11"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PLAC_OF_SRVC_DESC",
+      "dtype": "object",
+      "null_count": 384280,
+      "null_pct": 52.16,
+      "distinct_count": 27,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "LOCATION, OTHER THAN A HOSPITAL, SKILLED NURSING FACILITY (SNF), MILITARY TREATMENT FACILITY, COMMUNITY HEALTH CENTER, STATE OR LOCAL PUBLIC HEALTH CLINIC, OR INTERMEDIATE CARE FACILITY (ICF), WHERE THE HEALTH PROFESSIONAL ROUTINELY PROVIDES HEALTH EXAMINATIONS, DIAGNOSIS, AND TREATMENT OF ILLNESS OR INJURY ON AN AMBULATORY BASIS.": 134449,
+        "A FACILITY, OTHER THAN PSYCHIATRIC, WHICH PRIMARILY PROVIDES DIAGNOSTIC, THERAPEUTIC (BOTH SURGICAL AND NONSURGICAL), AND REHABILITATION SERVICES BY, OR UNDER, THE SUPERVISION OF PHYSICIANS TO PATIENTS ADMITTED FOR A VARIETY OF MEDICAL CONDITIONS.": 97559,
+        "OTHER PLACE OF SERVICE NOT IDENTIFIED ABOVE.": 34068,
+        "A PORTION OF A HOSPITAL WHERE EMERGENCY DIAGNOSIS AND TREATMENT OF ILLNESS OR INJURY IS PROVIDED.": 27804,
+        "A PORTION OF A HOSPITAL'S MAIN CAMPUS WHICH PROVIDES DIAGNOSTIC, THERAPEUTIC (BOTH SURGICAL AND NONSURGICAL), AND REHABILITATION SERVICES TO SICK OR INJURED PERSONS WHO DO NOT REQUIRE HOSPITALIZATION OR INSTITUTIONALIZATION.": 21527,
+        "THE LOCATION WHERE HEALTH SERVICES AND HEALTH RELATED SERVICES ARE PROVIDED OR RECEIVED, THROUGH TELECOMMUNICATION TECHNOLOGY. PATIENT IS NOT LOCATED IN THEIR HOME WHEN RECEIVING HEALTH SERVICES OR HEALTH RELATED SERVICES THROUGH TELECOMMUNICATION TECHNOLOGY.": 8500,
+        "A PORTION OF AN OFF-CAMPUS HOSPITAL PROVIDER BASED DEPARTMENT WHICH PROVIDES DIAGNOSTIC, THERAPEUTIC (BOTH SURGICAL AND NONSURGICAL), AND REHABILITATION SERVICES TO SICK OR INJURED PERSONS WHO DO NOT REQUIRE HOSPITALIZATION OR INSTITUTIONALIZATION.": 7535,
+        "LOCATION, DISTINCT FROM A HOSPITAL EMERGENCY ROOM, AN OFFICE, OR A CLINIC, WHOSE PURPOSE IS TO DIAGNOSE AND TREAT ILLNESS OR INJURY FOR UNSCHEDULED, AMBULATORY PATIENTS SEEKING IMMEDIATE MEDICAL ATTENTION.": 6461,
+        "A FACILITY LOCATED IN A MEDICALLY UNDERSERVED AREA THAT PROVIDES MEDICARE BENEFICIARIES PREVENTIVE PRIMARY MEDICAL CARE UNDER THE GENERAL DIRECTION OF A PHYSICIAN.": 3732,
+        "THE LOCATION WHERE HEALTH SERVICES AND HEALTH RELATED SERVICES ARE PROVIDED OR RECEIVED, THROUGH TELECOMMUNICATION TECHNOLOGY. PATIENT IS LOCATED IN THEIR HOME (WHICH IS A LOCATION OTHER THAN A HOSPITAL OR OTHER FACILITY WHERE THE PATIENT RECEIVES CARE IN A PRIVATE RESIDENCE) WHEN RECEIVING HEALTH SERVICES OR HEALTH RELATED SERVICES THROUGH TELECOMMUNICATION TECHNOLOGY.": 3571
+      },
+      "sample": [
+        "A PORTION OF AN OFF-CAMPUS HOSPITAL PROVIDER BASED DEPARTMENT WHICH PROVIDES DIAGNOSTIC, THERAPEUTIC (BOTH SURGICAL AND NONSURGICAL), AND REHABILITATION SERVICES TO SICK OR INJURED PERSONS WHO DO NOT REQUIRE HOSPITALIZATION OR INSTITUTIONALIZATION.",
+        "LOCATION, OTHER THAN A HOSPITAL, SKILLED NURSING FACILITY (SNF), MILITARY TREATMENT FACILITY, COMMUNITY HEALTH CENTER, STATE OR LOCAL PUBLIC HEALTH CLINIC, OR INTERMEDIATE CARE FACILITY (ICF), WHERE THE HEALTH PROFESSIONAL ROUTINELY PROVIDES HEALTH EXAMINATIONS, DIAGNOSIS, AND TREATMENT OF ILLNESS OR INJURY ON AN AMBULATORY BASIS.",
+        "LOCATION, OTHER THAN A HOSPITAL, SKILLED NURSING FACILITY (SNF), MILITARY TREATMENT FACILITY, COMMUNITY HEALTH CENTER, STATE OR LOCAL PUBLIC HEALTH CLINIC, OR INTERMEDIATE CARE FACILITY (ICF), WHERE THE HEALTH PROFESSIONAL ROUTINELY PROVIDES HEALTH EXAMINATIONS, DIAGNOSIS, AND TREATMENT OF ILLNESS OR INJURY ON AN AMBULATORY BASIS.",
+        "LOCATION, OTHER THAN A HOSPITAL, SKILLED NURSING FACILITY (SNF), MILITARY TREATMENT FACILITY, COMMUNITY HEALTH CENTER, STATE OR LOCAL PUBLIC HEALTH CLINIC, OR INTERMEDIATE CARE FACILITY (ICF), WHERE THE HEALTH PROFESSIONAL ROUTINELY PROVIDES HEALTH EXAMINATIONS, DIAGNOSIS, AND TREATMENT OF ILLNESS OR INJURY ON AN AMBULATORY BASIS.",
+        "LOCATION, OTHER THAN A HOSPITAL, SKILLED NURSING FACILITY (SNF), MILITARY TREATMENT FACILITY, COMMUNITY HEALTH CENTER, STATE OR LOCAL PUBLIC HEALTH CLINIC, OR INTERMEDIATE CARE FACILITY (ICF), WHERE THE HEALTH PROFESSIONAL ROUTINELY PROVIDES HEALTH EXAMINATIONS, DIAGNOSIS, AND TREATMENT OF ILLNESS OR INJURY ON AN AMBULATORY BASIS."
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "FCLT_TYP_CD",
+      "dtype": "object",
+      "null_count": 596772,
+      "null_pct": 81.0,
+      "distinct_count": 18,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "13": 110207,
+        "11": 11779,
+        "77": 4615,
+        "85": 4478,
+        "73": 2644,
+        "71": 2565,
+        "14": 2298,
+        "12": 613,
+        "76": 282,
+        "72": 115
+      },
+      "sample": [
+        "13",
+        "13",
+        "13",
+        "13",
+        "77"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "UNIT_ADM",
+      "dtype": "object",
+      "null_count": 202059,
+      "null_pct": 27.43,
+      "distinct_count": 522,
+      "distinct_pct": 0.07,
+      "top_values": {
+        "1": 469742,
+        "2": 13777,
+        "4": 8586,
+        "3": 5416,
+        "8": 3846,
+        "10": 3655,
+        "5": 2109,
+        "12": 2052,
+        "20": 1920,
+        "6": 1871
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "46"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SRC_REF_PSBR_ID",
+      "dtype": "object",
+      "null_count": 201783,
+      "null_pct": 27.39,
+      "distinct_count": 36517,
+      "distinct_pct": 4.96,
+      "top_values": {
+        "0": 310331,
+        "7736382": 1363,
+        "17209647": 967,
+        "9922361": 897,
+        "10238919": 634,
+        "7966807": 584,
+        "19279634": 537,
+        "10101482": 526,
+        "11995870": 465,
+        "6883072": 431
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_CUST_ID",
+      "dtype": "object",
+      "null_count": 513952,
+      "null_pct": 69.76,
+      "distinct_count": 36355,
+      "distinct_pct": 4.93,
+      "top_values": {
+        "58048105": 1363,
+        "80439073": 967,
+        "58856266": 897,
+        "56724133": 634,
+        "58411751": 584,
+        "85760312": 537,
+        "59257080": 523,
+        "58768374": 465,
+        "56600190": 431,
+        "55113505": 424
+      },
+      "sample": [
+        "58393983",
+        "55135910",
+        "57507837",
+        "56966069",
+        "56512593"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_BILL_ID",
+      "dtype": "object",
+      "null_count": 201783,
+      "null_pct": 27.39,
+      "distinct_count": 14329,
+      "distinct_pct": 1.94,
+      "top_values": {
+        "0": 110564,
+        "18959666": 11305,
+        "18995197": 2729,
+        "5179280": 2564,
+        "29522399": 2192,
+        "18959656": 2090,
+        "18155974": 2022,
+        "18959865": 1899,
+        "18958061": 1808,
+        "2338100": 1779
+      },
+      "sample": [
+        "2522392",
+        "18962128",
+        "2522392",
+        "2522392",
+        "18291609"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_FCLT_ID",
+      "dtype": "object",
+      "null_count": 201783,
+      "null_pct": 27.39,
+      "distinct_count": 7819,
+      "distinct_pct": 1.06,
+      "top_values": {
+        "0": 342338,
+        "18959666": 1872,
+        "17773510": 1568,
+        "18959727": 1549,
+        "18959656": 1483,
+        "18958061": 1322,
+        "18959580": 1282,
+        "5179280": 1005,
+        "18957556": 910,
+        "17775005": 861
+      },
+      "sample": [
+        "0",
+        "18962128",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REMIT_RCVD_DT",
+      "dtype": "object",
+      "null_count": 515304,
+      "null_pct": 69.94,
+      "distinct_count": 2156,
+      "distinct_pct": 0.29,
+      "top_values": {
+        "3/5/2025": 328,
+        "5/31/2023": 320,
+        "2/14/2025": 312,
+        "12/4/2024": 299,
+        "3/18/2025": 299,
+        "7/31/2024": 294,
+        "7/24/2023": 292,
+        "5/25/2023": 291,
+        "1/6/2025": 278,
+        "4/10/2025": 277
+      },
+      "sample": [
+        "2/26/2024",
+        "1/5/2025",
+        "1/15/2024",
+        "3/27/2024",
+        "10/26/2021"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REMIT_BILLED_AMT",
+      "dtype": "object",
+      "null_count": 204109,
+      "null_pct": 27.7,
+      "distinct_count": 29501,
+      "distinct_pct": 4.0,
+      "top_values": {
+        "200": 10335,
+        "150": 9887,
+        "0": 7215,
+        "250": 6559,
+        "300": 5682,
+        "175": 5374,
+        "125": 5007,
+        "100": 4564,
+        "120": 4114,
+        "0.01": 4022
+      },
+      "sample": [
+        "807",
+        "200",
+        "95",
+        "46.28",
+        "6762"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REMIT_ALLWD_AMT",
+      "dtype": "object",
+      "null_count": 550851,
+      "null_pct": 74.77,
+      "distinct_count": 22851,
+      "distinct_pct": 3.1,
+      "top_values": {
+        "0": 5708,
+        "87.43": 962,
+        "252": 659,
+        "71.52": 560,
+        "12.8": 358,
+        "75.86": 332,
+        "200": 322,
+        "150": 296,
+        "45.8": 283,
+        "300": 265
+      },
+      "sample": [
+        "65.42",
+        "19.13",
+        "18.09",
+        "108.54",
+        "94.62"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SRC_PRI_PLAN_ID",
+      "dtype": "object",
+      "null_count": 511852,
+      "null_pct": 69.47,
+      "distinct_count": 1295,
+      "distinct_pct": 0.18,
+      "top_values": {
+        "20860012": 5731,
+        "200576": 5287,
+        "39999": 4771,
+        "37260001": 4634,
+        "4390028": 4285,
+        "20860018": 4179,
+        "129999": 3961,
+        "209999": 3557,
+        "20860041": 3431,
+        "20860011": 3185
+      },
+      "sample": [
+        "6149999",
+        "4799999",
+        "6149999",
+        "6149999",
+        "4390028"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRI_PLAN_ID",
+      "dtype": "object",
+      "null_count": 567843,
+      "null_pct": 77.07,
+      "distinct_count": 1004,
+      "distinct_pct": 0.14,
+      "top_values": {
+        "77009821": 5287,
+        "81201320": 4771,
+        "77239620": 4634,
+        "74269064": 4285,
+        "53200900": 3961,
+        "53201132": 3557,
+        "53204848": 2814,
+        "53200128": 2680,
+        "76006174": 2577,
+        "53214471": 2413
+      },
+      "sample": [
+        "53204848",
+        "53204003",
+        "53204848",
+        "53204848",
+        "74269064"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRI_PAID_DATE",
+      "dtype": "object",
+      "null_count": 515777,
+      "null_pct": 70.01,
+      "distinct_count": 2115,
+      "distinct_pct": 0.29,
+      "top_values": {
+        "5/13/2024": 430,
+        "11/12/2024": 422,
+        "10/28/2025": 387,
+        "12/23/2024": 370,
+        "2/24/2025": 362,
+        "2/26/2025": 350,
+        "4/30/2024": 350,
+        "7/30/2024": 348,
+        "8/19/2025": 348,
+        "3/28/2025": 343
+      },
+      "sample": [
+        "3/5/2024",
+        "1/28/2025",
+        "1/24/2024",
+        "4/3/2024",
+        "11/10/2021"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRI_PAYR_PAID_AMT",
+      "dtype": "object",
+      "null_count": 515308,
+      "null_pct": 69.94,
+      "distinct_count": 24661,
+      "distinct_pct": 3.35,
+      "top_values": {
+        "0": 42205,
+        "87.43": 810,
+        "252": 653,
+        "71.52": 560,
+        "12.8": 360,
+        "75.86": 322,
+        "5.11": 278,
+        "10.75": 242,
+        "61.08": 226,
+        "95.95": 212
+      },
+      "sample": [
+        "65.42",
+        "19.13",
+        "18.09",
+        "0",
+        "86.83"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SEC_PLAN_ID",
+      "dtype": "object",
+      "null_count": 705715,
+      "null_pct": 95.79,
+      "distinct_count": 425,
+      "distinct_pct": 0.06,
+      "top_values": {
+        "53199034": 1050,
+        "53207440": 998,
+        "77009916": 913,
+        "53214487": 718,
+        "53199020": 699,
+        "53199024": 585,
+        "76006174": 552,
+        "53201165": 551,
+        "53204848": 548,
+        "53207895": 520
+      },
+      "sample": [
+        "53199053",
+        "53199053",
+        "53199052",
+        "53214479",
+        "53214490"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SEC_PAID_DT",
+      "dtype": "object",
+      "null_count": 704431,
+      "null_pct": 95.61,
+      "distinct_count": 1745,
+      "distinct_pct": 0.24,
+      "top_values": {
+        "11/15/2024": 187,
+        "3/20/2024": 158,
+        "7/20/2023": 139,
+        "7/30/2025": 126,
+        "9/17/2020": 124,
+        "10/30/2024": 98,
+        "9/25/2024": 96,
+        "4/15/2025": 95,
+        "5/21/2025": 94,
+        "6/18/2025": 92
+      },
+      "sample": [
+        "8/28/2023",
+        "11/27/2023",
+        "5/5/2025",
+        "8/14/2025",
+        "9/21/2023"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SEC_PAYR_PD_AMT",
+      "dtype": "object",
+      "null_count": 704395,
+      "null_pct": 95.61,
+      "distinct_count": 4097,
+      "distinct_pct": 0.56,
+      "top_values": {
+        "0": 14205,
+        "5.85": 474,
+        "59.02": 177,
+        "15.84": 88,
+        "15.53": 86,
+        "59.04": 79,
+        "16.13": 77,
+        "90": 68,
+        "22.26": 67,
+        "14.93": 65
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "28.21",
+        "11.3"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_OWED_AMT",
+      "dtype": "object",
+      "null_count": 505534,
+      "null_pct": 68.62,
+      "distinct_count": 7517,
+      "distinct_pct": 1.02,
+      "top_values": {
+        "0": 176487,
+        "25": 1178,
+        "20": 1144,
+        "30": 1068,
+        "40": 998,
+        "10": 924,
+        "35": 908,
+        "15": 681,
+        "90": 643,
+        "50": 587
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "21.71"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "CLAIM_DATA_SRC_TYP",
+      "dtype": "object",
+      "null_count": 187025,
+      "null_pct": 25.38,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "MX": 379147,
+        "HX": 170591
+      },
+      "sample": [
+        "HX",
+        "MX",
+        "HX",
+        "HX",
+        "HX"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "CLAIM_DATA_SRC_DESC",
+      "dtype": "object",
+      "null_count": 187025,
+      "null_pct": 25.38,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Physician Office": 379147,
+        "Hospital/Institution": 170591
+      },
+      "sample": [
+        "Hospital/Institution",
+        "Physician Office",
+        "Hospital/Institution",
+        "Hospital/Institution",
+        "Hospital/Institution"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "BATCH_ID",
+      "dtype": "object",
+      "null_count": 187025,
+      "null_pct": 25.38,
+      "distinct_count": 1,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "2.03E+13": 549738
+      },
+      "sample": [
+        "2.03E+13",
+        "2.03E+13",
+        "2.03E+13",
+        "2.03E+13",
+        "2.03E+13"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "MOD_CD",
+      "dtype": "object",
+      "null_count": 588468,
+      "null_pct": 79.87,
+      "distinct_count": 180,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "25": 58513,
+        "95": 15016,
+        "GC": 9116,
+        "UD": 7798,
+        "RR": 5248,
+        "26": 3973,
+        "AI": 3600,
+        "CS": 3555,
+        "GT": 3450,
+        "59": 2941
+      },
+      "sample": [
+        "QW",
+        "U8",
+        "25",
+        "25",
+        "95"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "MOD_CD_2",
+      "dtype": "object",
+      "null_count": 719794,
+      "null_pct": 97.7,
+      "distinct_count": 131,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "KX": 3665,
+        "25": 1479,
+        "GC": 1165,
+        "CS": 1164,
+        "KJ": 1042,
+        "95": 857,
+        "PO": 735,
+        "59": 719,
+        "CR": 445,
+        "SA": 379
+      },
+      "sample": [
+        "GC",
+        "U5",
+        "U8",
+        "97",
+        "97"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "MOD_CD_3",
+      "dtype": "object",
+      "null_count": 734434,
+      "null_pct": 99.68,
+      "distinct_count": 58,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "KX": 1176,
+        "CR": 226,
+        "CQ": 190,
+        "CO": 171,
+        "59": 104,
+        "GC": 48,
+        "CS": 38,
+        "25": 34,
+        "QS": 33,
+        "P3": 33
+      },
+      "sample": [
+        "KX",
+        "CR",
+        "KX",
+        "QS",
+        "KX"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "MOD_CD_4",
+      "dtype": "object",
+      "null_count": 736713,
+      "null_pct": 99.99,
+      "distinct_count": 13,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "59": 18,
+        "KX": 8,
+        "PO": 4,
+        "CO": 4,
+        "CR": 3,
+        "P3": 3,
+        "U9": 3,
+        "U8": 2,
+        "JW": 1,
+        "UD": 1
+      },
+      "sample": [
+        "59",
+        "59",
+        "59",
+        "59",
+        "59"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "MOD_CD_ARRAY",
+      "dtype": "object",
+      "null_count": 187025,
+      "null_pct": 25.38,
+      "distinct_count": 1012,
+      "distinct_pct": 0.14,
+      "top_values": {
+        "[]": 400784,
+        "[\"25\"]": 55205,
+        "[\"95\"]": 14255,
+        "[\"GC\"]": 8790,
+        "[\"UD\"]": 7643,
+        "[\"26\"]": 3799,
+        "[\"AI\"]": 3247,
+        "[\"GT\"]": 3097,
+        "[\"59\"]": 2884,
+        "[\"CS\"]": 2865
+      },
+      "sample": [
+        "[]",
+        "[]",
+        "[\"QW\"]",
+        "[\"U8\"]",
+        "[]"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CODES_ARRAY",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 192821,
+      "distinct_pct": 26.17,
+      "top_values": {
+        "[]": 165175,
+        "[\"J45.909\"]": 9247,
+        "[\"J45.50\"]": 9150,
+        "[\"J45.40\"]": 6835,
+        "[\"J44.9\"]": 5306,
+        "[\"J45.20\"]": 3477,
+        "[\"J45.901\"]": 3168,
+        "[\"J44.1\"]": 3038,
+        "[\"J45.51\"]": 2745,
+        "[\"J45.41\"]": 1420
+      },
+      "sample": [
+        "[]",
+        "[]",
+        "[]",
+        "[]",
+        "[]"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "FIRST_SRVC_DATE",
+      "dtype": "datetime64[ns]",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 415,
+      "distinct_pct": 0.06,
+      "top_values": {
+        "2016-02-02": 51211,
+        "2016-02-01": 49581,
+        "2016-02-03": 33761,
+        "2016-02-05": 27243,
+        "2016-02-08": 25863,
+        "2016-02-04": 24000,
+        "2016-02-09": 22176,
+        "2016-02-10": 20131,
+        "2016-02-11": 19298,
+        "2016-02-17": 16859
+      },
+      "sample": [
+        "2016-02-21",
+        "2016-02-21",
+        "2016-02-21",
+        "2016-02-21",
+        "2016-02-21"
+      ],
+      "role_guess": "date",
+      "min": "2016-02-01 00:00:00",
+      "max": "2024-08-25 00:00:00"
+    },
+    {
+      "name": "FIRST_RX_DATE",
+      "dtype": "object",
+      "null_count": 1062,
+      "null_pct": 0.14,
+      "distinct_count": 713,
+      "distinct_pct": 0.1,
+      "top_values": {
+        "2016-02-08T00:00:00.000Z": 17367,
+        "2016-02-02T00:00:00.000Z": 16959,
+        "2016-02-03T00:00:00.000Z": 16900,
+        "2016-02-16T00:00:00.000Z": 16202,
+        "2016-02-01T00:00:00.000Z": 15599,
+        "2016-02-09T00:00:00.000Z": 15365,
+        "2016-02-04T00:00:00.000Z": 13763,
+        "2016-02-17T00:00:00.000Z": 11902,
+        "2016-02-05T00:00:00.000Z": 11610,
+        "2016-02-10T00:00:00.000Z": 11323
+      },
+      "sample": [
+        "2016-02-21T00:00:00.000Z",
+        "2016-02-21T00:00:00.000Z",
+        "2016-02-21T00:00:00.000Z",
+        "2016-02-21T00:00:00.000Z",
+        "2016-02-21T00:00:00.000Z"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "FIRST_DX_DATE",
+      "dtype": "object",
+      "null_count": 2413,
+      "null_pct": 0.33,
+      "distinct_count": 1102,
+      "distinct_pct": 0.15,
+      "top_values": {
+        "2016-02-08T00:00:00.000Z": 8933,
+        "2016-02-11T00:00:00.000Z": 7799,
+        "2016-02-23T00:00:00.000Z": 7114,
+        "2016-02-01T00:00:00.000Z": 6193,
+        "2016-02-02T00:00:00.000Z": 6022,
+        "2016-02-09T00:00:00.000Z": 5910,
+        "2016-02-17T00:00:00.000Z": 5782,
+        "2016-02-05T00:00:00.000Z": 5737,
+        "2016-02-19T00:00:00.000Z": 5388,
+        "2016-03-02T00:00:00.000Z": 5382
+      },
+      "sample": [
+        "2016-10-31T00:00:00.000Z",
+        "2016-10-31T00:00:00.000Z",
+        "2016-10-31T00:00:00.000Z",
+        "2016-10-31T00:00:00.000Z",
+        "2016-10-31T00:00:00.000Z"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "FIRST_PX_DATE",
+      "dtype": "datetime64[ns]",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 559,
+      "distinct_pct": 0.08,
+      "top_values": {
+        "2016-02-02": 36942,
+        "2016-02-01": 33972,
+        "2016-02-03": 22440,
+        "2016-02-05": 20907,
+        "2016-02-11": 18375,
+        "2016-02-04": 17331,
+        "2016-02-09": 15145,
+        "2016-02-17": 14440,
+        "2016-02-08": 14187,
+        "2016-02-10": 13852
+      },
+      "sample": [
+        "2016-03-17",
+        "2016-03-17",
+        "2016-03-17",
+        "2016-03-17",
+        "2016-03-17"
+      ],
+      "role_guess": "date",
+      "min": "2016-02-01 00:00:00",
+      "max": "2024-08-25 00:00:00"
+    },
+    {
+      "name": "REJT_REAS",
+      "dtype": "object",
+      "null_count": 720313,
+      "null_pct": 97.77,
+      "distinct_count": 144,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "Refill Too Soon": 4598,
+        "Not Covered": 2934,
+        "Prior Auth Required": 1471,
+        "Drug Not on Formulary": 1349,
+        "DUR Reject Error": 1048,
+        "M/I Missing/Invalid": 902,
+        "Product Identifier not FDA/NSDE Listed": 539,
+        "Scheduled Downtime": 506,
+        "Plan Limits Exceeded": 284,
+        "Pharmacy Provider Segment is not used for this Transaction Code": 219
+      },
+      "sample": [
+        "Prior Auth Required",
+        "Not Covered",
+        "Refill Too Soon",
+        "Not Covered",
+        "M/I Prescription/Service Reference Number"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REJT_GRP",
+      "dtype": "object",
+      "null_count": 720313,
+      "null_pct": 97.77,
+      "distinct_count": 7,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Refill Restriction": 4622,
+        "Product Not Covered": 4459,
+        "All Other": 4391,
+        "Prior Authorization Required": 1487,
+        "Step Edit": 1062,
+        "Plan Limitations Exceeded": 324,
+        "Distribution Limitation": 105
+      },
+      "sample": [
+        "Prior Authorization Required",
+        "Product Not Covered",
+        "Refill Restriction",
+        "Product Not Covered",
+        "All Other"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROD_NM",
+      "dtype": "object",
+      "null_count": 511770,
+      "null_pct": 69.46,
+      "distinct_count": 902,
+      "distinct_pct": 0.12,
+      "top_values": {
+        "ALBUTEROL HFA": 29965,
+        "PREDNISONE": 24614,
+        "MONTELUKAST SOD": 24277,
+        "ALBUTEROL": 11534,
+        "ALBUT SULF/IPRATROP BR": 10806,
+        "TRELEGY ELLIPTA": 9570,
+        "SYMBICORT": 8719,
+        "BREO ELLIPTA": 5794,
+        "VENTOLIN HFA": 5688,
+        "FLUTICASONE PROP/SAL": 4819
+      },
+      "sample": [
+        "TRELEGY ELLIPTA",
+        "MONTELUKAST SOD",
+        "TRELEGY ELLIPTA",
+        "ALBUT SULF/IPRATROP BR",
+        "PREDNISONE"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "GNER_NM",
+      "dtype": "object",
+      "null_count": 511770,
+      "null_pct": 69.46,
+      "distinct_count": 673,
+      "distinct_pct": 0.09,
+      "top_values": {
+        "ALBUTEROL SULFATE": 50081,
+        "PREDNISONE": 24620,
+        "MONTELUKAST SODIUM": 24316,
+        "BUDESONIDE-FORMOTEROL FUMARATE DIHYDRATE": 13314,
+        "FLUTICASONE-SALMETEROL": 13268,
+        "IPRATROPIUM-ALBUTEROL": 12405,
+        "FLUTICASONE-UMECLIDINIUM-VILANTEROL": 9570,
+        "FLUTICASONE FUROATE-VILANTEROL": 6953,
+        "TIOTROPIUM BROMIDE": 6546,
+        "DEXAMETHASONE SODIUM PHOSPHATE": 5398
+      },
+      "sample": [
+        "FLUTICASONE-UMECLIDINIUM-VILANTEROL",
+        "MONTELUKAST SODIUM",
+        "FLUTICASONE-UMECLIDINIUM-VILANTEROL",
+        "IPRATROPIUM-ALBUTEROL",
+        "PREDNISONE"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "BRD_GNER_FLG",
+      "dtype": "object",
+      "null_count": 511770,
+      "null_pct": 69.46,
+      "distinct_count": 4,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Generic": 147425,
+        "Brand": 77078,
+        "Branded Generic": 473,
+        "Unspecified": 17
+      },
+      "sample": [
+        "Brand",
+        "Generic",
+        "Brand",
+        "Generic",
+        "Generic"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROD_FORM",
+      "dtype": "object",
+      "null_count": 511879,
+      "null_pct": 69.48,
+      "distinct_count": 64,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "TABLET": 55010,
+        "AEROSOL, SOLN": 45078,
+        "AEROSOL POWDER, BREATH ACTIVATED": 32839,
+        "SOLUTION": 25779,
+        "AEROSOL": 21999,
+        "NEBULIZATION SOLUTION": 13174,
+        "SUSPENSION": 8557,
+        "SOLUTION RECONSTITUTED": 5025,
+        "TABLET THERAPY PACK": 4070,
+        "SOLUTION PREFILLED SYRINGE": 3956
+      },
+      "sample": [
+        "AEROSOL POWDER, BREATH ACTIVATED",
+        "TABLET",
+        "AEROSOL POWDER, BREATH ACTIVATED",
+        "SOLUTION",
+        "TABLET"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROD_STRG",
+      "dtype": "object",
+      "null_count": 511771,
+      "null_pct": 69.46,
+      "distinct_count": 534,
+      "distinct_pct": 0.07,
+      "top_values": {
+        "108 MCG/ACT": 38582,
+        "10 MG": 32295,
+        "160-4.5 MCG/ACT": 11858,
+        "20 MG": 11652,
+        "0.5-2.5(3) MG/3ML": 10795,
+        "0.08%": 10182,
+        "250-50 MCG/ACT": 6756,
+        "100-62.5-25 MCG/INH": 4941,
+        "5 MG": 4855,
+        "N/A": 4638
+      },
+      "sample": [
+        "100-62.5-25 MCG/INH",
+        "10 MG",
+        "100-62.5-25 MCG/INH",
+        "0.5-2.5(3) MG/3ML",
+        "20 MG"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PKG_SIZE",
+      "dtype": "object",
+      "null_count": 511878,
+      "null_pct": 69.48,
+      "distinct_count": 32,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 184294,
+        "30": 16044,
+        "25": 13149,
+        "60": 5087,
+        "10": 2620,
+        "2": 1760,
+        "24": 596,
+        "12": 363,
+        "14": 342,
+        "36": 132
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "60",
+        "1"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "MFGR",
+      "dtype": "object",
+      "null_count": 511770,
+      "null_pct": 69.46,
+      "distinct_count": 404,
+      "distinct_pct": 0.05,
+      "top_values": {
+        "GLAXO SMITH KLINE": 33133,
+        "PRASCO LABORATORIES": 19459,
+        "MYLAN": 9974,
+        "HIKMA PHARMACEUTICALS USA": 9754,
+        "TEVA PHARMACEUTICALS USA": 9599,
+        "BOEHRINGER INGELHEIM": 9168,
+        "ASTRAZENECA LP": 8957,
+        "CAMBER PHARMACEUTICALS": 8270,
+        "RITEDOSE PHARMACEUTICALS": 7993,
+        "NEPHRON PHARMACEUTICALS CORP.": 7465
+      },
+      "sample": [
+        "GLAXO SMITH KLINE",
+        "ACCORD HEALTHCARE",
+        "GLAXO SMITH KLINE",
+        "NEPHRON PHARMACEUTICALS CORP.",
+        "JUBILANT CADISTA"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DRUG_CLASS",
+      "dtype": "object",
+      "null_count": 524904,
+      "null_pct": 71.24,
+      "distinct_count": 15,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "SABA": 51807,
+        "OCS": 31531,
+        "ICS/LABA": 25898,
+        "LEUKOTRIENE MODIFIERS": 24516,
+        "INJECTION CS": 13586,
+        "SAMA/SABA": 12396,
+        "ICS/LABA/LAMA": 11784,
+        "LAMA": 9672,
+        "ICS_LABA_SMART": 9320,
+        "ICS": 7518
+      },
+      "sample": [
+        "ICS/LABA/LAMA",
+        "LEUKOTRIENE MODIFIERS",
+        "ICS/LABA/LAMA",
+        "SAMA/SABA",
+        "OCS"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DRUG_PACKAGE_DESC",
+      "dtype": "object",
+      "null_count": 626628,
+      "null_pct": 85.05,
+      "distinct_count": 338,
+      "distinct_pct": 0.05,
+      "top_values": {
+        "1 POUCH in 1 CARTON (0186-0370-20)  / 1 CANISTER in 1 POUCH / 120 AEROSOL in 1 CANISTER": 7674,
+        "1 INHALER in 1 CARTON (0093-3174-31)  / 200 AEROSOL, METERED in 1 INHALER": 7137,
+        "1 INHALER in 1 CARTON (0173-0682-20)  / 200 AEROSOL, METERED in 1 INHALER": 5422,
+        "1 TRAY in 1 CARTON (0173-0887-10)  / 1 INHALER in 1 TRAY / 30 POWDER in 1 INHALER": 4738,
+        "1 TRAY in 1 CARTON (0173-0893-10)  / 1 INHALER in 1 TRAY / 30 POWDER in 1 INHALER": 4516,
+        "1 POUCH in 1 CARTON (0310-7370-20)  / 1 CANISTER in 1 POUCH / 120 AEROSOL in 1 CANISTER": 4004,
+        "1 TRAY in 1 CARTON (0173-0882-10)  / 1 INHALER in 1 TRAY / 30 POWDER in 1 INHALER": 2811,
+        "1 TRAY in 1 CARTON (0173-0859-10)  / 1 INHALER in 1 TRAY / 30 POWDER in 1 INHALER": 2638,
+        "1 CARTRIDGE in 1 CARTON (0597-0100-61)  / 60 SPRAY, METERED in 1 CARTRIDGE": 2532,
+        "1 INHALER in 1 CARTON / 60 POWDER in 1 INHALER": 2363
+      },
+      "sample": [
+        "1 TRAY in 1 CARTON (0173-0887-14)  / 1 INHALER in 1 TRAY / 14 POWDER in 1 INHALER",
+        "1 TRAY in 1 CARTON (0173-0887-14)  / 1 INHALER in 1 TRAY / 14 POWDER in 1 INHALER",
+        "10 POUCH in 1 CARTON (0487-0201-60)  / 6 VIAL, SINGLE-USE in 1 POUCH / 3 mL in 1 VIAL, SINGLE-USE",
+        "1 POUCH in 1 CARTON (0310-7370-20)  / 1 CANISTER in 1 POUCH / 120 AEROSOL in 1 CANISTER",
+        "1 DOSE PACK in 1 CARTON (0603-4593-15)  / 21 TABLET in 1 DOSE PACK"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DRUG_TRGT_DOSE",
+      "dtype": "object",
+      "null_count": 736763,
+      "null_pct": 100.0,
+      "distinct_count": 0,
+      "distinct_pct": 0.0,
+      "top_values": {},
+      "sample": [],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DRUG_OCS_ML",
+      "dtype": "object",
+      "null_count": 736390,
+      "null_pct": 99.95,
+      "distinct_count": 1,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 373
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DRUG_PREDNISONE_EQUV_FACTOR",
+      "dtype": "object",
+      "null_count": 691646,
+      "null_pct": 93.88,
+      "distinct_count": 5,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 24734,
+        "1.25": 11882,
+        "6.666666667": 6964,
+        "0.25": 1044,
+        "6.25": 493
+      },
+      "sample": [
+        "1",
+        "1",
+        "1.25",
+        "1.25",
+        "6.666666667"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DRUG_CS_STRENGTH",
+      "dtype": "object",
+      "null_count": 641427,
+      "null_pct": 87.06,
+      "distinct_count": 42,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "160": 14102,
+        "100": 11660,
+        "20": 11497,
+        "200": 9724,
+        "10": 9385,
+        "250": 6834,
+        "4": 6636,
+        "40": 4572,
+        "5": 4238,
+        "500": 3343
+      },
+      "sample": [
+        "100",
+        "100",
+        "20",
+        "160",
+        "20"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DRUG_TOTAL_PUFFS",
+      "dtype": "object",
+      "null_count": 686543,
+      "null_pct": 93.18,
+      "distinct_count": 6,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "120": 20805,
+        "30": 16297,
+        "60": 12260,
+        "14": 798,
+        "28": 59,
+        "1": 1
+      },
+      "sample": [
+        "14",
+        "14",
+        "120",
+        "30",
+        "30"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DRUG_HIGH_MEDIUM_CUTOFF",
+      "dtype": "object",
+      "null_count": 686543,
+      "null_pct": 93.18,
+      "distinct_count": 12,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "600": 13292,
+        "90": 11784,
+        "460": 11477,
+        "100": 6953,
+        "250": 2025,
+        "380": 1708,
+        "400": 1690,
+        "200": 544,
+        "150": 414,
+        "300": 235
+      },
+      "sample": [
+        "90",
+        "90",
+        "600",
+        "100",
+        "90"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_DESC",
+      "dtype": "object",
+      "null_count": 179762,
+      "null_pct": 24.4,
+      "distinct_count": 8607,
+      "distinct_pct": 1.17,
+      "top_values": {
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE WITH (ACUTE) EXACERBATION": 18293,
+        "UNSPECIFIED ASTHMA WITH (ACUTE) EXACERBATION": 17988,
+        "UNSPECIFIED ASTHMA, UNCOMPLICATED": 16696,
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE, UNSPECIFIED": 14995,
+        "ESSENTIAL (PRIMARY) HYPERTENSION": 12813,
+        "SEVERE PERSISTENT ASTHMA, UNCOMPLICATED": 11939,
+        "MODERATE PERSISTENT ASTHMA, UNCOMPLICATED": 10901,
+        "ACUTE RESPIRATORY FAILURE WITH HYPOXIA": 7308,
+        "COVID-19": 6708,
+        "SEVERE PERSISTENT ASTHMA WITH (ACUTE) EXACERBATION": 6463
+      },
+      "sample": [
+        "HEADACHE, UNSPECIFIED",
+        "SPONTANEOUS ECCHYMOSES",
+        "UNSPECIFIED ABDOMINAL PAIN",
+        "MODERATE PERSISTENT ASTHMA WITH (ACUTE) EXACERBATION",
+        "NAUSEA WITH VOMITING, UNSPECIFIED"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_2_DESC",
+      "dtype": "object",
+      "null_count": 308172,
+      "null_pct": 41.83,
+      "distinct_count": 7772,
+      "distinct_pct": 1.05,
+      "top_values": {
+        "ESSENTIAL (PRIMARY) HYPERTENSION": 17850,
+        "UNSPECIFIED ASTHMA, UNCOMPLICATED": 14402,
+        "TYPE 2 DIABETES MELLITUS WITHOUT COMPLICATIONS": 8658,
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE, UNSPECIFIED": 7881,
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE WITH (ACUTE) EXACERBATION": 6661,
+        "UNSPECIFIED ASTHMA WITH (ACUTE) EXACERBATION": 6641,
+        "SHORTNESS OF BREATH": 5873,
+        "ACUTE RESPIRATORY FAILURE WITH HYPOXIA": 5174,
+        "PNEUMONIA, UNSPECIFIED ORGANISM": 4248,
+        "OTHER CHRONIC PAIN": 3891
+      },
+      "sample": [
+        "DIZZINESS AND GIDDINESS",
+        "DYSURIA",
+        "MELENA",
+        "DIZZINESS AND GIDDINESS",
+        "CANNABIS USE, UNSPECIFIED, UNCOMPLICATED"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_3_DESC",
+      "dtype": "object",
+      "null_count": 377139,
+      "null_pct": 51.19,
+      "distinct_count": 6794,
+      "distinct_pct": 0.92,
+      "top_values": {
+        "ESSENTIAL (PRIMARY) HYPERTENSION": 18999,
+        "UNSPECIFIED ASTHMA, UNCOMPLICATED": 17830,
+        "TYPE 2 DIABETES MELLITUS WITHOUT COMPLICATIONS": 7801,
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE, UNSPECIFIED": 6939,
+        "HYPERLIPIDEMIA, UNSPECIFIED": 5031,
+        "GASTRO-ESOPHAGEAL REFLUX DISEASE WITHOUT ESOPHAGITIS": 4041,
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE WITH (ACUTE) EXACERBATION": 3721,
+        "UNSPECIFIED ASTHMA WITH (ACUTE) EXACERBATION": 3515,
+        "MORBID (SEVERE) OBESITY DUE TO EXCESS CALORIES": 3505,
+        "HEART FAILURE, UNSPECIFIED": 2964
+      },
+      "sample": [
+        "SEVERE PERSISTENT ASTHMA WITH (ACUTE) EXACERBATION",
+        "MODERATE PERSISTENT ASTHMA, UNCOMPLICATED",
+        "UNSPECIFIED ASTHMA, UNCOMPLICATED",
+        "ALLERGIC RHINITIS DUE TO POLLEN",
+        "HYPOTENSION, UNSPECIFIED"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_4_DESC",
+      "dtype": "object",
+      "null_count": 441226,
+      "null_pct": 59.89,
+      "distinct_count": 5798,
+      "distinct_pct": 0.79,
+      "top_values": {
+        "UNSPECIFIED ASTHMA, UNCOMPLICATED": 18254,
+        "ESSENTIAL (PRIMARY) HYPERTENSION": 13972,
+        "TYPE 2 DIABETES MELLITUS WITHOUT COMPLICATIONS": 6244,
+        "HYPERLIPIDEMIA, UNSPECIFIED": 5183,
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE, UNSPECIFIED": 4705,
+        "GASTRO-ESOPHAGEAL REFLUX DISEASE WITHOUT ESOPHAGITIS": 4058,
+        "OBSTRUCTIVE SLEEP APNEA (ADULT) (PEDIATRIC)": 3526,
+        "UNSPECIFIED ASTHMA WITH (ACUTE) EXACERBATION": 3502,
+        "ATHEROSCLEROTIC HEART DISEASE OF NATIVE CORONARY ARTERY WITHOUT ANGINA PECTORIS": 3360,
+        "MIXED HYPERLIPIDEMIA": 2914
+      },
+      "sample": [
+        "OVERWEIGHT",
+        "PAIN, UNSPECIFIED",
+        "VOMITING, UNSPECIFIED",
+        "GASTRO-ESOPHAGEAL REFLUX DISEASE WITHOUT ESOPHAGITIS",
+        "DEHYDRATION"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_5_DESC",
+      "dtype": "object",
+      "null_count": 712391,
+      "null_pct": 96.69,
+      "distinct_count": 2107,
+      "distinct_pct": 0.29,
+      "top_values": {
+        "UNSPECIFIED ASTHMA, UNCOMPLICATED": 2773,
+        "ESSENTIAL (PRIMARY) HYPERTENSION": 1037,
+        "MODERATE PERSISTENT ASTHMA, UNCOMPLICATED": 512,
+        "TYPE 2 DIABETES MELLITUS WITHOUT COMPLICATIONS": 501,
+        "HYPERLIPIDEMIA, UNSPECIFIED": 443,
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE, UNSPECIFIED": 338,
+        "ATHEROSCLEROTIC HEART DISEASE OF NATIVE CORONARY ARTERY WITHOUT ANGINA PECTORIS": 329,
+        "GASTRO-ESOPHAGEAL REFLUX DISEASE WITHOUT ESOPHAGITIS": 318,
+        "MILD INTERMITTENT ASTHMA, UNCOMPLICATED": 301,
+        "ACUTE AND CHRONIC RESPIRATORY FAILURE, UNSPECIFIED WHETHER WITH HYPOXIA OR HYPERCAPNIA": 293
+      },
+      "sample": [
+        "EFFUSION, RIGHT ANKLE",
+        "TYPE 2 DIABETES MELLITUS WITH OTHER DIABETIC NEUROLOGICAL COMPLICATION",
+        "POLYNEUROPATHY, UNSPECIFIED",
+        "CHRONIC KIDNEY DISEASE, STAGE 3 UNSPECIFIED",
+        "HEART FAILURE, UNSPECIFIED"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_6_DESC",
+      "dtype": "object",
+      "null_count": 719232,
+      "null_pct": 97.62,
+      "distinct_count": 1620,
+      "distinct_pct": 0.22,
+      "top_values": {
+        "UNSPECIFIED ASTHMA, UNCOMPLICATED": 2125,
+        "ESSENTIAL (PRIMARY) HYPERTENSION": 611,
+        "MODERATE PERSISTENT ASTHMA, UNCOMPLICATED": 428,
+        "GASTRO-ESOPHAGEAL REFLUX DISEASE WITHOUT ESOPHAGITIS": 420,
+        "MILD INTERMITTENT ASTHMA, UNCOMPLICATED": 332,
+        "CHRONIC RESPIRATORY FAILURE, UNSPECIFIED WHETHER WITH HYPOXIA OR HYPERCAPNIA": 302,
+        "HYPERLIPIDEMIA, UNSPECIFIED": 300,
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE, UNSPECIFIED": 285,
+        "OBSTRUCTIVE SLEEP APNEA (ADULT) (PEDIATRIC)": 225,
+        "TYPE 2 DIABETES MELLITUS WITHOUT COMPLICATIONS": 224
+      },
+      "sample": [
+        "PAROXYSMAL ATRIAL FIBRILLATION",
+        "UNSPECIFIED DIASTOLIC (CONGESTIVE) HEART FAILURE",
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE WITH (ACUTE) EXACERBATION",
+        "OTHER SPECIFIED ABNORMAL IMMUNOLOGICAL FINDINGS IN SERUM",
+        "OTHER SPECIFIED ABNORMAL IMMUNOLOGICAL FINDINGS IN SERUM"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_7_DESC",
+      "dtype": "object",
+      "null_count": 722212,
+      "null_pct": 98.03,
+      "distinct_count": 1418,
+      "distinct_pct": 0.19,
+      "top_values": {
+        "UNSPECIFIED ASTHMA, UNCOMPLICATED": 1861,
+        "ESSENTIAL (PRIMARY) HYPERTENSION": 499,
+        "SEVERE PERSISTENT ASTHMA, UNCOMPLICATED": 465,
+        "GASTRO-ESOPHAGEAL REFLUX DISEASE WITHOUT ESOPHAGITIS": 407,
+        "MODERATE PERSISTENT ASTHMA, UNCOMPLICATED": 362,
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE, UNSPECIFIED": 268,
+        "MILD INTERMITTENT ASTHMA, UNCOMPLICATED": 266,
+        "HYPERLIPIDEMIA, UNSPECIFIED": 246,
+        "HYPOTHYROIDISM, UNSPECIFIED": 244,
+        "OBSTRUCTIVE SLEEP APNEA (ADULT) (PEDIATRIC)": 194
+      },
+      "sample": [
+        "ESSENTIAL (PRIMARY) HYPERTENSION",
+        "PERMANENT ATRIAL FIBRILLATION",
+        "HYPERLIPIDEMIA, UNSPECIFIED",
+        "MILD INTERMITTENT ASTHMA, UNCOMPLICATED",
+        "OTHER SYMPTOMS AND SIGNS INVOLVING THE MUSCULOSKELETAL SYSTEM"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAG_CD_8_DESC",
+      "dtype": "object",
+      "null_count": 724501,
+      "null_pct": 98.34,
+      "distinct_count": 1219,
+      "distinct_pct": 0.17,
+      "top_values": {
+        "UNSPECIFIED ASTHMA, UNCOMPLICATED": 1502,
+        "GASTRO-ESOPHAGEAL REFLUX DISEASE WITHOUT ESOPHAGITIS": 358,
+        "ESSENTIAL (PRIMARY) HYPERTENSION": 323,
+        "HYPOXEMIA": 302,
+        "MODERATE PERSISTENT ASTHMA, UNCOMPLICATED": 301,
+        "HYPERLIPIDEMIA, UNSPECIFIED": 298,
+        "MILD INTERMITTENT ASTHMA, UNCOMPLICATED": 216,
+        "MORBID (SEVERE) OBESITY DUE TO EXCESS CALORIES": 182,
+        "HYPOTHYROIDISM, UNSPECIFIED": 182,
+        "CHRONIC OBSTRUCTIVE PULMONARY DISEASE, UNSPECIFIED": 165
+      },
+      "sample": [
+        "EFFUSION, LEFT ANKLE",
+        "UNSPECIFIED ASTHMA, UNCOMPLICATED",
+        "OLD MYOCARDIAL INFARCTION",
+        "UNSPECIFIED OSTEOARTHRITIS, UNSPECIFIED SITE",
+        "LONG TERM (CURRENT) USE OF OPIATE ANALGESIC"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_CUST_NM",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2361,
+      "distinct_pct": 0.32,
+      "top_values": {
+        "Dr. Alexander Jackson": 27410,
+        "Dr. Henry Verma": 3211,
+        "Dr. Olivia Iyer": 2571,
+        "Dr. Kiran Verma": 1981,
+        "Dr. Ananya Young": 1880,
+        "Dr. Rohit Smith": 1590,
+        "Dr. Isabella Lopez": 1580,
+        "Dr. William Banerjee": 1247,
+        "Dr. Ethan White": 1178,
+        "Dr. Mia Mehta": 1152
+      },
+      "sample": [
+        "Dr. Andrew Harris",
+        "Dr. Andrew Harris",
+        "Dr. Andrew Harris",
+        "Dr. Andrew Harris",
+        "Dr. Henry Rao"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_CUST_TYP_DESC",
+      "dtype": "object",
+      "null_count": 27152,
+      "null_pct": 3.69,
+      "distinct_count": 18,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "HEALTH CARE PRESCRIBER": 679666,
+        "RESIDENTIAL": 6000,
+        "OUTPATIENT CENTER": 5934,
+        "HOSPITAL": 5824,
+        "SUPPLY": 4344,
+        "PHARMACY": 2324,
+        "CORPORATE PARENT": 1665,
+        "LABORATORY": 1411,
+        "LICENSED HEALTH CARE PROFESSIONAL": 1120,
+        "MISCELLANEOUS": 637
+      },
+      "sample": [
+        "HEALTH CARE PRESCRIBER",
+        "HEALTH CARE PRESCRIBER",
+        "HEALTH CARE PRESCRIBER",
+        "HEALTH CARE PRESCRIBER",
+        "HEALTH CARE PRESCRIBER"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_GNDR_CD",
+      "dtype": "object",
+      "null_count": 55523,
+      "null_pct": 7.54,
+      "distinct_count": 3,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "M": 424068,
+        "F": 257169,
+        "U": 3
+      },
+      "sample": [
+        "M",
+        "M",
+        "M",
+        "M",
+        "M"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_PRI_SPEC_DESC",
+      "dtype": "object",
+      "null_count": 41832,
+      "null_pct": 5.68,
+      "distinct_count": 253,
+      "distinct_pct": 0.03,
+      "top_values": {
+        "FAMILY MEDICINE": 129544,
+        "INTERNAL MEDICINE": 123094,
+        "INTERNAL MEDICINE - PULMONARY DISEASE": 81915,
+        "EMERGENCY MEDICINE": 64658,
+        "HOSPITALIST": 22676,
+        "INTERNAL MEDICINE - CARDIOVASCULAR DISEASE": 18402,
+        "NURSE PRACTITIONER": 17769,
+        "ALLERGY & IMMUNOLOGY": 16441,
+        "INTERNAL MEDICINE - HEMATOLOGY & ONCOLOGY": 15827,
+        "PHYSICIAN ASSISTANT": 13730
+      },
+      "sample": [
+        "SURGERY",
+        "SURGERY",
+        "SURGERY",
+        "SURGERY",
+        "INTERNAL MEDICINE - PULMONARY DISEASE"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_SEC_SPEC_DESC",
+      "dtype": "object",
+      "null_count": 55523,
+      "null_pct": 7.54,
+      "distinct_count": 174,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "SINGLE SPECIALTY": 376714,
+        "INTERNAL MEDICINE": 111711,
+        "HOSPITALIST": 25745,
+        "INTERNAL MEDICINE - PULMONARY DISEASE": 21742,
+        "FAMILY MEDICINE": 17144,
+        "INTERNAL MEDICINE - CRITICAL CARE MEDICINE": 11820,
+        "EMERGENCY MEDICINE": 10490,
+        "PEDIATRICS": 7987,
+        "SURGERY": 7420,
+        "GENERAL PRACTICE": 6563
+      },
+      "sample": [
+        "GENERAL PRACTICE",
+        "GENERAL PRACTICE",
+        "GENERAL PRACTICE",
+        "GENERAL PRACTICE",
+        "INTERNAL MEDICINE"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_TER_SPEC_DESC",
+      "dtype": "object",
+      "null_count": 55523,
+      "null_pct": 7.54,
+      "distinct_count": 158,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "SINGLE SPECIALTY": 573562,
+        "INTERNAL MEDICINE": 26853,
+        "INTERNAL MEDICINE - PULMONARY DISEASE": 16827,
+        "INTERNAL MEDICINE - CRITICAL CARE MEDICINE": 8802,
+        "INTERNAL MEDICINE - SLEEP MEDICINE": 4569,
+        "HOSPITALIST": 4132,
+        "PEDIATRICS": 3442,
+        "INTERNAL MEDICINE - HEMATOLOGY & ONCOLOGY": 3233,
+        "PAIN MEDICINE - PAIN MEDICINE": 2667,
+        "SURGERY": 2231
+      },
+      "sample": [
+        "SINGLE SPECIALTY",
+        "SINGLE SPECIALTY",
+        "SINGLE SPECIALTY",
+        "SINGLE SPECIALTY",
+        "INTERNAL MEDICINE - PULMONARY DISEASE"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_CUST_STA_CD",
+      "dtype": "object",
+      "null_count": 27152,
+      "null_pct": 3.69,
+      "distinct_count": 4,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "A": 698603,
+        "R": 7177,
+        "I": 3339,
+        "D": 492
+      },
+      "sample": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_PSBR_IND",
+      "dtype": "object",
+      "null_count": 27152,
+      "null_pct": 3.69,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Y": 679666,
+        "N": 29945
+      },
+      "sample": [
+        "Y",
+        "Y",
+        "Y",
+        "Y",
+        "Y"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_PDRP_OPT_OUT_IND",
+      "dtype": "object",
+      "null_count": 27152,
+      "null_pct": 3.69,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "N": 695155,
+        "Y": 14456
+      },
+      "sample": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_AMA_NO_CONTACT_IND",
+      "dtype": "object",
+      "null_count": 27152,
+      "null_pct": 3.69,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "N": 696902,
+        "Y": 12709
+      },
+      "sample": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_DEL_IND",
+      "dtype": "object",
+      "null_count": 27152,
+      "null_pct": 3.69,
+      "distinct_count": 1,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "N": 709611
+      },
+      "sample": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_CUST_NM",
+      "dtype": "object",
+      "null_count": 513952,
+      "null_pct": 69.76,
+      "distinct_count": 36326,
+      "distinct_pct": 4.93,
+      "top_values": {
+        "SEAN LESON": 1363,
+        "RACHEL ANN LIEBERMAN": 967,
+        "MARIA ELIZABETH LOFSTEAD": 897,
+        "RAWAN NARWAL": 634,
+        "KAREN BROWN JONES": 584,
+        "CAROLYN BLAIR WAGNER": 537,
+        "ANGEL RUIZ": 523,
+        "RAMI SAMI EL-YOUSEF": 465,
+        "OSCAR E VERZOSA": 431,
+        "RENE U PULIDO": 424
+      },
+      "sample": [
+        "WILLIAM ALLEN YODER",
+        "MICHAEL H ZEIHEN",
+        "ZONAIRA M GUL",
+        "CHARLES JAMESEDWARD COLE",
+        "PRASAD POLISETTY"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_CUST_TYP_DESC",
+      "dtype": "object",
+      "null_count": 513952,
+      "null_pct": 69.76,
+      "distinct_count": 11,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "HEALTH CARE PRESCRIBER": 221365,
+        "OUTPATIENT CENTER": 721,
+        "HOSPITAL": 278,
+        "LICENSED HEALTH CARE PROFESSIONAL": 258,
+        "PHARMACY": 70,
+        "HEALTH CARE PROFESSIONAL": 54,
+        "RESIDENTIAL": 27,
+        "CORPORATE PARENT": 21,
+        "EMERGENCY": 13,
+        "INSURANCE": 3
+      },
+      "sample": [
+        "HEALTH CARE PRESCRIBER",
+        "HEALTH CARE PRESCRIBER",
+        "HEALTH CARE PRESCRIBER",
+        "HEALTH CARE PRESCRIBER",
+        "HEALTH CARE PRESCRIBER"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_GNDR_CD",
+      "dtype": "object",
+      "null_count": 515086,
+      "null_pct": 69.91,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "M": 140306,
+        "F": 81371
+      },
+      "sample": [
+        "M",
+        "M",
+        "F",
+        "M",
+        "M"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_PRI_SPEC_DESC",
+      "dtype": "object",
+      "null_count": 514115,
+      "null_pct": 69.78,
+      "distinct_count": 187,
+      "distinct_pct": 0.03,
+      "top_values": {
+        "INTERNAL MEDICINE": 52684,
+        "FAMILY MEDICINE": 52522,
+        "INTERNAL MEDICINE - PULMONARY DISEASE": 14120,
+        "EMERGENCY MEDICINE": 13742,
+        "HOSPITALIST": 8834,
+        "INTERNAL MEDICINE - CARDIOVASCULAR DISEASE": 6567,
+        "INTERNAL MEDICINE - HEMATOLOGY & ONCOLOGY": 6073,
+        "NURSE PRACTITIONER": 4242,
+        "PHYSICIAN ASSISTANT": 4118,
+        "ALLERGY & IMMUNOLOGY": 3589
+      },
+      "sample": [
+        "PODIATRIST",
+        "INTERNAL MEDICINE",
+        "INTERNAL MEDICINE - INFECTIOUS DISEASE",
+        "FAMILY MEDICINE",
+        "INTERNAL MEDICINE"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_SEC_SPEC_DESC",
+      "dtype": "object",
+      "null_count": 515086,
+      "null_pct": 69.91,
+      "distinct_count": 154,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "SINGLE SPECIALTY": 128521,
+        "INTERNAL MEDICINE": 32503,
+        "HOSPITALIST": 9809,
+        "FAMILY MEDICINE": 5998,
+        "INTERNAL MEDICINE - PULMONARY DISEASE": 4564,
+        "GENERAL PRACTICE": 2985,
+        "SURGERY": 2486,
+        "EMERGENCY MEDICINE": 2437,
+        "INTERNAL MEDICINE - CRITICAL CARE MEDICINE": 2252,
+        "INTERNAL MEDICINE - HEMATOLOGY & ONCOLOGY": 2010
+      },
+      "sample": [
+        "SINGLE SPECIALTY",
+        "SINGLE SPECIALTY",
+        "INTERNAL MEDICINE",
+        "EMERGENCY MEDICINE",
+        "SINGLE SPECIALTY"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_TER_SPEC_DESC",
+      "dtype": "object",
+      "null_count": 515086,
+      "null_pct": 69.91,
+      "distinct_count": 135,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "SINGLE SPECIALTY": 191749,
+        "INTERNAL MEDICINE": 7465,
+        "INTERNAL MEDICINE - PULMONARY DISEASE": 2912,
+        "INTERNAL MEDICINE - CRITICAL CARE MEDICINE": 1628,
+        "ALLERGY & IMMUNOLOGY - CLINICAL & LABORATORY IMMUNOLOGY": 1366,
+        "HOSPITALIST": 1301,
+        "INTERNAL MEDICINE - SLEEP MEDICINE": 1234,
+        "PEDIATRICS": 1197,
+        "GENERAL PRACTICE": 977,
+        "PAIN MEDICINE - PAIN MEDICINE": 952
+      },
+      "sample": [
+        "SINGLE SPECIALTY",
+        "SINGLE SPECIALTY",
+        "INTERNAL MEDICINE - GERIATRIC MEDICINE",
+        "SINGLE SPECIALTY",
+        "SINGLE SPECIALTY"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_CUST_STA_CD",
+      "dtype": "object",
+      "null_count": 513952,
+      "null_pct": 69.76,
+      "distinct_count": 4,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "A": 219777,
+        "R": 2540,
+        "I": 299,
+        "D": 195
+      },
+      "sample": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_PSBR_IND",
+      "dtype": "object",
+      "null_count": 513952,
+      "null_pct": 69.76,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Y": 221365,
+        "N": 1446
+      },
+      "sample": [
+        "Y",
+        "Y",
+        "Y",
+        "Y",
+        "Y"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_PDRP_OPT_OUT_IND",
+      "dtype": "object",
+      "null_count": 513952,
+      "null_pct": 69.76,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "N": 218671,
+        "Y": 4140
+      },
+      "sample": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_AMA_NO_CONTACT_IND",
+      "dtype": "object",
+      "null_count": 513952,
+      "null_pct": 69.76,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "N": 218522,
+        "Y": 4289
+      },
+      "sample": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REFR_DEL_IND",
+      "dtype": "object",
+      "null_count": 513952,
+      "null_pct": 69.76,
+      "distinct_count": 1,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "N": 222811
+      },
+      "sample": [
+        "N",
+        "N",
+        "N",
+        "N",
+        "N"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PLAN_ID",
+      "dtype": "object",
+      "null_count": 119187,
+      "null_pct": 16.18,
+      "distinct_count": 2430,
+      "distinct_pct": 0.33,
+      "top_values": {
+        "53201132": 33174,
+        "53200900": 27162,
+        "53199007": 18359,
+        "53201541": 10185,
+        "53224650": 9788,
+        "81201320": 8231,
+        "77009916": 7634,
+        "53212921": 6172,
+        "53203004": 5629,
+        "53200991": 4999
+      },
+      "sample": [
+        "1003584539",
+        "53214392",
+        "1003584539",
+        "1009155208",
+        "83679337"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PLAN_NM",
+      "dtype": "object",
+      "null_count": 14909,
+      "null_pct": 2.02,
+      "distinct_count": 2872,
+      "distinct_pct": 0.39,
+      "top_values": {
+        "UNITED HLTHCARE-UNSPECIFIED": 33174,
+        "HUMANA-UNSPECIFIED": 27162,
+        "MEDICAID CALIFORNIA (CA)": 18359,
+        "HEALTH NET UNSPECIFIED": 10185,
+        "MEDICARE B CALIFORNIA SOUTH (CA)": 9921,
+        "ALL OTHER THIRD PARTY": 9788,
+        "AETNA INC-UNSPECIFIED": 8231,
+        "KEYSTONE FIRST (PA)": 7634,
+        "CMMNWLTH CRE MED SNP GENERAL(MA)": 6172,
+        "MEDICARE B FLORIDA (FL)": 5753
+      },
+      "sample": [
+        "3RD PARTY UNSPEC PLAN 0104",
+        "UHC/PAC/AARP MED D GENERAL (FL)",
+        "3RD PARTY UNSPEC PLAN 0104",
+        "AARP WALGREENS MED ADV GNRL",
+        "GOODRX"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAYR_NM",
+      "dtype": "object",
+      "null_count": 14909,
+      "null_pct": 2.02,
+      "distinct_count": 704,
+      "distinct_pct": 0.1,
+      "top_values": {
+        "UNITED HEALTHCARE": 77672,
+        "MEDICARE B": 59474,
+        "HUMANA": 51245,
+        "MEDICAID": 43998,
+        "AETNA INC": 43738,
+        "UHC/PACIFICARE/AARP MED D": 38108,
+        "ELEVANCE HEALTH/ANTHEM/WELLPOINT": 35492,
+        "MOLINA HEALTHCARE INC": 22089,
+        "KEYSTONE AMERIHEALTH CARITAS": 16504,
+        "MEDICARE A": 15857
+      },
+      "sample": [
+        "3RD PARTY UNSPEC",
+        "UHC/PACIFICARE/AARP MED D",
+        "3RD PARTY UNSPEC",
+        "UHC/PACIFICARE/AARP MED D",
+        "GOODRX"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PBM_NM",
+      "dtype": "object",
+      "null_count": 160082,
+      "null_pct": 21.73,
+      "distinct_count": 67,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "OPTUMRX (PROC UNSPEC)": 143620,
+        "CAREMARK (PROC-UNSP)": 105709,
+        "EXPRESS SCRIPTS  (PROC-UNSP)": 95577,
+        "SS&C HEALTH (PROC-UNSP)": 56130,
+        "CARELONRX (PROC-UNSP)": 34792,
+        "AETNA PHARMACY MGT (PROC-UNSP)": 22314,
+        "MEDIMPACT/MEDCARE (PROC-UNSP)": 19217,
+        "MAGELLAN RX MGT (PROC-UNSP)": 18423,
+        "PRIME THERAPEUTICS (PROC-UNSP)": 17696,
+        "ABARCA HEALTH (PROC-UNSP)": 16645
+      },
+      "sample": [
+        "OPTUMRX (PROC UNSPEC)",
+        "OPTUMRX (PROC UNSPEC)",
+        "GOODRX (PROC-UNSP)",
+        "CARELONRX (PROC-UNSP)",
+        "CARELONRX (PROC-UNSP)"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SRC_PBM_ID",
+      "dtype": "object",
+      "null_count": 160082,
+      "null_pct": 21.73,
+      "distinct_count": 67,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "65000": 143620,
+        "15000": 105709,
+        "19000": 95577,
+        "14000": 56130,
+        "990382": 34792,
+        "23000": 22314,
+        "4000": 19217,
+        "39000": 18423,
+        "184400": 17696,
+        "990047": 16645
+      },
+      "sample": [
+        "65000",
+        "65000",
+        "990542",
+        "990382",
+        "990382"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "SRC_RPTG_PLAN_ID",
+      "dtype": "object",
+      "null_count": 14909,
+      "null_pct": 2.02,
+      "distinct_count": 2872,
+      "distinct_pct": 0.39,
+      "top_values": {
+        "209999": 33174,
+        "129999": 27162,
+        "20006": 18359,
+        "669999": 10185,
+        "20860012": 9921,
+        "8888880001": 9788,
+        "39999": 8231,
+        "18160001": 7634,
+        "21130003": 6172,
+        "20860018": 5753
+      },
+      "sample": [
+        "31210104",
+        "24290627",
+        "31210104",
+        "24291895",
+        "35710001"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PLAN_TYP_DESC",
+      "dtype": "object",
+      "null_count": 14909,
+      "null_pct": 2.02,
+      "distinct_count": 51,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "UNSPEC": 163613,
+        "MGD MEDI": 86704,
+        "MED ADVG": 76062,
+        "MED B": 59457,
+        "FFS MED": 43998,
+        "MED UNSP": 35297,
+        "MEDICAID": 34304,
+        "PPO": 21007,
+        "MED PDPG": 20272,
+        "IPA": 20122
+      },
+      "sample": [
+        "UNKNOWN",
+        "MED UNSP",
+        "UNKNOWN",
+        "MED ADVG",
+        "DISC CRD"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRCR_CD_DESC",
+      "dtype": "object",
+      "null_count": 237516,
+      "null_pct": 32.24,
+      "distinct_count": 2346,
+      "distinct_pct": 0.32,
+      "top_values": {
+        "OFFICE OR OTHER OUTPATIENT VISIT FOR THE EVALUATION AND MANAGEMENT OF AN ESTABLISHED PATIENT, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND MODERATE LEVEL OF MEDICAL DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF THE ENCOUNTER FOR CODE SELECTION, 30 MINUTES MUST BE MET OR EXCEEDED.": 71359,
+        "OFFICE OR OTHER OUTPATIENT VISIT FOR THE EVALUATION AND MANAGEMENT OF AN ESTABLISHED PATIENT, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND LOW LEVEL OF MEDICAL DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF THE ENCOUNTER FOR CODE SELECTION, 20 MINUTES MUST BE MET OR EXCEEDED.": 49589,
+        "SUBSEQUENT HOSPITAL INPATIENT OR OBSERVATION CARE, PER DAY, FOR THE EVALUATION AND MANAGEMENT OF A PATIENT, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND MODERATE LEVEL OF MEDICAL DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF THE ENCOUNTER FOR CODE SELECTION, 35 MINUTES MUST BE MET OR EXCEEDED.": 37816,
+        "SUBSEQUENT HOSPITAL INPATIENT OR OBSERVATION CARE, PER DAY, FOR THE EVALUATION AND MANAGEMENT OF A PATIENT, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND HIGH LEVEL OF MEDICAL DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF THE ENCOUNTER FOR CODE SELECTION, 50 MINUTES MUST BE MET OR EXCEEDED.": 29406,
+        "EMERGENCY DEPARTMENT VISIT FOR THE EVALUATION AND MANAGEMENT OF A PATIENT, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND HIGH LEVEL OF MEDICAL DECISION MAKING": 22106,
+        "HOSPITAL OUTPATIENT CLINIC VISIT FOR ASSESSMENT AND MANAGEMENT OF A PATIENT": 15439,
+        "EMERGENCY DEPARTMENT VISIT FOR THE EVALUATION AND MANAGEMENT OF A PATIENT, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND MODERATE LEVEL OF MEDICAL DECISION MAKING": 13694,
+        "SUBSEQUENT NURSING FACILITY CARE, PER DAY, FOR THE EVALUATION AND MANAGEMENT OF A PATIENT, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND MODERATE LEVEL OF MEDICAL DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF THE ENCOUNTER FOR CODE SELECTION, 30 MINUTES MUST BE MET OR EXCEEDED.": 11824,
+        "OFFICE OR OTHER OUTPATIENT VISIT FOR THE EVALUATION AND MANAGEMENT OF AN ESTABLISHED PATIENT, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND HIGH LEVEL OF MEDICAL DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF THE ENCOUNTER FOR CODE SELECTION, 40 MINUTES MUST BE MET OR EXCEEDED.": 10796,
+        "INITIAL HOSPITAL INPATIENT OR OBSERVATION CARE, PER DAY, FOR THE EVALUATION AND MANAGEMENT OF A PATIENT, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND HIGH LEVEL OF MEDICAL DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF THE ENCOUNTER FOR CODE SELECTION, 75 MINUTES MUST BE MET OR EXCEEDED.": 10748
+      },
+      "sample": [
+        "RADIOLOGIC EXAMINATION, CHEST; 2 VIEWS",
+        "OFFICE OR OTHER OUTPATIENT VISIT FOR THE EVALUATION AND MANAGEMENT OF AN ESTABLISHED PATIENT, WHICH REQUIRES A MEDICALLY APPROPRIATE HISTORY AND/OR EXAMINATION AND MODERATE LEVEL OF MEDICAL DECISION MAKING. WHEN USING TOTAL TIME ON THE DATE OF THE ENCOUNTER FOR CODE SELECTION, 30 MINUTES MUST BE MET OR EXCEEDED.",
+        "BLOOD COUNT; COMPLETE (CBC), AUTOMATED (HGB, HCT, RBC, WBC AND PLATELET COUNT) AND AUTOMATED DIFFERENTIAL WBC COUNT",
+        "INJECTION, METHYLPREDNISOLONE ACETATE, 40 MG",
+        "HOSPITAL OBSERVATION SERVICE, PER HOUR"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROC_CLASS",
+      "dtype": "object",
+      "null_count": 341811,
+      "null_pct": 46.39,
+      "distinct_count": 15,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Urgent Care": 154767,
+        "Acute Inpatient": 105149,
+        "Emergency Department": 44369,
+        "Outpatient": 35266,
+        "Non-Acute Inpatient": 26497,
+        "INJECTION CS": 13979,
+        "Observation": 6250,
+        "BIOLOGICS": 3363,
+        "OCS": 2452,
+        "SABA": 2079
+      },
+      "sample": [
+        "Urgent Care",
+        "INJECTION CS",
+        "Observation",
+        "Urgent Care",
+        "Urgent Care"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROC_PREDNISONE_EQUV_FACTOR",
+      "dtype": "object",
+      "null_count": 721093,
+      "null_pct": 97.87,
+      "distinct_count": 3,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1.25": 7062,
+        "6.666666667": 6629,
+        "1": 1979
+      },
+      "sample": [
+        "1.25",
+        "6.666666667",
+        "6.666666667",
+        "1",
+        "6.666666667"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROC_CS_STRENGTH",
+      "dtype": "object",
+      "null_count": 721093,
+      "null_pct": 97.87,
+      "distinct_count": 9,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 8204,
+        "10": 3016,
+        "125": 1715,
+        "40": 1686,
+        "80": 498,
+        "0.25": 450,
+        "20": 72,
+        "4": 23,
+        "5": 6
+      },
+      "sample": [
+        "40",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROC_PROD_STRENGTH",
+      "dtype": "object",
+      "null_count": 715651,
+      "null_pct": 97.13,
+      "distinct_count": 11,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1 MG": 9290,
+        "10 MG": 3016,
+        "5 MG": 2283,
+        "125 MG": 1715,
+        "40 MG": 1686,
+        "1MG": 1060,
+        "0.5MG": 1019,
+        "80 MG": 498,
+        "0.25 MG": 450,
+        "20 MG": 72
+      },
+      "sample": [
+        "40 MG",
+        "1 MG",
+        "1 MG",
+        "1 MG",
+        "1 MG"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_BIRTH_YR",
+      "dtype": "int16",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 74,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "0": 54519,
+        "1963": 30539,
+        "1959": 26223,
+        "1955": 25753,
+        "1948": 24112,
+        "1957": 23496,
+        "1954": 21854,
+        "1958": 20408,
+        "1960": 20195,
+        "1961": 20113
+      },
+      "sample": [
+        "1953",
+        "1953",
+        "1953",
+        "1953",
+        "1953"
+      ],
+      "role_guess": "metric",
+      "min": 0.0,
+      "max": 2013.0,
+      "mean": 1818.0105692061084
+    },
+    {
+      "name": "PAT_GNDR",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "F": 548514,
+        "M": 188249
+      },
+      "sample": [
+        "F",
+        "F",
+        "F",
+        "F",
+        "F"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_LONGITUDINAL_USE_FLG",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Y": 619020,
+        "N": 117743
+      },
+      "sample": [
+        "Y",
+        "Y",
+        "Y",
+        "Y",
+        "Y"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_STATE",
+      "dtype": "object",
+      "null_count": 55523,
+      "null_pct": 7.54,
+      "distinct_count": 56,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "CA": 130108,
+        "NY": 51006,
+        "OH": 49559,
+        "PA": 40602,
+        "FL": 37349,
+        "TX": 34382,
+        "MI": 33085,
+        "NJ": 31216,
+        "MA": 26437,
+        "AZ": 21799
+      },
+      "sample": [
+        "FL",
+        "FL",
+        "FL",
+        "FL",
+        "MO"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_STATE_NAME",
+      "dtype": "object",
+      "null_count": 55523,
+      "null_pct": 7.54,
+      "distinct_count": 56,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "CALIFORNIA": 130108,
+        "NEW YORK": 51006,
+        "OHIO": 49559,
+        "PENNSYLVANIA": 40602,
+        "FLORIDA": 37349,
+        "TEXAS": 34382,
+        "MICHIGAN": 33085,
+        "NEW JERSEY": 31216,
+        "MASSACHUSETTS": 26437,
+        "ARIZONA": 21799
+      },
+      "sample": [
+        "FLORIDA",
+        "FLORIDA",
+        "FLORIDA",
+        "FLORIDA",
+        "MISSOURI"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_CITY",
+      "dtype": "object",
+      "null_count": 55523,
+      "null_pct": 7.54,
+      "distinct_count": 4713,
+      "distinct_pct": 0.64,
+      "top_values": {
+        "PHILADELPHIA": 11267,
+        "LOS ANGELES": 10052,
+        "BROOKLYN": 9765,
+        "NEW YORK": 9657,
+        "CLEVELAND": 8200,
+        "BRONX": 7390,
+        "PHOENIX": 6644,
+        "CINCINNATI": 5704,
+        "FORT WORTH": 4437,
+        "BAKERSFIELD": 4303
+      },
+      "sample": [
+        "ZEPHYRHILLS",
+        "ZEPHYRHILLS",
+        "ZEPHYRHILLS",
+        "ZEPHYRHILLS",
+        "SAINT LOUIS"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_ZIP",
+      "dtype": "object",
+      "null_count": 55531,
+      "null_pct": 7.54,
+      "distinct_count": 9078,
+      "distinct_pct": 1.23,
+      "top_values": {
+        "44195": 4917,
+        "8103": 4031,
+        "92708": 3869,
+        "2124": 2918,
+        "76104": 2769,
+        "1843": 2638,
+        "29169": 2499,
+        "10457": 2241,
+        "48073": 2124,
+        "92868": 2082
+      },
+      "sample": [
+        "33542",
+        "33542",
+        "33542",
+        "33542",
+        "63117"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_GENDER",
+      "dtype": "object",
+      "null_count": 55523,
+      "null_pct": 7.54,
+      "distinct_count": 3,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "M": 424068,
+        "F": 257169,
+        "U": 3
+      },
+      "sample": [
+        "M",
+        "M",
+        "M",
+        "M",
+        "M"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_STATUS",
+      "dtype": "object",
+      "null_count": 55523,
+      "null_pct": 7.54,
+      "distinct_count": 4,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "A": 672579,
+        "R": 7177,
+        "I": 992,
+        "D": 492
+      },
+      "sample": [
+        "A",
+        "A",
+        "A",
+        "A",
+        "A"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_CUSTOMER_TYPE",
+      "dtype": "object",
+      "null_count": 55523,
+      "null_pct": 7.54,
+      "distinct_count": 3,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "HCPR": 679666,
+        "LHCP": 1120,
+        "HCPL": 454
+      },
+      "sample": [
+        "HCPR",
+        "HCPR",
+        "HCPR",
+        "HCPR",
+        "HCPR"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_NPI",
+      "dtype": "object",
+      "null_count": 57048,
+      "null_pct": 7.74,
+      "distinct_count": 89956,
+      "distinct_pct": 12.21,
+      "top_values": {
+        "1972814960": 2867,
+        "1336103233": 2342,
+        "1699733766": 1452,
+        "1659798726": 1269,
+        "1861750846": 960,
+        "1952646622": 760,
+        "1063527356": 602,
+        "1851352678": 557,
+        "1356533749": 553,
+        "1780797381": 551
+      },
+      "sample": [
+        "1730372467",
+        "1730372467",
+        "1730372467",
+        "1730372467",
+        "1033485156"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_TERRITORY_CODE",
+      "dtype": "object",
+      "null_count": 55539,
+      "null_pct": 7.54,
+      "distinct_count": 33,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "20122595": 101216,
+        "20122578": 48101,
+        "20122572": 44645,
+        "20122571": 33208,
+        "20122575": 32811,
+        "20122574": 32441,
+        "20122600": 29663,
+        "20122577": 29540,
+        "20122586": 29394,
+        "20122576": 23007
+      },
+      "sample": [
+        "20122591",
+        "20122591",
+        "20122591",
+        "20122591",
+        "20122590"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_TERRITORY_NAME",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 34,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Ohio": 101216,
+        "#N/A": 55539,
+        "Massachusetts": 48101,
+        "Mississippi": 44645,
+        "New York": 33208,
+        "Maine": 32811,
+        "Louisiana": 32441,
+        "Minnesota": 29663,
+        "Pennsylvania": 29540,
+        "New Hampshire": 29394
+      },
+      "sample": [
+        "Michigan",
+        "Michigan",
+        "Michigan",
+        "Michigan",
+        "North Dakota"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_DISTRICT_CODE",
+      "dtype": "object",
+      "null_count": 55539,
+      "null_pct": 7.54,
+      "distinct_count": 4,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "20122731": 243631,
+        "20122733": 223682,
+        "20122730": 213882,
+        "G00002": 29
+      },
+      "sample": [
+        "20122731",
+        "20122731",
+        "20122731",
+        "20122731",
+        "20122733"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_DISTRICT_NAME",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 4,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "South Carolina": 243631,
+        "Virginia": 223682,
+        "Kentucky": 213882,
+        "#N/A": 55568
+      },
+      "sample": [
+        "South Carolina",
+        "South Carolina",
+        "South Carolina",
+        "South Carolina",
+        "Virginia"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_REGION_CODE",
+      "dtype": "object",
+      "null_count": 55539,
+      "null_pct": 7.54,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "20075061": 681195,
+        "G00003": 29
+      },
+      "sample": [
+        "20075061",
+        "20075061",
+        "20075061",
+        "20075061",
+        "20075061"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PROV_REGION_NAME",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 3,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Midwest": 681195,
+        "#N/A": 55539,
+        "South": 29
+      },
+      "sample": [
+        "Midwest",
+        "Midwest",
+        "Midwest",
+        "Midwest",
+        "Midwest"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REF_ZIP",
+      "dtype": "object",
+      "null_count": 515087,
+      "null_pct": 69.91,
+      "distinct_count": 6453,
+      "distinct_pct": 0.88,
+      "top_values": {
+        "92708": 2093,
+        "92843": 1613,
+        "44195": 1325,
+        "10459": 1224,
+        "8103": 1138,
+        "29169": 1010,
+        "45249": 984,
+        "92868": 961,
+        "15205": 897,
+        "48073": 727
+      },
+      "sample": [
+        "53142",
+        "53143",
+        "7601",
+        "22920",
+        "24970"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REF_TERRITORY_CODE",
+      "dtype": "object",
+      "null_count": 515087,
+      "null_pct": 69.91,
+      "distinct_count": 33,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "20122595": 35949,
+        "20122578": 15394,
+        "20122575": 11769,
+        "20122571": 11314,
+        "20122572": 10862,
+        "20122599": 9634,
+        "20122574": 9217,
+        "20122591": 9100,
+        "20122577": 8610,
+        "20122586": 8391
+      },
+      "sample": [
+        "20122596",
+        "20122596",
+        "20122577",
+        "20122571",
+        "20122579"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REF_TERRITORY_NAME",
+      "dtype": "object",
+      "null_count": 515087,
+      "null_pct": 69.91,
+      "distinct_count": 33,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Ohio": 35949,
+        "Massachusetts": 15394,
+        "Maine": 11769,
+        "New York": 11314,
+        "Mississippi": 10862,
+        "Iowa": 9634,
+        "Louisiana": 9217,
+        "Michigan": 9100,
+        "Pennsylvania": 8610,
+        "New Hampshire": 8391
+      },
+      "sample": [
+        "Oklahoma",
+        "Oklahoma",
+        "Pennsylvania",
+        "New York",
+        "Georgia"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REF_DISTRICT_CODE",
+      "dtype": "object",
+      "null_count": 515087,
+      "null_pct": 69.91,
+      "distinct_count": 4,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "20122731": 83247,
+        "20122730": 71610,
+        "20122733": 66814,
+        "G00002": 5
+      },
+      "sample": [
+        "20122733",
+        "20122733",
+        "20122731",
+        "20122731",
+        "20122733"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REF_DISTRICT_NAME",
+      "dtype": "object",
+      "null_count": 515092,
+      "null_pct": 69.91,
+      "distinct_count": 3,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "South Carolina": 83247,
+        "Kentucky": 71610,
+        "Virginia": 66814
+      },
+      "sample": [
+        "Virginia",
+        "Virginia",
+        "South Carolina",
+        "South Carolina",
+        "Virginia"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REF_REGION_CODE",
+      "dtype": "object",
+      "null_count": 515087,
+      "null_pct": 69.91,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "20075061": 221671,
+        "G00003": 5
+      },
+      "sample": [
+        "20075061",
+        "20075061",
+        "20075061",
+        "20075061",
+        "20075061"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "REF_REGION_NAME",
+      "dtype": "object",
+      "null_count": 515087,
+      "null_pct": 69.91,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Midwest": 221671,
+        "South": 5
+      },
+      "sample": [
+        "Midwest",
+        "Midwest",
+        "Midwest",
+        "Midwest",
+        "Midwest"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "LIS_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 506928,
+        "0": 229835
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.6880475811081719
+    },
+    {
+      "name": "PRIORITY",
+      "dtype": "object",
+      "null_count": 27146,
+      "null_pct": 3.68,
+      "distinct_count": 4,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Non Target": 661797,
+        "Tier 3": 46316,
+        "Tier 2": 1016,
+        "Tier 1": 488
+      },
+      "sample": [
+        "Non Target",
+        "Non Target",
+        "Non Target",
+        "Non Target",
+        "Tier 3"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "2023Q3_severe_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 501093,
+        "0": 235670
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.6801278022919175
+    },
+    {
+      "name": "2023Q4_severe_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 525140,
+        "0": 211623
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.7127665205771734
+    },
+    {
+      "name": "2024Q1_severe_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 540625,
+        "0": 196138
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.7337841341109692
+    },
+    {
+      "name": "2024Q2_severe_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 545123,
+        "0": 191640
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.7398892181067724
+    },
+    {
+      "name": "2024Q3_severe_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 549420,
+        "0": 187343
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.7457214870996508
+    },
+    {
+      "name": "2024Q4_severe_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 539870,
+        "0": 196893
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.7327593812392859
+    },
+    {
+      "name": "2025Q1_severe_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 531503,
+        "0": 205260
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.7214029477593201
+    },
+    {
+      "name": "2025Q2_severe_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 517281,
+        "0": 219482
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.7020995896916647
+    },
+    {
+      "name": "2023Q3_Uncontrolled_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 488879,
+        "0": 247884
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.6635498796763681
+    },
+    {
+      "name": "2023Q4_Uncontrolled_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 505579,
+        "0": 231184
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.6862165988248595
+    },
+    {
+      "name": "2024Q1_Uncontrolled_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 492554,
+        "0": 244209
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.668537915177608
+    },
+    {
+      "name": "2024Q2_Uncontrolled_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 481854,
+        "0": 254909
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.6540149274597122
+    },
+    {
+      "name": "2024Q3_Uncontrolled_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 466073,
+        "0": 270690
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.6325955565086737
+    },
+    {
+      "name": "2024Q4_Uncontrolled_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 435583,
+        "0": 301180
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.5912118279555298
+    },
+    {
+      "name": "2025Q1_Uncontrolled_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 421349,
+        "0": 315414
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.5718921824250132
+    },
+    {
+      "name": "2025Q2_Uncontrolled_new_flag",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 423836,
+        "0": 312927
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.5752677591029951
+    },
+    {
+      "name": "DIAG_CD_DESC_ARRAY",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 192807,
+      "distinct_pct": 26.17,
+      "top_values": {
+        "[]": 165175,
+        "[\"UNSPECIFIED ASTHMA, UNCOMPLICATED\"]": 9247,
+        "[\"SEVERE PERSISTENT ASTHMA, UNCOMPLICATED\"]": 9150,
+        "[\"MODERATE PERSISTENT ASTHMA, UNCOMPLICATED\"]": 6835,
+        "[\"CHRONIC OBSTRUCTIVE PULMONARY DISEASE, UNSPECIFIED\"]": 5306,
+        "[\"MILD INTERMITTENT ASTHMA, UNCOMPLICATED\"]": 3477,
+        "[\"UNSPECIFIED ASTHMA WITH (ACUTE) EXACERBATION\"]": 3168,
+        "[\"CHRONIC OBSTRUCTIVE PULMONARY DISEASE WITH (ACUTE) EXACERBATION\"]": 3038,
+        "[\"SEVERE PERSISTENT ASTHMA WITH (ACUTE) EXACERBATION\"]": 2745,
+        "[\"MODERATE PERSISTENT ASTHMA WITH (ACUTE) EXACERBATION\"]": 1420
+      },
+      "sample": [
+        "[]",
+        "[]",
+        "[]",
+        "[]",
+        "[]"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "DIAGNOSIS_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 541762,
+        "1": 195001
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.2646726287829329
+    },
+    {
+      "name": "DERM_GI_ENT_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 718482,
+        "1": 18281
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.024812592380453417
+    },
+    {
+      "name": "HCP_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "1": 681240,
+        "0": 55523
+      },
+      "sample": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.9246392666298389
+    },
+    {
+      "name": "PAY_TYPE",
+      "dtype": "object",
+      "null_count": 31090,
+      "null_pct": 4.22,
+      "distinct_count": 5,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Medicare": 421424,
+        "Medicaid": 174389,
+        "Commercial": 104175,
+        "Others": 4998,
+        "Dual": 687
+      },
+      "sample": [
+        "Medicare",
+        "Medicare",
+        "Medicare",
+        "Medicare",
+        "Medicare"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_ZIP",
+      "dtype": "object",
+      "null_count": 52890,
+      "null_pct": 7.18,
+      "distinct_count": 2890,
+      "distinct_pct": 0.39,
+      "top_values": {
+        "92708": 3844,
+        "44195": 3401,
+        "2124": 3365,
+        "48073": 2905,
+        "1843": 2815,
+        "93301": 2804,
+        "70403": 2513,
+        "8103": 2423,
+        "1040": 2322,
+        "49085": 2314
+      },
+      "sample": [
+        "33542",
+        "33542",
+        "33542",
+        "33542",
+        "33542"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_STATE_NAME",
+      "dtype": "object",
+      "null_count": 52863,
+      "null_pct": 7.18,
+      "distinct_count": 49,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "CALIFORNIA": 130244,
+        "OHIO": 50580,
+        "NEW YORK": 50077,
+        "PENNSYLVANIA": 40451,
+        "FLORIDA": 35718,
+        "TEXAS": 33729,
+        "MICHIGAN": 33534,
+        "NEW JERSEY": 32092,
+        "MASSACHUSETTS": 27040,
+        "ARIZONA": 21695
+      },
+      "sample": [
+        "FLORIDA",
+        "FLORIDA",
+        "FLORIDA",
+        "FLORIDA",
+        "FLORIDA"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_STATE",
+      "dtype": "object",
+      "null_count": 52863,
+      "null_pct": 7.18,
+      "distinct_count": 49,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "CA": 130244,
+        "OH": 50580,
+        "NY": 50077,
+        "PA": 40451,
+        "FL": 35718,
+        "TX": 33729,
+        "MI": 33534,
+        "NJ": 32092,
+        "MA": 27040,
+        "AZ": 21695
+      },
+      "sample": [
+        "FL",
+        "FL",
+        "FL",
+        "FL",
+        "FL"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_TERRITORY_CODE",
+      "dtype": "object",
+      "null_count": 52890,
+      "null_pct": 7.18,
+      "distinct_count": 32,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "20122595": 102003,
+        "20122578": 49982,
+        "20122572": 44163,
+        "20122571": 34733,
+        "20122575": 33121,
+        "20122574": 32719,
+        "20122586": 29622,
+        "20122600": 29143,
+        "20122577": 28603,
+        "20122576": 22313
+      },
+      "sample": [
+        "20122591",
+        "20122591",
+        "20122591",
+        "20122591",
+        "20122591"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_TERRITORY_NAME",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 33,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Ohio": 102003,
+        "#N/A": 52890,
+        "Massachusetts": 49982,
+        "Mississippi": 44163,
+        "New York": 34733,
+        "Maine": 33121,
+        "Louisiana": 32719,
+        "New Hampshire": 29622,
+        "Minnesota": 29143,
+        "Pennsylvania": 28603
+      },
+      "sample": [
+        "Michigan",
+        "Michigan",
+        "Michigan",
+        "Michigan",
+        "Michigan"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_DISTRICT_CODE",
+      "dtype": "object",
+      "null_count": 52890,
+      "null_pct": 7.18,
+      "distinct_count": 3,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "20122731": 244806,
+        "20122733": 224540,
+        "20122730": 214527
+      },
+      "sample": [
+        "20122731",
+        "20122731",
+        "20122731",
+        "20122731",
+        "20122731"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_DISTRICT_NAME",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 4,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "South Carolina": 244806,
+        "Virginia": 224540,
+        "Kentucky": 214527,
+        "#N/A": 52890
+      },
+      "sample": [
+        "South Carolina",
+        "South Carolina",
+        "South Carolina",
+        "South Carolina",
+        "South Carolina"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_REGION_CODE",
+      "dtype": "object",
+      "null_count": 52890,
+      "null_pct": 7.18,
+      "distinct_count": 1,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "20075061": 683873
+      },
+      "sample": [
+        "20075061",
+        "20075061",
+        "20075061",
+        "20075061",
+        "20075061"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PAT_REGION_NAME",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "Midwest": 683873,
+        "#N/A": 52890
+      },
+      "sample": [
+        "Midwest",
+        "Midwest",
+        "Midwest",
+        "Midwest",
+        "Midwest"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "PRVDR_CUST_CLAS",
+      "dtype": "object",
+      "null_count": 27152,
+      "null_pct": 3.69,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "HCP": 681240,
+        "HCA": 28371
+      },
+      "sample": [
+        "HCP",
+        "HCP",
+        "HCP",
+        "HCP",
+        "HCP"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "YEAR_MONTH",
+      "dtype": "int32",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 71,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "202401": 14436,
+        "202308": 14220,
+        "202303": 14152,
+        "202311": 13985,
+        "202310": 13895,
+        "202305": 13804,
+        "202306": 13488,
+        "202312": 13389,
+        "202501": 13000,
+        "202410": 12938
+      },
+      "sample": [
+        "202203",
+        "202207",
+        "202203",
+        "202209",
+        "202206"
+      ],
+      "role_guess": "metric",
+      "min": 202001.0,
+      "max": 202511.0,
+      "mean": 202281.99788805898
+    },
+    {
+      "name": "SCS_TYPE",
+      "dtype": "object",
+      "null_count": 690142,
+      "null_pct": 93.67,
+      "distinct_count": 5,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "METHYLPREDNISOLONE": 19234,
+        "DEXAMETHASONE": 18972,
+        "TRIAMCINOLONE": 6270,
+        "BETAMETHASONE": 1122,
+        "HYDROCORTISONE": 1023
+      },
+      "sample": [
+        "METHYLPREDNISOLONE",
+        "TRIAMCINOLONE",
+        "DEXAMETHASONE",
+        "DEXAMETHASONE",
+        "TRIAMCINOLONE"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "TOTAL_SCS_DOSE",
+      "dtype": "object",
+      "null_count": 724928,
+      "null_pct": 98.39,
+      "distinct_count": 125,
+      "distinct_pct": 0.02,
+      "top_values": {
+        "62.5": 1750,
+        "50": 1458,
+        "200": 1119,
+        "100": 1037,
+        "400": 875,
+        "156.25": 826,
+        "125": 777,
+        "25": 750,
+        "75": 518,
+        "150": 459
+      },
+      "sample": [
+        "50",
+        "400",
+        "100",
+        "150",
+        "200"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "OSTEOPOROSIS_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 734350,
+        "1": 2413
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.0032751373236712482
+    },
+    {
+      "name": "HYPERTENSION_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 660994,
+        "1": 75769
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.10284039779413462
+    },
+    {
+      "name": "DIABETES_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 678441,
+        "1": 58322
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.079159784082534
+    },
+    {
+      "name": "CATARACT_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 735321,
+        "1": 1442
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.0019572101204865066
+    },
+    {
+      "name": "HOSP_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 726071,
+        "1": 10692
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.014512129409321586
+    },
+    {
+      "name": "ER_VISIT_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 728936,
+        "1": 7827
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.010623497651212127
+    },
+    {
+      "name": "OP_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 732168,
+        "1": 4595
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.006236740987264561
+    },
+    {
+      "name": "OCS_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 720694,
+        "1": 16069
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "1"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.021810270059707124
+    },
+    {
+      "name": "CHRONIC_STATUS",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 689709,
+        "1": 47054
+      },
+      "sample": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.06386585645587523
+    },
+    {
+      "name": "OCS_DOSE",
+      "dtype": "object",
+      "null_count": 708495,
+      "null_pct": 96.16,
+      "distinct_count": 272,
+      "distinct_pct": 0.04,
+      "top_values": {
+        "105": 4083,
+        "200": 4077,
+        "300": 3372,
+        "150": 1954,
+        "100": 1179,
+        "600": 966,
+        "120": 800,
+        "250": 774,
+        "160": 717,
+        "280": 662
+      },
+      "sample": [
+        "280",
+        "300",
+        "105",
+        "280",
+        "200"
+      ],
+      "role_guess": "dimension"
+    },
+    {
+      "name": "ICS_HIGH_MEDIUM_DOSE_FLAG",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 2,
+      "distinct_pct": 0.0,
+      "top_values": {
+        "0": 695248,
+        "1": 41515
+      },
+      "sample": [
+        "1",
+        "0",
+        "1",
+        "0",
+        "0"
+      ],
+      "role_guess": "dimension",
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.0563478350568636
+    },
+    {
+      "name": "PAT_AGE",
+      "dtype": "int8",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 74,
+      "distinct_pct": 0.01,
+      "top_values": {
+        "85": 54519,
+        "62": 30539,
+        "66": 26223,
+        "70": 25753,
+        "77": 24112,
+        "68": 23496,
+        "71": 21854,
+        "67": 20408,
+        "65": 20195,
+        "64": 20113
+      },
+      "sample": [
+        "72",
+        "72",
+        "72",
+        "72",
+        "72"
+      ],
+      "role_guess": "metric",
+      "min": 12.0,
+      "max": 85.0,
+      "mean": 63.43328044432199
+    }
+  ]
+}

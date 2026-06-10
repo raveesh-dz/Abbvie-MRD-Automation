@@ -1,0 +1,134 @@
+[
+  {
+    "left_table": "Monthly_Data_Tabular",
+    "left_col": "ROW_TYPE",
+    "right_table": "Weekly_Data_Tabular",
+    "right_col": "ROW_TYPE",
+    "name_match": "exact",
+    "jaccard": 1.0,
+    "overlap_pct_of_smaller": 1.0,
+    "left_distinct": 2,
+    "right_distinct": 2,
+    "left_unique": false,
+    "right_unique": false,
+    "cardinality": "many_to_many",
+    "sample_overlap": [
+      "PRODUCT",
+      "MARKET_TOTAL"
+    ],
+    "rationale": "",
+    "score": 2.5
+  },
+  {
+    "left_table": "Monthly_Data_Tabular",
+    "left_col": "NON_APPROVED_FLAG",
+    "right_table": "Weekly_Data_Tabular",
+    "right_col": "NON_APPROVED_FLAG",
+    "name_match": "exact",
+    "jaccard": 1.0,
+    "overlap_pct_of_smaller": 1.0,
+    "left_distinct": 2,
+    "right_distinct": 2,
+    "left_unique": false,
+    "right_unique": false,
+    "cardinality": "many_to_many",
+    "sample_overlap": [
+      "N",
+      "Y"
+    ],
+    "rationale": "",
+    "score": 2.5
+  },
+  {
+    "left_table": "Weekly_Data_Tabular",
+    "left_col": "PRODUCT",
+    "right_table": "ndc_brand_crosswalk",
+    "right_col": "PRODUCT",
+    "name_match": "exact",
+    "jaccard": 0.875,
+    "overlap_pct_of_smaller": 1.0,
+    "left_distinct": 32,
+    "right_distinct": 28,
+    "left_unique": false,
+    "right_unique": false,
+    "cardinality": "many_to_many",
+    "sample_overlap": [
+      "KINERET",
+      "ENBREL",
+      "SKYRIZI",
+      "ACTEMRA SQ",
+      "COSENTYX SQ"
+    ],
+    "rationale": "",
+    "score": 2.4375
+  },
+  {
+    "left_table": "ADHOC_FINAL_TABLE",
+    "left_col": "NDC_CD",
+    "right_table": "ndc_brand_crosswalk",
+    "right_col": "NDC_CD",
+    "name_match": "exact",
+    "jaccard": 0.0149,
+    "overlap_pct_of_smaller": 1.0,
+    "left_distinct": 4028,
+    "right_distinct": 60,
+    "left_unique": false,
+    "right_unique": true,
+    "cardinality": "many_to_one",
+    "sample_overlap": [
+      "186037020",
+      "93317431",
+      "173088210",
+      "55111072590",
+      "3029328"
+    ],
+    "rationale": "",
+    "score": 2.3074
+  },
+  {
+    "left_table": "Monthly_Data_Tabular",
+    "left_col": "PRODUCT",
+    "right_table": "Weekly_Data_Tabular",
+    "right_col": "PRODUCT",
+    "name_match": "exact",
+    "jaccard": 0.2778,
+    "overlap_pct_of_smaller": 0.7812,
+    "left_distinct": 83,
+    "right_distinct": 32,
+    "left_unique": false,
+    "right_unique": false,
+    "cardinality": "many_to_many",
+    "sample_overlap": [
+      "KINERET",
+      "ENBREL",
+      "ACTEMRA SQ",
+      "COSENTYX SQ",
+      "ILUMYA"
+    ],
+    "rationale": "",
+    "score": 1.9201
+  },
+  {
+    "left_table": "Monthly_Data_Tabular",
+    "left_col": "PRODUCT",
+    "right_table": "ndc_brand_crosswalk",
+    "right_col": "PRODUCT",
+    "name_match": "exact",
+    "jaccard": 0.2472,
+    "overlap_pct_of_smaller": 0.7857,
+    "left_distinct": 83,
+    "right_distinct": 28,
+    "left_unique": false,
+    "right_unique": false,
+    "cardinality": "many_to_many",
+    "sample_overlap": [
+      "KINERET",
+      "ENBREL",
+      "ACTEMRA SQ",
+      "COSENTYX SQ",
+      "ILUMYA"
+    ],
+    "rationale": "",
+    "score": 1.9093
+  }
+]

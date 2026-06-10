@@ -1,0 +1,14 @@
+{
+  "table": "ndc_brand_crosswalk",
+  "connector": "csv_local",
+  "source_object": "data\\ndc_brand_crosswalk.csv",
+  "fetched_at": "2026-06-09T11:35:37.799796+00:00",
+  "row_count": 60,
+  "column_count": 2,
+  "columns": [
+    "NDC_CD",
+    "PRODUCT"
+  ],
+  "column_hash": "sha256:0ea50e7efd9e79296398d42b67137b58f1c5571dfe939c3eabafdc805d4ad1c9",
+  "cache_path": "data\\_cache\\ndc_brand_crosswalk.parquet"
+}
