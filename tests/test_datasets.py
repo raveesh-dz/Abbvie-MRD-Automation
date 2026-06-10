@@ -17,3 +17,9 @@ def test_monthly_min_max(repo_copy):
     assert m["date_column"] == "MONTH_DATE"
     assert m["min_date"] == "2020-05-01"
     assert m["max_date"] == "2026-04-01"
+
+def test_table_info_quality_fields(repo_copy):
+    from server import datasets
+    t = datasets.table_info("Weekly_Data_Tabular")
+    assert t["metric_nulls"] >= 0
+    assert t["periods"] > 100        # ~106 weeks

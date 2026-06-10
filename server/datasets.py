@@ -33,6 +33,11 @@ def table_info(name: str) -> dict:
     df = pd.read_csv(config.data_dir() / f"{name}.csv")
     dcol = date_column(d)
     dates = pd.to_datetime(df[dcol], errors="coerce") if dcol else None
+    num = df.select_dtypes("number")
+    info_extra = {
+        "metric_nulls": int(num.isna().sum().sum()),
+        "periods": int(dates.nunique()) if dcol else None,
+    }
     return {
         "name": d.get("table", name),
         "description": d.get("description", ""),
@@ -42,6 +47,7 @@ def table_info(name: str) -> dict:
         "min_date": dates.min().strftime("%Y-%m-%d") if dcol else None,
         "max_date": dates.max().strftime("%Y-%m-%d") if dcol else None,
         "row_count": int(len(df)),
+        **info_extra,
     }
 
 
