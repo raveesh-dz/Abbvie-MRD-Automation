@@ -26,11 +26,27 @@ def _folder(v):
     return config.get_root() / v["folder"]
 
 
-def _weekly_max():
-    for t in datasets.all_tables():
-        if t["name"] == "Weekly_Data_Tabular":
-            return t["max_date"]
-    return None
+def declared_tables(v) -> list:
+    return v.get("tables") or ["Weekly_Data_Tabular", "Monthly_Data_Tabular"]
+
+
+def _current_max(tables=None) -> dict:
+    tables = tables if tables is not None else datasets.all_tables()
+    return {t["name"]: t["max_date"] for t in tables}
+
+
+def _declared_max(v) -> dict:
+    cur = _current_max()
+    return {n: cur[n] for n in declared_tables(v) if n in cur}
+
+
+def _is_stale(v, meta, cur: dict) -> bool:
+    rec = meta.get("data_max_at_run")
+    if not rec:
+        return False
+    if isinstance(rec, str):                       # pre-v2 metas: weekly only
+        rec = {"Weekly_Data_Tabular": rec}
+    return any(cur.get(n) and m and cur[n] > m for n, m in rec.items())
 
 
 def read_run_meta(v) -> dict:
@@ -64,14 +80,14 @@ def _append_history(folder, meta: dict, ok: bool) -> None:
     hp.write_text(json.dumps(hist[-50:], indent=2), encoding="utf-8")
 
 
-def view_status(v, weekly_max=None) -> dict:
+def view_status(v, cur=None) -> dict:
     base = {"id": v["id"], "title": v["title"], "status": v["status"],
             "tag": v.get("tag"), "brand": v.get("brand"),
             "description": v.get("description", ""), "note": v.get("note")}
     if v["status"] != "built":
         return base
     meta = read_run_meta(v)
-    wk = weekly_max if weekly_max is not None else _weekly_max()
+    cur = cur if cur is not None else _current_max()
     base.update({
         "last_run_at": meta.get("last_run_at"),
         "validation": meta.get("validation_status"),
@@ -79,21 +95,14 @@ def view_status(v, weekly_max=None) -> dict:
         "deck_available": meta.get("deck_available", False),
         "data_max_at_run": meta.get("data_max_at_run"),
         "never_run": not bool(meta),
-        "stale": bool(meta and meta.get("data_max_at_run") and wk
-                      and wk > meta["data_max_at_run"]),
+        "stale": _is_stale(v, meta, cur),
     })
     return base
 
 
-def _weekly_max_from(tables):
-    return next((t["max_date"] for t in tables
-                 if t["name"] == "Weekly_Data_Tabular"), None)
-
-
 def all_view_status(tables=None) -> list:
-    # Weekly max is identical for every view; parse the CSVs once, not N times.
-    wk = _weekly_max_from(tables) if tables is not None else _weekly_max()
-    return [view_status(v, wk) for v in load_registry()]
+    cur = _current_max(tables)
+    return [view_status(v, cur) for v in load_registry()]
 
 
 def _finish(v, folder, ok, validation, deck, log, vdetail=None):
@@ -101,7 +110,7 @@ def _finish(v, folder, ok, validation, deck, log, vdetail=None):
     rows = int(len(pd.read_csv(rp))) if rp.exists() else None
     meta = {
         "last_run_at": datetime.now().isoformat(timespec="seconds"),
-        "data_max_at_run": _weekly_max(),
+        "data_max_at_run": _declared_max(v),
         "validation_status": validation,
         "validation_detail": vdetail,
         "row_count": rows,

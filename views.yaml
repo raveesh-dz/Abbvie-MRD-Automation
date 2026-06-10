@@ -6,6 +6,7 @@ views:
     status: built
     kind: indication_split
     folder: output/tremfya_ibd_split
+    tables: [Weekly_Data_Tabular, Monthly_Data_Tabular]
 
   - id: skyrizi_ibd_split
     title: "SKYRIZI (SQ+IV+OBI) — IBD Indication Split"
@@ -14,6 +15,7 @@ views:
     status: built
     kind: indication_split
     folder: output/skyrizi_ibd_split
+    tables: [Weekly_Data_Tabular, Monthly_Data_Tabular]
 
   - id: humira_ibd_split
     title: "HUMIRA — IBD Indication Split"

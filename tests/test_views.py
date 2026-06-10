@@ -29,7 +29,10 @@ def test_run_view_produces_result_and_meta(repo_copy):
     folder = repo_copy / "output" / "tremfya_ibd_split"
     assert (folder / "result.csv").exists()
     meta = views.read_run_meta({"folder": "output/tremfya_ibd_split", "status": "built"})
-    assert meta["data_max_at_run"] == "2026-05-08"
+    from server import datasets
+    cur = {t["name"]: t["max_date"] for t in datasets.all_tables()}
+    assert meta["data_max_at_run"]["Weekly_Data_Tabular"] == cur["Weekly_Data_Tabular"]
+    assert "Monthly_Data_Tabular" in meta["data_max_at_run"]
     assert meta["row_count"] > 0
 
 @pytest.mark.slow
@@ -75,3 +78,41 @@ def test_append_history_strips_validation_detail(tmp_path):
                                      "validation_detail": {"big": "blob"}}, ok=True)
     hist = json.loads((tmp_path / "run_history.json").read_text(encoding="utf-8"))
     assert "validation_detail" not in hist[0]
+
+
+def _seed_meta(repo_copy, vid, data_max):
+    import json
+    from server import views
+    v = views.view_by_id(vid)
+    folder = repo_copy / v["folder"]
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / "run_meta.json").write_text(json.dumps({
+        "last_run_at": "2026-06-01T00:00:00", "data_max_at_run": data_max,
+        "validation_status": "pass", "row_count": 1, "deck_available": False,
+    }), encoding="utf-8")
+
+
+def test_stale_on_monthly_only_change(repo_copy):
+    from server import datasets, views
+    # weekly CURRENT (read live, not a literal — survives data changes),
+    # monthly behind → STALE even though weekly didn't move
+    cur = {t["name"]: t["max_date"] for t in datasets.all_tables()}
+    cur["Monthly_Data_Tabular"] = "2020-01-01"
+    _seed_meta(repo_copy, "tremfya_ibd_split", cur)
+    s = next(x for x in views.all_view_status() if x["id"] == "tremfya_ibd_split")
+    assert s["stale"] is True
+
+
+def test_not_stale_when_all_tables_current(repo_copy):
+    from server import views, datasets
+    cur = {t["name"]: t["max_date"] for t in datasets.all_tables()}
+    _seed_meta(repo_copy, "tremfya_ibd_split", cur)
+    s = next(x for x in views.all_view_status() if x["id"] == "tremfya_ibd_split")
+    assert s["stale"] is False
+
+
+def test_backward_compat_string_data_max(repo_copy):
+    from server import views
+    _seed_meta(repo_copy, "tremfya_ibd_split", "2020-01-01")  # old string format
+    s = next(x for x in views.all_view_status() if x["id"] == "tremfya_ibd_split")
+    assert s["stale"] is True   # weekly has moved past 2020
