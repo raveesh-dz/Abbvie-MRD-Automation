@@ -41,3 +41,17 @@ def test_engine_list_and_get(repo_copy):
         assert [i["id"] for i in items[:2]] == [b["id"], a["id"]]   # newest first
         assert c.get(f"/api/engine/{a['id']}").json()["question"] == "q1"
         assert c.get("/api/engine/nope").status_code == 404
+
+
+def test_promote_capability_ready_queues_question(repo_copy):
+    with _client(repo_copy) as c:
+        r = c.post("/api/views/humira_ibd_split/promote").json()
+        assert r["status"] == "queued"
+        assert "HUMIRA" in r["question"]
+
+
+def test_promote_rejects_data_gap_and_built(repo_copy):
+    with _client(repo_copy) as c:
+        assert c.post("/api/views/payer_mix/promote").status_code == 400
+        assert c.post("/api/views/tremfya_ibd_split/promote").status_code == 400
+        assert c.post("/api/views/nope/promote").status_code == 404

@@ -67,6 +67,18 @@ def create_app() -> FastAPI:
         snapshot.acknowledge()      # snapshot follows the restored originals
         return {"reset": True}
 
+    @app.post("/api/views/{vid}/promote")
+    def api_promote(vid: str):
+        v = views.view_by_id(vid)
+        if not v:
+            raise HTTPException(404, "no such view")
+        if v.get("status") != "placeholder" or v.get("tag") != "capability-ready":
+            raise HTTPException(400, "only capability-ready placeholders can be promoted")
+        q = (f"Build the view '{v['title']}': {v.get('description', '')} "
+             f"Use the established indication-split method if applicable. "
+             f"Replace the '{vid}' placeholder when registering the result.")
+        return engine.ask(q, build_deck=False)
+
     @app.post("/api/views/{vid}/run")
     def api_run(vid: str):
         try:
