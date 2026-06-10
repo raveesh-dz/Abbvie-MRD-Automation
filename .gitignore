@@ -20,3 +20,8 @@ Thumbs.db
 
 # Synthetic demo / format reference (not part of the project)
 _reference/
+
+# Runtime/demo state, never committed
+data/_original/
+data/.snapshot.json
+engine_inbox/
