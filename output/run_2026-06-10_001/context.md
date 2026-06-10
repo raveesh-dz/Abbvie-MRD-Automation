@@ -1,0 +1,7 @@
+# Context — run_2026-06-10_001
+headline: RA / JIA remains Humira's largest indication at 49,379 TRx in May 2026 — 2.1× Crohn's — after a uniform ~30% step-down across every indication from December 2025 into January 2026.
+methodology: Single-table read of the national Monthly IQVIA extract. Humira is the one brand row "HUMIRA (Including Citrate Free)"; biosimilars are separate products and excluded. PRODUCT rows only, Total PsA rollup excluded (PsA shown as Derm and Rheum separately). TRX_VOLUME reported as-is per indication and month — no allocation or derived metrics.
+filters_applied: Product = HUMIRA (Including Citrate Free); PRODUCT rows only (no market totals); Total PsA rollup excluded; months 2025-12 through 2026-05.
+time_period: 2025-12-01 to 2026-05-01 (latest 6 months in the Monthly table).
+data_freshness: Latest month used is 2026-05-01, the newest month in the extract. Whether the source treats the latest month as provisional is unconfirmed (open question in project memory).
+caveats: Indication markets overlap in this source, so volumes are NOT additive across indications — no total column is provided and none should be computed. GCA is included although Humira carries NON_APPROVED_FLAG = Y there (volume is negligible, ~90–180/month). Values are adjusted/projected volumes, not whole script counts. The December→January drop pattern has no documented context rule yet; it is reported as observed, not explained.
