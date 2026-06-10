@@ -17,15 +17,6 @@ views:
     folder: output/skyrizi_ibd_split
     tables: [Weekly_Data_Tabular, Monthly_Data_Tabular]
 
-  - id: q_20260610_120715572993_001
-    title: "HUMIRA — Monthly TRx by Indication (latest 6 months)"
-    brand: HUMIRA
-    description: "National monthly TRx for Humira across its 10 reported indications, Dec 2025 – May 2026."
-    status: built
-    kind: engine
-    folder: output/run_2026-06-10_001
-    tables: [Monthly_Data_Tabular]
-
   - id: humira_ibd_split
     title: "HUMIRA — IBD Indication Split"
     brand: HUMIRA
