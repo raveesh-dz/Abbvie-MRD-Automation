@@ -33,35 +33,40 @@ def has_backup() -> bool:
     return all((bdir / f"{n}.csv").exists() for n in (WEEKLY, MONTHLY))
 
 
-def _append(name, date_col, value_col, new_dates):
+def _append(name, date_col, value_col, new_dates) -> list:
     df = pd.read_csv(_csv(name))
     dts = pd.to_datetime(df[date_col])
     latest = df[dts == dts.max()].copy()
-    frames = [df]
+    frames, added = [df], []
     for k, new_dt in enumerate(new_dates(dts.max()), start=1):
         blk = latest.copy()
-        blk[date_col] = new_dt.strftime("%Y-%m-%d")
+        stamp = new_dt.strftime("%Y-%m-%d")
+        blk[date_col] = stamp
         blk[value_col] = (pd.to_numeric(blk[value_col], errors="coerce")
                           * (GROWTH ** k)).round(6)
         frames.append(blk)
+        added.append(stamp)
     pd.concat(frames, ignore_index=True).to_csv(_csv(name), index=False)
+    return added
 
 
-def simulate() -> dict:
+def simulate(weeks: int = 4) -> dict:
+    weeks = max(1, min(int(weeks), 8))
     ensure_backup()
-    _append(WEEKLY, "WEEK_ENDING", "TRX_ADJUSTED",
-            lambda m: [m + pd.Timedelta(days=7 * k) for k in range(1, 5)])
-    _append(MONTHLY, "MONTH_DATE", "TRX_VOLUME",
-            lambda m: [m + pd.offsets.MonthBegin(1)])
-    # The frontend immediately calls refreshAll()/refresh-check, which re-reads
-    # min/max via datasets.all_tables(); no need to re-parse both CSVs here.
-    return {"ok": True}
+    wk = _append(WEEKLY, "WEEK_ENDING", "TRX_ADJUSTED",
+                 lambda m: [m + pd.Timedelta(days=7 * k) for k in range(1, weeks + 1)])
+    mo = _append(MONTHLY, "MONTH_DATE", "TRX_VOLUME",
+                 lambda m: [m + pd.offsets.MonthBegin(1)])
+    return {"ok": True, "weekly_added": wk, "monthly_added": mo}
 
 
 def reset() -> bool:
+    """Restore originals AND delete the backup, so has_backup() doubles as
+    the 'demo data active' indicator."""
     if not has_backup():
         return False
     bdir = config.original_backup_dir()
     for name in (WEEKLY, MONTHLY):
         shutil.copy2(bdir / f"{name}.csv", _csv(name))
+        (bdir / f"{name}.csv").unlink()
     return True

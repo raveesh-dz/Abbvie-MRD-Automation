@@ -22,3 +22,19 @@ def test_reset_restores_byte_identical(repo_copy):
 
 def test_reset_without_backup_is_noop(repo_copy):
     assert simulate.reset() is False
+
+
+def test_simulate_reports_added_periods(repo_copy):
+    from server import simulate
+    out = simulate.simulate(weeks=2)
+    assert len(out["weekly_added"]) == 2
+    assert len(out["monthly_added"]) == 1
+    assert out["weekly_added"][0] > "2026-05-08"
+
+
+def test_reset_clears_demo_state(repo_copy):
+    from server import simulate
+    simulate.simulate(weeks=1)
+    assert simulate.has_backup() is True
+    assert simulate.reset() is True
+    assert simulate.has_backup() is False      # badge clears after reset

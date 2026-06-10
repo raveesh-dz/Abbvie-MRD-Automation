@@ -44,12 +44,16 @@ def create_app() -> FastAPI:
         return snapshot.acknowledge()
 
     @app.post("/api/data/simulate")
-    def api_simulate():
+    def api_simulate(body: dict | None = Body(None)):
         try:
             with runner.run_lock():
-                return simulate.simulate()
+                return simulate.simulate(weeks=(body or {}).get("weeks", 4))
         except runner.Busy:
             raise HTTPException(409, "busy")
+
+    @app.get("/api/data/demo-status")
+    def api_demo_status():
+        return {"demo_active": simulate.has_backup()}
 
     @app.post("/api/data/reset")
     def api_reset():
@@ -60,6 +64,7 @@ def create_app() -> FastAPI:
             raise HTTPException(409, "busy")
         if not ok:
             raise HTTPException(400, "no backup to reset from")
+        snapshot.acknowledge()      # snapshot follows the restored originals
         return {"reset": True}
 
     @app.post("/api/views/{vid}/run")
