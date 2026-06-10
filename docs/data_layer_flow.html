@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MRD Data Layer — End-to-End Flow</title>
+<style>
+  :root {
+    --navy:   #071D49;
+    --magenta:#E40D62;
+    --teal:   #07B2AC;
+    --gray:   #50535A;
+    --pink:   #FBE3EA;
+    --blue:   #ECF1F8;
+    --mint:   #E6F7F6;
+    --line:   #D9DEE8;
+    --bg:     #F8F9FC;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--navy);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  body { padding: 32px 24px 80px; }
+  .page { max-width: 1200px; margin: 0 auto; }
+
+  /* Header */
+  h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.5px; }
+  .sub { color: var(--gray); font-size: 14px; margin: 0 0 28px; }
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; margin: 0 0 32px;
+    padding: 14px 18px; background: white; border: 1px solid var(--line);
+    border-radius: 10px; font-size: 13px; }
+  .legend .key { display: flex; align-items: center; gap: 8px; }
+  .legend .swatch { width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--line); }
+  .sw-auto { background: var(--blue); }
+  .sw-user { background: var(--pink); }
+  .sw-valid { background: var(--mint); }
+  .sw-engine { background: #FFF8E6; }
+
+  /* Flow */
+  .flow { display: flex; flex-direction: column; gap: 6px; }
+  .step {
+    background: white; border: 1px solid var(--line); border-radius: 12px;
+    padding: 18px 22px; position: relative;
+    box-shadow: 0 1px 2px rgba(7,29,73,0.04);
+  }
+  .step.auto   { background: var(--blue); }
+  .step.user   { background: var(--pink); border-color: #f3c4d2; }
+  .step.valid  { background: var(--mint); }
+  .step.engine { background: #FFF8E6; }
+
+  .step .row1 { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .step .num {
+    display: inline-flex; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--navy); color: white; font-weight: 600; font-size: 13px;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .step.user .num { background: var(--magenta); }
+  .step.valid .num { background: var(--teal); }
+  .step.engine .num { background: #B8860B; }
+  .step h2 { font-size: 17px; margin: 0; }
+  .step .tag {
+    font-size: 11px; padding: 2px 9px; border-radius: 999px;
+    background: white; color: var(--gray); border: 1px solid var(--line);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .step .what { margin: 10px 0 0; font-size: 14px; line-height: 1.55; color: #2A3960; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+  .grid > div {
+    background: rgba(255,255,255,0.7); border: 1px solid var(--line);
+    border-radius: 8px; padding: 10px 12px;
+  }
+  .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--gray); margin: 0 0 4px; font-weight: 600; }
+  code, pre {
+    font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+    font-size: 12.5px;
+  }
+  pre {
+    margin: 4px 0 0; padding: 8px 10px; background: white;
+    border: 1px solid var(--line); border-radius: 6px; overflow-x: auto;
+    color: var(--navy);
+  }
+  .files { font-size: 12.5px; color: var(--gray); }
+  .files code { background: white; padding: 1px 6px; border: 1px solid var(--line); border-radius: 4px; }
+
+  /* Arrow */
+  .arrow { display: flex; justify-content: center; height: 22px; }
+  .arrow::before {
+    content: ""; width: 2px; background: var(--navy);
+  }
+  .arrow.user::before { background: var(--magenta); }
+  .arrow.valid::before { background: var(--teal); }
+  .arrow.engine::before { background: #B8860B; }
+
+  /* Decision (branch) */
+  .branch {
+    display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px;
+    margin: 6px 0;
+  }
+  .branch .arm {
+    background: white; border: 1px dashed var(--line); border-radius: 10px;
+    padding: 14px 16px; font-size: 13px; color: var(--gray);
+  }
+  .branch .arm strong { color: var(--navy); }
+  .branch .merge {
+    align-self: center; font-size: 13px; color: var(--gray);
+    padding: 6px 10px; background: white; border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+
+  /* Footer */
+  .foot {
+    margin-top: 40px; padding: 20px 24px; background: white;
+    border: 1px solid var(--line); border-radius: 12px; font-size: 13px;
+    color: var(--gray); line-height: 1.6;
+  }
+  .foot strong { color: var(--navy); }
+  .foot ul { margin: 6px 0 0 18px; padding: 0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>MRD Data Layer — End-to-End Flow</h1>
+  <p class="sub">
+    From raw source (Snowflake or CSV) all the way to a user query answered with insights + optional deck.
+    Self-contained reference for the <code>feature/data-layer</code> branch.
+  </p>
+
+  <div class="legend">
+    <div class="key"><span class="swatch sw-auto"></span> Automated (engine runs it)</div>
+    <div class="key"><span class="swatch sw-user"></span> User gate (confirm / edit / reject)</div>
+    <div class="key"><span class="swatch sw-valid"></span> Validation</div>
+    <div class="key"><span class="swatch sw-engine"></span> Query-time (existing engine)</div>
+  </div>
+
+  <div class="flow">
+
+    <!-- 0. One-time setup -->
+    <div class="step auto">
+      <div class="row1">
+        <span class="num">0</span>
+        <h2>One-time setup</h2>
+        <span class="tag">automated · ~10 min</span>
+      </div>
+      <p class="what">
+        Install the package, drop credentials into <code>.env</code>, and (if you have a new connector instance)
+        declare it in <code>connectors/&lt;name&gt;.yaml</code>. csv_local + snowflake_dz already exist.
+      </p>
+      <div class="grid">
+        <div>
+          <p class="label">commands</p>
+          <pre>py -3 -m pip install -e .
+cp .env.example .env   # fill creds</pre>
+        </div>
+        <div>
+          <p class="label">artifacts</p>
+          <p class="files"><code>.env</code> (gitignored), <code>connectors/snowflake_dz.yaml</code>, <code>connectors/csv_local.yaml</code></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- 1. Source -->
+    <div class="step auto">
+      <div class="row1">
+        <span class="num">1</span>
+        <h2>Pick source for a table</h2>
+        <span class="tag">user picks · automated dispatch</span>
+      </div>
+      <p class="what">
+        Engine dispatches by connector type. Same downstream pipeline regardless of source.
+      </p>
+      <div class="branch">
+        <div class="arm">
+          <strong>CSV path</strong><br>
+          Drop file in <code>/data/</code><br>
+          <code>mrd onboard csv_local &lt;file.csv&gt;</code>
+        </div>
+        <div class="merge">or</div>
+        <div class="arm">
+          <strong>Snowflake path</strong><br>
+          Table in any DB.SCHEMA you can <code>SELECT</code> from<br>
+          <code>mrd onboard snowflake_dz &lt;DB.SCHEMA.TABLE&gt;</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- 2. Fetch -->
+    <div class="step auto">
+      <div class="row1">
+        <span class="num">2</span>
+        <h2>Fetch → local parquet cache</h2>
+        <span class="tag">automated</span>
+      </div>
+      <p class="what">
+        Connector pulls the source into <code>data/_cache/&lt;table&gt;.parquet</code> with a row-cap guardrail
+        (default 10M). For Snowflake: cursor fetch via SSO. For CSV: read + re-save as parquet.
+        Returns a <strong>Manifest</strong> (connector, fetched_at, row_count, column_hash, cache_path).
+      </p>
+      <div class="grid">
+        <div>
+          <p class="label">files written</p>
+          <p class="files"><code>data/_cache/&lt;table&gt;.parquet</code></p>
+        </div>
+        <div>
+          <p class="label">guardrails</p>
+          <p class="files">row_cap 10M · SSO timeout · column-hash for drift</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- 3. Profile -->
+    <div class="step auto">
+      <div class="row1">
+        <span class="num">3</span>
+        <h2>Profile every column</h2>
+        <span class="tag">automated</span>
+      </div>
+      <p class="what">
+        Statistical profiler: per column dtype, null %, distinct count, top-K values, min/max,
+        sample rows, role guess (key / dimension / metric / date / flag).
+        This grounds the LLM step so it can't hallucinate.
+      </p>
+      <p class="files">writes <code>profiles/&lt;table&gt;.json</code></p>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- 4. Propose metadata -->
+    <div class="step auto">
+      <div class="row1">
+        <span class="num">4</span>
+        <h2>Propose metadata (LLM)</h2>
+        <span class="tag">automated · Claude CLI</span>
+      </div>
+      <p class="what">
+        Claude Code CLI (headless <code>claude -p</code>, prompt piped via stdin) reads the profile JSON +
+        column samples and proposes: table description, grain, business meaning per column,
+        synonyms, role, known issues (rollup rows, biosimilar traps, coding-system caveats like
+        NDC zero-padding). Falls back to a heuristic backend if the CLI is unavailable.
+      </p>
+      <div class="grid">
+        <div>
+          <p class="label">backends</p>
+          <p class="files"><code>claude_cli</code> (default) · <code>heuristic</code> (fallback) · <code>anthropic_api</code> (stub)</p>
+        </div>
+        <div>
+          <p class="label">writes</p>
+          <p class="files"><code>metadata/&lt;table&gt;.yaml.proposed</code></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow user"></div>
+
+    <!-- 5. Review metadata -->
+    <div class="step user">
+      <div class="row1">
+        <span class="num">5</span>
+        <h2>User gate: review metadata</h2>
+        <span class="tag">user confirmation</span>
+      </div>
+      <p class="what">
+        Diff <code>.yaml.proposed</code> against existing (if any) and accept / edit / reject per top-level
+        field. Optional per-column drill-down. Auto-accept mode for batch onboarding.
+        Promotes <code>.yaml.proposed</code> → <code>.yaml</code>.
+      </p>
+      <pre>mrd review &lt;table&gt;            # interactive
+mrd review &lt;table&gt; --auto     # headless accept-all</pre>
+      <p class="files">writes <code>metadata/&lt;table&gt;.yaml</code> (the canonical dictionary)</p>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- 6. (loop) per-table onboarding repeats -->
+    <div class="step auto">
+      <div class="row1">
+        <span class="num">↻</span>
+        <h2>Repeat steps 1–5 for every table</h2>
+        <span class="tag">per-table loop</span>
+      </div>
+      <p class="what">
+        Onboard each new source / file in turn. Order doesn't matter. Existing onboarded
+        tables aren't affected. Once you've onboarded enough tables to join, proceed.
+      </p>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- 7. Joins discovery -->
+    <div class="step auto">
+      <div class="row1">
+        <span class="num">7</span>
+        <h2>Discover candidate joins</h2>
+        <span class="tag">automated</span>
+      </div>
+      <p class="what">
+        Engine scores every column pair across onboarded tables on three signals:
+        <strong>name match</strong> (exact / strong substring),
+        <strong>Jaccard value overlap</strong> on stringified distincts (sample-capped),
+        and <strong>cardinality</strong> (1:1 / 1:N / N:1 / N:M).
+        Optional one-line LLM rationale per candidate (via Claude CLI).
+        Output is a ranked table with confidence + sample overlap.
+      </p>
+      <pre>mrd joins recommend                  # ranked candidate list
+mrd joins recommend --no-rationales  # skip LLM rationale (faster)</pre>
+      <p class="files">writes <code>profiles/join_candidates.json</code></p>
+    </div>
+
+    <div class="arrow user"></div>
+
+    <!-- 8. Joins confirmation -->
+    <div class="step user">
+      <div class="row1">
+        <span class="num">8</span>
+        <h2>User gate: confirm joins</h2>
+        <span class="tag">user confirmation</span>
+      </div>
+      <p class="what">
+        Two modes: pick specific candidates by index, or accept all above threshold.
+        Confirmed edges are <strong>appended idempotently</strong> to <code>metadata/relationships.yaml</code>,
+        carrying provenance (auto-discovered, name_match, jaccard, overlap, rationale).
+        The hand-curated edges that already live in <code>relationships.yaml</code> are preserved.
+      </p>
+      <pre>mrd joins accept 0 2 4 7      # cherry-pick
+mrd joins recommend --accept-all   # bulk</pre>
+      <p class="files">writes <code>metadata/relationships.yaml</code></p>
+    </div>
+
+    <div class="arrow valid"></div>
+
+    <!-- 9. Validate -->
+    <div class="step valid">
+      <div class="row1">
+        <span class="num">9</span>
+        <h2>Validate the data layer</h2>
+        <span class="tag">validation gate</span>
+      </div>
+      <p class="what">
+        Extended schema gate. For each dictionary: cache exists, columns match,
+        dtypes parse, column hash unchanged. Cross-checks <code>relationships.yaml</code> references against
+        every column in every dictionary. With <code>--include-remote</code>, also handshakes
+        Snowflake and diffs the live schema vs the dictionary.
+      </p>
+      <pre>mrd validate                 # local checks
+py -3 scripts/validate_schema.py --include-remote   # + Snowflake drift</pre>
+      <p class="files">exit 0 = clear · 1 = halt · 2 = warnings only</p>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- 10. Foundation ready -->
+    <div class="step auto">
+      <div class="row1">
+        <span class="num">10</span>
+        <h2>Data layer ready — foundation locked in</h2>
+        <span class="tag">milestone</span>
+      </div>
+      <p class="what">
+        At this point every onboarded table has a dictionary, a profile, a manifest, and a loadable
+        cache. Every confirmed join lives in <code>relationships.yaml</code>. The engine sees a uniform
+        interface via <code>mrd_engine.loader.load(&lt;table&gt;)</code> regardless of source.
+        <code>mrd status</code> shows the inventory.
+      </p>
+    </div>
+
+    <div class="arrow engine"></div>
+
+    <!-- 11. User query lands -->
+    <div class="step engine">
+      <div class="row1">
+        <span class="num">11</span>
+        <h2>User asks a query</h2>
+        <span class="tag">query time</span>
+      </div>
+      <p class="what">
+        Plain English. The Claude Code orchestrator parses it per <code>CLAUDE.md</code> protocol:
+        extract entities, metrics, time window, output grain.
+      </p>
+      <p class="files">example: "Top 10 brands by 2024 patient claim count, with their IQVIA latest weekly TRx"</p>
+    </div>
+
+    <div class="arrow engine"></div>
+
+    <!-- 12. Feasibility + plan -->
+    <div class="step engine">
+      <div class="row1">
+        <span class="num">12</span>
+        <h2>Feasibility check + plan</h2>
+        <span class="tag">query time · automated</span>
+      </div>
+      <p class="what">
+        Engine checks the query against dictionaries, relationships, and semantic rules.
+        Three outcomes: <strong>feasible</strong>, <strong>feasible with assumptions</strong> (surfaced for user
+        confirmation), or <strong>data / semantic gap</strong> (reported, stopped). If feasible, writes
+        <code>analysis_plan.md</code> with tables, joins, filters, assumptions, expected row count.
+      </p>
+      <p class="files">writes <code>output/run_&lt;id&gt;/analysis_plan.md</code> + <code>query.txt</code></p>
+    </div>
+
+    <div class="arrow engine"></div>
+
+    <!-- 13. Codegen -->
+    <div class="step engine">
+      <div class="row1">
+        <span class="num">13</span>
+        <h2>Generate <code>analysis_code.py</code></h2>
+        <span class="tag">query time · pandas codegen</span>
+      </div>
+      <p class="what">
+        Standalone, re-runnable script. Reads tables via
+        <code>mrd_engine.loader.load(&lt;table&gt;)</code> — never <code>pd.read_csv</code> directly. Copies joins
+        verbatim from <code>relationships.yaml</code>. Applies standing filters. Slide-size convention:
+        ≤2000 rows in <code>result.csv</code>.
+      </p>
+      <pre>from mrd_engine.loader import load
+claims = load("ADHOC_FINAL_TABLE")          # Snowflake parquet
+cross  = load("ndc_brand_crosswalk")        # csv_local parquet
+weekly = load("Weekly_Data_Tabular")        # legacy CSV
+# ... joins, filters, aggs ...
+result.to_csv("result.csv", index=False)</pre>
+    </div>
+
+    <div class="arrow engine"></div>
+
+    <!-- 14. Execute -->
+    <div class="step engine">
+      <div class="row1">
+        <span class="num">14</span>
+        <h2>Execute (pandas) + write manifest</h2>
+        <span class="tag">query time · automated</span>
+      </div>
+      <p class="what">
+        Pandas runs locally against parquet / CSV caches. No SQL push-down today —
+        all compute is local pandas on the cached data. Output table written to
+        <code>result.csv</code>. A <code>source_manifest.json</code> pins connector + fetched_at +
+        column_hash per source touched. Reproducible.
+      </p>
+      <p class="files">writes <code>output/run_&lt;id&gt;/result.csv</code> + <code>source_manifest.json</code></p>
+    </div>
+
+    <div class="arrow valid"></div>
+
+    <!-- 15. Validate result -->
+    <div class="step valid">
+      <div class="row1">
+        <span class="num">15</span>
+        <h2>Validate the result</h2>
+        <span class="tag">validation gate</span>
+      </div>
+      <p class="what">
+        <code>scripts/validate_result.py</code>: row count vs plan, slide-size cap, null audit on metric
+        columns, duplicate-row check (catches join fan-out). Failure = engine does not deliver;
+        plan or code gets fixed and re-run.
+      </p>
+      <p class="files">exit 0 PASS · 1 FAIL · 2 warnings</p>
+    </div>
+
+    <div class="arrow engine"></div>
+
+    <!-- 16. Insights -->
+    <div class="step engine">
+      <div class="row1">
+        <span class="num">16</span>
+        <h2>Insights → <code>takeaways.md</code> + <code>context.md</code></h2>
+        <span class="tag">query time · automated</span>
+      </div>
+      <p class="what">
+        2–4 numbered takeaways, every one traceable to a number in <code>result.csv</code>. Uses
+        <code>semantic/context.md</code> rules to explain patterns. Flags caveats (provisional weeks,
+        synthetic crosswalks, projected vs adjusted volumes).
+      </p>
+      <p class="files">writes <code>takeaways.md</code> + <code>context.md</code> — completes the 6-file contract</p>
+    </div>
+
+    <div class="arrow user"></div>
+
+    <!-- 17. Deliver + deck gate -->
+    <div class="step user">
+      <div class="row1">
+        <span class="num">17</span>
+        <h2>Deliver + ask about deck</h2>
+        <span class="tag">user gate · default stop</span>
+      </div>
+      <p class="what">
+        Engine confirms delivery with the headline + run-folder path. Then asks
+        <em>"Do you want me to build a slide deck for this?"</em>
+        Default stop. Deck only built on explicit yes.
+      </p>
+    </div>
+
+    <div class="arrow engine"></div>
+
+    <!-- 18. Optional deck -->
+    <div class="step engine">
+      <div class="row1">
+        <span class="num">18</span>
+        <h2>Optional: build deck (python-pptx)</h2>
+        <span class="tag">opt-in · automated</span>
+      </div>
+      <p class="what">
+        On explicit user yes: write <code>deck_spec.json</code>, run
+        <code>scripts/build_deck_pptx.py output/&lt;run_id&gt;</code>. Renders a DataZymes/Otsuka-style
+        deck (navy section strip, statement title, italic dek, native line chart, numbered
+        insight blocks, TL;DR bar). Integer-EMU sanitizer + round-trip validation. Numbers
+        read live from <code>result.csv</code> — never hard-coded.
+      </p>
+      <p class="files">writes <code>deck_spec.json</code> + <code>deck.pptx</code></p>
+    </div>
+
+  </div>
+
+  <!-- Footer summary -->
+  <div class="foot">
+    <p><strong>Mental model in one line:</strong> connector → fetch → profile → propose → <em>user confirms metadata</em> → joins → <em>user confirms joins</em> → validate → uniform <code>load()</code> surface → query → plan → pandas codegen → result + manifest → validate → insights → optional deck.</p>
+    <p><strong>Two user gates:</strong> metadata signoff (per table), joins signoff (across tables). Everything else is automated.</p>
+    <p><strong>Engine touch points:</strong></p>
+    <ul>
+      <li><code>mrd_engine.loader.load(table)</code> — single source-agnostic read surface.</li>
+      <li><code>mrd_engine.runs.manifest.write_manifest()</code> — reproducibility per run.</li>
+      <li><code>scripts/validate_schema.py</code> — pre-flight gate (boot-time).</li>
+      <li><code>scripts/validate_result.py</code> — post-execution gate.</li>
+    </ul>
+    <p><strong>Not yet wired:</strong> SQL push-down to Snowflake (would require DuckDB federation; deferred). Anthropic API metadata backend (stubbed). Refresh-cadence TTL (manual re-onboard for now).</p>
+  </div>
+
+</div>
+</body>
+</html>
