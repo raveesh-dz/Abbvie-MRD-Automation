@@ -1,0 +1,29 @@
+{
+  "ADHOC_FINAL_TABLE": {
+    "connector": "snowflake_dz",
+    "source_object": "SNDBX_DB.ADHOC.ADHOC_FINAL_TABLE",
+    "fetched_at": "2026-06-09T11:34:04.914358+00:00",
+    "row_count": 736763,
+    "column_count": 222,
+    "column_hash": "sha256:1edf5b59fa56ad004a2c966a68035d7beeaaf2ea9af0747203c01e8b19c41da8",
+    "cache_path": "data\\_cache\\ADHOC_FINAL_TABLE.parquet"
+  },
+  "ndc_brand_crosswalk": {
+    "connector": "csv_local",
+    "source_object": "ndc_brand_crosswalk.csv",
+    "fetched_at": "2026-06-09T11:35:37.799796+00:00",
+    "row_count": 60,
+    "column_count": 2,
+    "column_hash": "sha256:0ea50e7efd9e79296398d42b67137b58f1c5571dfe939c3eabafdc805d4ad1c9",
+    "cache_path": "data\\_cache\\ndc_brand_crosswalk.parquet"
+  },
+  "Weekly_Data_Tabular": {
+    "connector": "csv_legacy",
+    "source_object": "data\\Weekly_Data_Tabular.csv",
+    "fetched_at": "2026-06-09T11:50:13.495419+00:00",
+    "row_count": -1,
+    "column_count": 7,
+    "column_hash": "sha256:0335640e1efc4e6223090e0be5cc00412d76435b898afa65dc9420a3b336181a",
+    "cache_path": "data\\Weekly_Data_Tabular.csv"
+  }
+}

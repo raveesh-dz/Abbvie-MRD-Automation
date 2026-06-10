@@ -1,0 +1,65 @@
+{
+  "row_count": 60,
+  "column_count": 2,
+  "columns": [
+    {
+      "name": "NDC_CD",
+      "dtype": "int64",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 60,
+      "distinct_pct": 100.0,
+      "top_values": {
+        "66993001968": 1,
+        "186037020": 1,
+        "93317431": 1,
+        "31722072610": 1,
+        "68180096301": 1,
+        "173068220": 1,
+        "173088710": 1,
+        "173089310": 1,
+        "310737020": 1,
+        "65862057490": 1
+      },
+      "sample": [
+        "66993001968",
+        "186037020",
+        "93317431",
+        "31722072610",
+        "68180096301"
+      ],
+      "role_guess": "key",
+      "min": 3029328.0,
+      "max": 76204060060.0,
+      "mean": 28592577706.95
+    },
+    {
+      "name": "PRODUCT",
+      "dtype": "object",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "distinct_count": 28,
+      "distinct_pct": 46.67,
+      "top_values": {
+        "STELARA SQ": 9,
+        "SKYRIZI OBI": 7,
+        "HUMIRA (Including Citrate Free)": 5,
+        "TREMFYA": 4,
+        "SKYRIZI": 4,
+        "RINVOQ": 3,
+        "CIMZIA": 2,
+        "ACTEMRA BIOSIMILARS SQ TOTAL": 2,
+        "ILUMYA": 2,
+        "VELSIPITY": 2
+      },
+      "sample": [
+        "ACTEMRA BIOSIMILARS SQ TOTAL",
+        "SKYRIZI OBI",
+        "SKYRIZI",
+        "BIMZELX",
+        "CIMZIA"
+      ],
+      "role_guess": "dimension"
+    }
+  ]
+}
