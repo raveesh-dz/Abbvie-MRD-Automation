@@ -5,31 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Query-to-Slide · Control Panel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <header class="topbar">
-    <div class="brand"><span class="mark">▶</span> DataZymes <span class="sep">·</span> Query-to-Slide</div>
-    <div id="freshness" class="freshness"></div>
+    <div class="brand"><span class="mark" aria-hidden="true">▶</span> DataZymes <span class="sep">·</span> Query-to-Slide <span class="v2">v2</span></div>
+    <div class="top-status">
+      <span id="demo-chip" class="chip warn hidden">demo data active</span>
+      <span id="pipeline-chip" class="chip idle">idle</span>
+      <div id="freshness" class="freshness"></div>
+    </div>
   </header>
 
   <main>
-    <section>
-      <h2>Datasets</h2>
+    <section id="sec-data">
+      <div class="sec-head">
+        <h2>Datasets</h2>
+        <div class="sim-controls">
+          <label class="lbl" for="sim-weeks">Simulate new data</label>
+          <select id="sim-weeks">
+            <option value="1">+1 week</option>
+            <option value="2">+2 weeks</option>
+            <option value="4" selected>+4 weeks</option>
+          </select>
+          <button id="btn-simulate" class="btn">Add</button>
+          <button id="btn-reset" class="btn ghost">Reset demo data</button>
+        </div>
+      </div>
       <div id="tables" class="grid"></div>
     </section>
 
-    <section>
+    <section id="sec-pipeline">
+      <h2>Refresh</h2>
       <div class="controls">
-        <button id="btn-refresh" class="btn primary">Data Refresh</button>
-        <button id="btn-simulate" class="btn">Simulate new month</button>
-        <button id="btn-reset" class="btn ghost">Reset demo data</button>
+        <!-- toggle-button semantics: Tab between buttons, Enter/Space activates;
+             role=radio would demand the roving-tabindex/arrow-key pattern -->
+        <div class="segmented" role="group" aria-label="Refresh depth">
+          <button class="seg active" data-mode="check" aria-pressed="true">Check</button>
+          <button class="seg" data-mode="data" aria-pressed="false">Data refresh</button>
+          <button class="seg" data-mode="full" aria-pressed="false">Full pipeline</button>
+        </div>
+        <button id="btn-go" class="btn primary">Run</button>
+        <span class="mode-hint" id="mode-hint"></span>
       </div>
       <div id="banner" class="banner hidden"></div>
+      <div id="confirm" class="confirm hidden"></div>
+      <ol id="stepper" class="stepper hidden"></ol>
     </section>
 
-    <section>
+    <section id="sec-views">
       <div class="views-head">
         <h2>Views</h2>
         <div class="views-actions">
@@ -40,18 +65,32 @@
       <div id="views" class="grid"></div>
     </section>
 
-    <section id="result-section" class="hidden">
-      <h2 id="result-title">Result</h2>
-      <div id="deck-link" class="deck-link"></div>
-      <div class="result-wrap">
-        <div id="chart"></div>
-        <div id="takeaways" class="takeaways"></div>
+    <section id="sec-results" class="hidden">
+      <h2>Results</h2>
+      <!-- plain toggle buttons, not ARIA tablist (which would require
+           aria-selected/aria-controls/tabpanel/arrow-key wiring) -->
+      <div id="result-tabs" class="tabs"></div>
+      <div id="result-panels"></div>
+    </section>
+
+    <section id="sec-engine">
+      <h2>Ask the engine</h2>
+      <div class="ask card">
+        <label for="ask-q">Business question (plain English)</label>
+        <textarea id="ask-q" rows="2"
+          placeholder="e.g. weekly HUMIRA TRx split by indication for the IBD market"></textarea>
+        <div class="ask-row">
+          <label class="chk"><input type="checkbox" id="ask-deck" /> Build slide deck too</label>
+          <button id="btn-ask" class="btn primary">Send to engine</button>
+        </div>
+        <p class="hint">Questions queue to <code>engine_inbox/</code> and are processed by the live Claude Code session.</p>
       </div>
-      <details><summary>Run log</summary><pre id="runlog"></pre></details>
-      <div id="result-table"></div>
+      <div id="engine-items" class="grid"></div>
     </section>
   </main>
 
-  <script src="/app.js"></script>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script type="module" src="/js/main.js"></script>
 </body>
 </html>
