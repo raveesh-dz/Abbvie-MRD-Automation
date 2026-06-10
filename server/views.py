@@ -179,3 +179,36 @@ def run_view(vid: str) -> dict:
         return {"id": vid, "ok": False, "log": "not a runnable built view"}
     with runner.run_lock():
         return run_view_core(v)
+
+
+def run_diff(v) -> dict:
+    """Compare result.csv to result_prev.csv: rows added + latest-common-row deltas."""
+    if "folder" not in v:                      # placeholder views have no folder
+        return {"available": False}
+    folder = _folder(v)
+    cur_p, prev_p = folder / "result.csv", folder / "result_prev.csv"
+    if not (cur_p.exists() and prev_p.exists()):
+        return {"available": False}
+    cur, prev = pd.read_csv(cur_p), pd.read_csv(prev_p)
+    date_col = cur.columns[0]
+    new_rows = sorted(set(cur[date_col].astype(str)) - set(prev[date_col].astype(str)))
+    common = sorted(set(cur[date_col].astype(str)) & set(prev[date_col].astype(str)))
+    deltas = {}
+    if common:
+        last = common[-1]
+        c_row = cur[cur[date_col].astype(str) == last].iloc[-1]
+        p_row = prev[prev[date_col].astype(str) == last].iloc[-1]
+        for col in cur.select_dtypes("number").columns:
+            if col in prev.columns:
+                pc, cc = float(p_row[col]), float(c_row[col])
+                if pc != cc:
+                    deltas[col] = {"prev": pc, "curr": cc, "delta": round(cc - pc, 2)}
+    return {"available": True, "new_rows": new_rows,
+            "compared_at": common[-1] if common else None, "latest_deltas": deltas}
+
+
+def read_history(v) -> list:
+    if "folder" not in v:                      # placeholder views have no folder
+        return []
+    hp = _folder(v) / "run_history.json"
+    return json.loads(hp.read_text(encoding="utf-8")) if hp.exists() else []

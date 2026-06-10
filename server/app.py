@@ -85,12 +85,42 @@ def create_app() -> FastAPI:
             raise HTTPException(404, "not run yet")
         with open(rp, encoding="utf-8") as fh:
             rows = list(csv.DictReader(fh))
-        spec = json.loads((folder / "deck_spec.json").read_text(encoding="utf-8"))
+        spec_p = folder / "deck_spec.json"
+        if spec_p.exists():
+            spec = json.loads(spec_p.read_text(encoding="utf-8"))
+        else:                                   # infer from result.csv header
+            cols = list(rows[0].keys()) if rows else []
+
+            def _num(c):
+                try:
+                    float(rows[0][c]); return True
+                except (ValueError, TypeError):
+                    return False
+            numeric = [c for c in cols[1:] if _num(c)]
+            total = next((c for c in numeric if "total" in c.lower()), None)
+            spec = {"date_column": cols[0] if cols else None,
+                    "series_columns": [c for c in numeric if c != total],
+                    "total_column": total, "title": v["title"],
+                    "inferred": True}   # provenance: deckpreview.js skips inferred specs
         tk = folder / "takeaways.md"
         meta = views.read_run_meta(v)
-        return {"rows": rows, "spec": spec,
+        return {"rows": rows, "spec": spec, "meta": meta,
                 "data_max_at_run": meta.get("data_max_at_run") if meta else None,
                 "takeaways": tk.read_text(encoding="utf-8") if tk.exists() else ""}
+
+    @app.get("/api/views/{vid}/diff")
+    def api_diff(vid: str):
+        v = views.view_by_id(vid)
+        if not v:
+            raise HTTPException(404, "no such view")
+        return views.run_diff(v)
+
+    @app.get("/api/views/{vid}/history")
+    def api_history(vid: str):
+        v = views.view_by_id(vid)
+        if not v:
+            raise HTTPException(404, "no such view")
+        return views.read_history(v)
 
     @app.get("/api/views/{vid}/deck")
     def api_deck(vid: str):
