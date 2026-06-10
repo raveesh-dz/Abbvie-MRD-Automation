@@ -3,7 +3,39 @@
     "allow": [
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(echo \"== zod package ==\")",
+      "Bash(cat /c/Users/RounakSuranshe/.claude/plugins/cache/thedotmack/claude-mem/13.4.2/node_modules/zod/package.json)",
+      "Bash(command -v bun)",
+      "Bash(\"/c/Users/RounakSuranshe/.bun/bin/bun.exe\" install *)",
+      "Bash(node /c/Users/RounakSuranshe/.claude/plugins/cache/thedotmack/claude-mem/13.4.2/scripts/bun-runner.js /c/Users/RounakSuranshe/.claude/plugins/cache/thedotmack/claude-mem/13.4.2/scripts/worker-service.cjs status)",
+      "Bash(\"/c/Users/RounakSuranshe/.bun/bin/bun.exe\" -e \"require\\('zod/v3'\\); console.log\\('zod/v3 resolves OK'\\)\")"
+    ]
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "powershell",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:/Users/RounakSuranshe/Documents/Abbvie-MRD-Automation/.claude/hooks/attention.ps1\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "powershell",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:/Users/RounakSuranshe/Documents/Abbvie-MRD-Automation/.claude/hooks/attention.ps1\"",
+            "async": true
+          }
+        ]
+      }
     ]
   }
 }
