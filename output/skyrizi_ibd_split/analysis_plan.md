@@ -12,7 +12,7 @@ metrics:
   - RULE-004: indication allocation, renormalise-within-reported-set — full combined weekly total split across {UC, CD}
 context:
   - RULE-301: weekly panel is IBD-only, so the full weekly Skyrizi total is genuinely IBD volume (UC+CD), not an overstatement
-time_window: 2024-05-03 → 2026-05-08 (full available weekly range, 106 weeks). No window stated; no documented default exists (MEMORY pending #4) so full range used, matching prior runs. Anchor/latest week = 2026-05-08.
+time_window: 2024-05-03 → 2026-07-03 (full available weekly range, 114 weeks). No window stated; no documented default exists (MEMORY pending #4) so full range used, matching prior runs. Anchor/latest week = 2026-07-03.
 output_grain: one row per WEEK_ENDING, columns UC, CD, and SKYRIZI_TRx_total (reconciliation). FULL GRAIN (trend) — 106 weekly rows by design, not top-N.
 assumptions:
   - "Skyrizi" = SKYRIZI + SKYRIZI OBI combined (user confirmed 2026-06-08, after surfacing that OBI is ~99.9% of Skyrizi's IBD volume; initial ask was OBI-excluded but reversed once magnitude was shown)

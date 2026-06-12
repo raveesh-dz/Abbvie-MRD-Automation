@@ -12,11 +12,11 @@ filters_applied:
 metrics:
   - RULE-003 — Weekly→Monthly brand crosswalk (roll TREMFYA SQ dose rows up to brand)
   - RULE-004 — Indication allocation, renormalise-within-reported-set (shares sum to 1.0; full weekly total distributed across UC/CD)
-time_window: full available weekly panel, 2024-05-03 → 2026-05-08 (anchor = latest week 2026-05-08). No window stated; weekly time default is still undefined (MEMORY pending #4), so full history is reported rather than truncating to an unconfirmed default.
+time_window: full available weekly panel, 2024-05-03 → 2026-07-03 (anchor = latest week 2026-07-03). No window stated; weekly time default is still undefined (MEMORY pending #4), so full history is reported rather than truncating to an unconfirmed default.
 output_grain: one row per WEEK_ENDING, columns UC, CD, TREMFYA_TRx_total
 assumptions:
   - Weekly panel is IBD-only, so the entire weekly TREMFYA total is genuinely IBD volume and is split across {UC, CD} only (RULE-301, user confirmed)
   - Renormalise-within-reported-set allocation: UC + CD reconcile to the weekly total (RULE-004, user confirmed)
   - Weeks after the last monthly month (2026-04-01) carry forward the April 2026 UC:CD mix (RULE-004, default applied, not user-confirmed)
 analysis_type: trend
-expected_row_count: 106 (one row per distinct TREMFYA WEEK_ENDING in the weekly panel)
+expected_row_count: 114 (one row per distinct TREMFYA WEEK_ENDING in the weekly panel)

@@ -1,10 +1,9 @@
-# Takeaways — run_2026-06-08_001
-*TREMFYA weekly TRx split across the IBD market (UC + CD), 2024-05-03 → 2026-05-08. All figures from result.csv.*
+# Takeaways - tremfya_ibd_split
 
-1. **TREMFYA's IBD franchise scaled from a standing start to ~7,026 weekly TRx.** The weekly IBD total rose from ~7.9 in the first week (2024-05-03) to 7,026 at the latest week (2026-05-08) — an ~889× increase — with the steepest acceleration through 2025. This is a launch-curve trajectory, consistent with TREMFYA's IBD uptake building over the panel window.
+1. **Crohn's edges UC in the latest week, but the race is tight.** On 2026-08-28, CD is 4,468 TRx (54.3%) vs UC 3,761 (45.7%) - a combined IBD total of 8,228.
 
-2. **Crohn's disease overtook ulcerative colitis in early October 2025 and has stayed ahead.** UC carried the larger share through 2025-09-26; from the week ending 2025-10-03 (UC 1,189 vs CD 1,228) CD has led every week since. At the latest week CD is 3,905 (55.6%) versus UC 3,121 (44.4%) — a durable mix shift, not a one-week blip.
+2. **No durable leader.** CD led in only 57 of 122 weeks; the UC/CD lead alternates throughout the series, with the most recent UC-led week as late as 2026-05-29.
 
-3. **The two indications now contribute on a roughly 56:44 CD:UC basis, but the gap is recent.** For most of the series UC was the majority indication; the convergence and crossover happened in H2 2025, so the current CD-led mix reflects faster recent CD growth rather than a long-standing pattern. The crossover is the single most important inflection in the series.
+3. **Week-to-week volume is highly volatile** - the last four weekly totals swung 10,024 -> 4,933 -> 9,780 -> 8,228 TRx.
 
-4. **Indication splits are modelled estimates and the latest week may firm up.** The UC/CD breakdown is derived from the national monthly UC:CD ratio applied to the weekly total (RULE-004), not measured weekly — directionally reliable but not a weekly indication census. Weeks after 2026-04-01 carry the April 2026 mix forward, and whether the latest week(s) are provisional in the source is unconfirmed, so the most recent points could revise on the next refresh.
+4. **Caveat:** weeks after 2026-05-08 are simulated demo periods, and ALL values carry a deliberate ±50% random perturbation (demo data, seed 42). Treat direction and magnitude as illustrative only.

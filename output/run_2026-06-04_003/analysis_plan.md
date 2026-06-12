@@ -19,11 +19,11 @@ filters_applied: none (semantic/filters.md empty); ROW_TYPE = PRODUCT rows only 
 metrics:
   - RULE-003 (crosswalk): weekly TREMFYA → monthly SQ dose rows
   - RULE-004: weekly total × renormalised monthly UC / CD share
-time_window: 2024-05-03 to 2026-05-08 (full available weekly series, 106 weeks). Anchor = 2026-05-08.
+time_window: 2024-05-03 to 2026-07-03 (full available weekly series, 114 weeks). Anchor = 2026-07-03.
 output_grain: one row per week; columns UC, CD, TREMFYA_TRx_total — full grain (trend)
 assumptions:
   - IBD / GI market = {UC, CD} — the only gastrointestinal indications present (RULE-301)
   - The full weekly total is attributed to UC + CD because the weekly panel is IBD-only (RULE-301)
   - Allocated values are ESTIMATES (monthly UC:CD ratio applied to weekly totals), not measured weekly IBD counts
 analysis_type: trend
-expected_row_count: 106
+expected_row_count: 114

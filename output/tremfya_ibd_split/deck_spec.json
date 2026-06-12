@@ -3,5 +3,18 @@
   "title": "Tremfya SQ\nIBD Performance",
   "subtitle": "Weekly TRx split by indication (UC / CD), full series",
   "series_columns": ["UC", "CD"],
-  "total_column": "TREMFYA_TRx_total"
+  "total_column": "TREMFYA_TRx_total",
+  "section_strip": "TREMFYA IBD  ·  WEEKLY TRX BY INDICATION",
+  "statement_title": "Crohn's and Ulcerative Colitis Are Locked in a Tight Race for Tremfya's IBD Mix",
+  "dek_template": "Tremfya's weekly IBD volume reached ~{latest_total:,.0f} TRx by {latest_label}. The UC/CD lead has churned week to week across the series, with Crohn's edging ahead in the latest reads.",
+  "chart_caption": "WEEKLY TRX — UC VS CD (FULL SERIES)",
+  "blocks": [
+    {"num": "01", "head": "CD edges UC",
+     "body_template": "CD ~{latest_cd:,.0f} vs UC ~{latest_uc:,.0f} TRx in the latest week ({latest_label})."},
+    {"num": "02", "head": "No durable leader",
+     "body_template": "Neither indication holds the lead for long — weekly volatility swings the UC/CD mix throughout the series."},
+    {"num": "03", "head": "Near-balanced split",
+     "body_template": "Latest mix: UC {latest_uc_pct:.0f}% / CD {latest_cd_pct:.0f}% of ~{latest_total:,.0f} weekly TRx."}
+  ],
+  "tldr": "Tremfya's IBD mix is near-balanced — CD ~{latest_cd_pct:.0f}% vs UC ~{latest_uc_pct:.0f}% — with the weekly lead alternating rather than settled."
 }

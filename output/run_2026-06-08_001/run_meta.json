@@ -1,0 +1,11 @@
+{
+  "run_id": "run_2026-06-08_001",
+  "last_run_at": "2026-06-10T00:00:00",
+  "data_max_at_run": {
+    "Weekly_Data_Tabular": "2026-07-03",
+    "Monthly_Data_Tabular": "2026-06-01"
+  },
+  "validation_status": "PASS",
+  "row_count": 114,
+  "deck_available": true
+}

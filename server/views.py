@@ -160,12 +160,21 @@ def run_view_core(v, on_stage=None) -> dict:
     # deck intent: indication_split kind, an explicit deck: true in views.yaml
     # (engine-registered views — ENGINE_INBOX.md step 4), or a deck_spec.json
     # already in the folder from a previous deck build.
-    if (v.get("kind") == "indication_split" or v.get("deck")
-            or (folder / "deck_spec.json").exists()):
+    spec_p = folder / "deck_spec.json"
+    if (v.get("kind") == "indication_split" or v.get("deck") or spec_p.exists()):
         stage("deck", "running")
+        # dispatch builder by spec shape so non-UC/CD decks aren't mis-rendered
+        builder = "build_deck_pptx.py"
+        if spec_p.exists():
+            try:
+                ck = json.loads(spec_p.read_text(encoding="utf-8")).get("chart_kind")
+            except Exception:
+                ck = None
+            if ck == "monthly_multiline":
+                builder = "build_deck_monthly.py"
         drc, do, de = runner.run_script(
-            [str(config.scripts_dir() / "build_deck_pptx.py"), str(folder)])
-        log.append(f"$ build_deck_pptx.py -> {drc}\n{do}{de}".rstrip())
+            [str(config.scripts_dir() / builder), str(folder)])
+        log.append(f"$ {builder} -> {drc}\n{do}{de}".rstrip())
         deck_ok = drc == 0
         stage("deck", "ok" if deck_ok else "fail")
     return _finish(v, folder, ok=True, validation=validation, deck=deck_ok,

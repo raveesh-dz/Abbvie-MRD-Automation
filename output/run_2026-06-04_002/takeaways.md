@@ -1,10 +1,7 @@
-# Takeaways — run_2026-06-04_002
-analysis_type: trend
+# Takeaways - run_2026-06-04_002
 
-1. **Crohn's has overtaken ulcerative colitis within IBD.** On the latest week (2026-05-08) the UC:CD split is ~3,121 vs ~3,905 — CD ahead. The crossover happened during 2025: UC led decisively in early 2025 (2025-04-04: UC ~154 vs CD ~14), the two drew level by autumn (2025-10-03: UC ~1,189 vs CD ~1,228), and CD has led since.
+1. **Crohn's leads Tremfya's IBD book.** In the latest week (2026-07-03), CD is 4,711 TRx (55.5%) vs UC 3,770 (44.5%) - a combined IBD total of 8,481.
 
-2. **TREMFYA's IBD volume has ramped ~890x.** The weekly panel is IBD-only (RULE-301), so the weekly total IS TREMFYA's IBD TRx: it rises from ~8 (2024-05-03) to ~7,026 (2026-05-08), split entirely across UC and CD.
+2. **CD overtook UC around 2026-03-06 and has held the lead since**; UC led the earlier part of the series (48 of 114 weeks were UC-led).
 
-3. **Early UC dominance, then convergence.** Through early 2025 the monthly ratio was UC-heavy (UC ~92% of IBD at 2025-04-04), consistent with UC's earlier launch; CD's share then grew steadily to ~56% by 2026-05-08.
-
-4. **Basis.** The weekly panel is IBD-only (RULE-301), so the total is genuinely IBD volume; UC + CD reconcile to it by construction (RULE-004). The split between UC and CD uses the national monthly UC:CD ratio (the only source of the indication breakdown), with May 2026 reusing April 2026's ratio.
+3. **Tremfya's IBD volume scaled enormously** from a near-zero launch base (~9 TRx the first populated week) to 8,481 weekly TRx - it entered IBD late and ramped fast.

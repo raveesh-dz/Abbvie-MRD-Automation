@@ -1,8 +1,7 @@
-# Context — run_2026-06-08_001
-headline: TREMFYA's weekly IBD TRx grew from ~8 to ~7,026 over two years, and Crohn's disease overtook ulcerative colitis in early October 2025 to become the larger share (CD 55.6% vs UC 44.4% at the latest week).
-methodology: TREMFYA's total weekly TRx (Weekly panel, PRODUCT rows only) is split across the two IBD indications — ulcerative colitis (UC) and Crohn's disease (CD) — using the brand's national monthly UC:CD mix (Monthly panel, TREMFYA SQ dose rows crosswalked to the brand per RULE-003). The monthly mix is renormalised across {UC, CD} so the two shares sum to 1.0 and are applied to each week's total (RULE-004), so UC + CD reconcile back to the weekly total. Only the unitless mix crosses the table edge; the weekly and monthly volumes are never summed or compared.
-filters_applied: TREMFYA only; ROW_TYPE = PRODUCT on both tables (market-total and non-approved rollups excluded); monthly TREMFYA limited to SQ dose rows (SQ 100MG + SQ 200MG + SQ INDUCTION, IV excluded); indication set limited to UC and CD.
-time_period: 2024-05-03 to 2026-05-08 (106 weekly periods; latest week 2026-05-08).
-data_freshness: latest week_ending used = 2026-05-08. No provisional-week exclusion is applied — the source's treatment of the latest week(s) as complete vs provisional is still unconfirmed (MEMORY pending #3).
-caveats: >
-  The weekly panel is IBD-only (RULE-301), so attributing the entire weekly total to {UC, CD} is correct here, not an overstatement. Indication-level volumes are ESTIMATES — the weekly source has no indication breakdown; the split is modelled from the national monthly UC:CD ratio, not measured weekly. Weeks after 2026-04-01 (the last monthly month) carry forward the April 2026 mix. Early-2024 weeks have very small absolute volumes, so their UC/CD split is noisy; the durable UC→CD crossover is read from the sustained period, not the first week it occurs.
+# Context - tremfya_ibd_split
+headline: Tremfya's IBD mix is a tight race - CD 4,468 TRx (54.3%) vs UC 3,761 (45.7%) in the latest week (2026-08-28), with the weekly lead alternating rather than settled.
+methodology: Weekly Tremfya TRx (IBD-only panel, RULE-301) split across {UC, CD} using the national monthly UC:CD mix renormalised within the set (RULE-004); weekly Tremfya line matched 1:1 to monthly (RULE-003). Full weekly series, one row per WEEK_ENDING.
+filters_applied: PRODUCT rows only (MARKET_TOTAL / Non-Approved excluded). No standing filters.
+time_period: 2024-05-03 -> 2026-08-28 (122 weeks, full available panel).
+data_freshness: latest weekly WEEK_ENDING = 2026-08-28; weeks past the latest monthly mix carry it forward.
+caveats: DEMO DATA - weeks after 2026-05-08 are simulated periods, and all values (weekly and monthly) carry a deliberate ±50% random perturbation (seed 42). Indication splits are model estimates (national mix applied to an IBD-only panel), not a claims census. Restore data/_pre_perturb and data/_original for production numbers.
