@@ -29,7 +29,7 @@ Two narrow, testable problems (NL→IR, IR→SQL) instead of one fuzzy one (NL�
 - Portable: starts on Claude Code (skills/subagents), migrates to pure Anthropic API with no core rewrite.
 
 **Non-goals (v1)**
-- Executing SQL against Snowflake / returning data rows (out of scope by decision).
+- Executing SQL against Snowflake / returning data rows (out of scope by decision). Consequence: verifier V4 (result sanity) is deferred — see §6.
 - Building slide decks / downstream presentation (that's the reference repo's job).
 - Patient-grain output — banned by guardrail, always aggregate above patient level.
 - Write/DDL/DML generation — read-only `SELECT` only.
@@ -49,21 +49,21 @@ The single rule that makes "Claude Code now → Anthropic API later" cheap: **ne
 ┌─ Tool contract (stable interface) ───────┐   ← define ONCE; both harnesses register identical schemas
 │  search_semantic_model · fetch_schema     │
 │  compile_ir · run_verifiers · dry_run     │
-│  rca_diagnose                             │
+│  rca_diagnose · model_client (LLM seam)    │
 └──────────────────┬───────────────────────┘
                    │ calls
 ┌─ Deterministic core (pure Python lib) ───┐   ← 100% PORTABLE, zero harness deps, CI-tested
-│  IR schema · compiler · 4 verifiers       │
+│  IR schema · compiler · verifiers (V1–V4) │
 │  semantic-model loader · macro registry   │
 │  guardrail policy enforcer · RCA engine   │
 └───────────────────────────────────────────┘
 ```
 
-- **Core (L1):** pure Python, no Claude/Claude-Code imports. Everything deterministic lives here. CI-tested without any LLM.
-- **Tool contract (L2):** a fixed set of tool schemas (name, input JSON schema, output JSON schema). Claude Code registers them as tools; the Anthropic API agent registers the *same* schemas. This contract is the portability seam.
+- **Core (L1):** pure Python, no Claude/Claude-Code imports. All *deterministic* logic lives here, CI-tested without any LLM. The two LLM-using components (V3 intent-judge, RCA) keep their deterministic scaffolding here — prompt assembly, structured-output parsing, signature-map lookup — and make their one model call through the **L2 model-client seam**, so they stay portable too.
+- **Tool contract (L2):** a fixed set of tool schemas (name, input JSON schema, output JSON schema) **plus a `model_client` interface** — the single place an LLM is called. Claude Code registers the tools and binds `model_client` to its harness; the Anthropic API agent registers the *same* schemas and binds `model_client` to the Anthropic SDK. This contract is the portability seam.
 - **Orchestration adapter (L3):** thin. Drives the Resolve → Verify → RCA → Repair loop. Today = Claude Code skills/subagents. Later = an Anthropic SDK agent loop. **Discipline: nothing important lives in skill markdown** — skills only orchestrate; all real work is L1 behind L2.
 
-Migration = swap the model client + re-register the same L2 tools. No L1 rewrite.
+Migration = rebind `model_client` + re-register the same L2 tools. No L1 rewrite.
 
 ---
 
@@ -72,25 +72,26 @@ Migration = swap the model client + re-register the same L2 tools. No L1 rewrite
 ```
 NL question
    │  ① RESOLVE   (LLM, via L2 tools)
+   ├── not feasible (semantic gap at resolve) → HALT + propose definition   ⛔ early exit
    ▼
 Query Intent IR (JSON)        ← the contract / audit artifact
    │  ② COMPILE   (deterministic, L1)
    ▼
 Snowflake SQL string
    │
-   ▼  ④ VERIFY   (V1..V4, independent)
+   ▼  ③ VERIFY   (V1..V3 always; V4 conditional — §6)
    ├── pass → emit SQL + provenance + verify report   ✅ DONE
-   └── fail → ⑤ RCA (localize fault to a layer)
+   └── fail → ④ RCA (localize fault to a layer)
                   │
-                  ├─ semantic gap / schema drift → HALT + human
-                  └─ retrieval miss / compiler bug → ③ REPAIR (inject diagnosis, retry, max N) → back to ①/②
+                  ├─ semantic gap / relationship error / schema drift → HALT + human
+                  └─ retrieval miss / compiler bug → ⑤ REPAIR (inject diagnosis, retry, max N) → back to ①/②
 ```
 
-- **① Resolve** — the only LLM stage in the happy path. Reads the Charter + retrieves relevant semantic defs, maps NL → IR. Surfaces assumptions in plain English (default-applied if user disengages — reference-repo pattern).
-- **② Compile** — deterministic IR → SQL. Copies joins verbatim from declared edges, inlines macros by ID, applies standing filters, handles Snowflake dialect + quoting, enforces top-N + Other rollup, deterministic ordering.
-- **④ Verify** — four independent gates (§6).
-- **⑤ RCA** — localizes fault to a layer (§6).
-- **⑥ Repair loop** — RCA-routed, not blind. Max N attempts, then halt + report.
+- **① Resolve** — maps NL → IR. Reads the Charter + retrieves relevant semantic defs. Two LLM stages exist (Resolve here, the V3 intent-judge in §6); Resolve is the only stage that *authors* the IR. Surfaces assumptions in plain English, default-applied & logged if unconfirmed (reference-repo pattern, non-blocking). **Early feasibility exit:** if a term/metric/macro cannot be mapped to the semantic layer, Resolve HALTs *before* compile and proposes a definition — it does not emit a guessed IR (reference-repo feasibility check).
+- **② Compile** — deterministic IR → SQL. Copies joins verbatim from declared edges, inlines macros by ID, applies standing filters, handles Snowflake dialect + quoting, enforces top-N + Other rollup, deterministic ordering. **Filter values are bound/parameterized, never string-concatenated** (see §11). Deterministic → `(ir_hash, semantic_model_version)` keys an SQL cache.
+- **③ Verify** — independent gates (§6): V1–V3 every query, V4 conditional.
+- **④ RCA** — localizes fault to a layer (§6).
+- **⑤ Repair loop** — RCA-routed, not blind. Max N attempts, then HALT + report.
 
 ---
 
@@ -100,7 +101,7 @@ Snowflake SQL string
 - **#0 — System Charter.** Soft steering constitution (CLAUDE.md-style). Market/domain context (pharma, Snowflake, TRx = adjusted volume not script count, who consumes the SQL, what "good" means), SQL style conventions (CTE-first, explicit column lists, no `SELECT *`, naming, comment density, deterministic ordering), soft defaults (default time window, top-N + Other, surface assumptions before finalizing). **Precedence: Charter < Semantic model < Guardrail policy < explicit user ask.** Hard limits do NOT live here.
 - **#1 — Semantic model (YAML).** Machine-readable single source of truth: entities, metrics, dimensions, declared joins, reusable filters, time-grains. Typed, diffable, testable. (The *declarative 80%*.)
 - **#2 — Macro registry.** Named, tested Snowflake SQL snippets for *procedural* rules that no declarative metric can express (e.g. brand crosswalk = RULE-003 analog; indication allocation / renormalize-within-reported-set = RULE-004 analog). YAML references a macro by ID; compiler inlines the vetted SQL. (The *procedural 20%*.) Doubles as RCA's "semantic gap" target.
-- **#3 — Glossary / synonyms.** Business term → canonical entity ("loyal writers", "IBD market" → defined set). Resolve maps slang to the model.
+- **#3 — Glossary / synonyms.** Business term → canonical entity ("loyal writers", "IBD market" → defined set). Resolve maps slang to the model. Kept *separate* from #1: each glossary entry resolves to a semantic-model ref, but synonyms churn faster than the governed model and editing them must not touch metric definitions.
 
 ### Live / system state
 - **#4 — Physical schema catalog.** Snowflake tables/columns/types, refreshed on a cadence. Powers V2 (schema validity) and RCA "schema drift".
@@ -129,12 +130,12 @@ Snowflake SQL string
 ### Four independent verifiers (each emits pass/fail + structured reason)
 | # | Verifier | Catches | LLM? |
 |---|----------|---------|------|
-| **V1** | Static SQL safety | non-read-only (DML/DDL), undeclared joins, patient grain, missing caps, `SELECT *`, unparseable | No (deterministic) |
+| **V1** | Static SQL safety | non-read-only (DML/DDL), undeclared joins, patient grain, missing caps, `SELECT *`, unparseable, unbound literal values (must be parameterized) | No (deterministic) |
 | **V2** | Schema / dialect | unknown table/column, type mismatch, Snowflake dry-run `EXPLAIN` fail | No (catalog + dry-run) |
 | **V3** | Intent fidelity | SQL silently drifts from IR — wrong metric / filter / window / grain | Yes (LLM-as-judge) |
-| **V4** | Result sanity | row count vs expected grain, null spikes, total vs baseline | Optional (needs a `LIMIT`/sample run) |
+| **V4** | Result sanity | row count vs expected grain, null spikes, total vs baseline | DEFERRED in v1 (needs a `LIMIT`/sample run) |
 
-V4 is optional in v1 since execution is out of scope — runs only if a small sample query is permitted.
+**V1–V3 run on every query** (all static / catalog / judge — no execution needed, consistent with the emit-only boundary). **V4 is DEFERRED in v1** because it requires running SQL, which §2 puts out of scope. It stays in the design (interface + run-folder slot reserved) so it activates with zero rework if a sample-run path is later permitted. Until then V4 always reports `skipped`.
 
 ### RCA agent — fault localization
 Consumes *all* failure signals + the IR + the semantic layer, localizes the fault to a **layer**:
@@ -153,6 +154,7 @@ RCA output drives the repair loop routing (§4). The RCA **signature map (#10)**
 **Every step / skill / agent / subagent writes its input and output as readable artifacts.** Mirrors the reference repo's run-folder output contract, extended for the pipeline.
 
 ### Per-query run folder: `runs/<run_id>/`
+`run_id` = `run_<YYYY-MM-DD>_<NNN>` (NNN = sequence within the day; reference-repo convention).
 ```
 runs/<run_id>/
   00_question.txt                 # raw NL question + session context
@@ -164,7 +166,7 @@ runs/<run_id>/
   03_verify.V1.json               # static safety: pass/fail + reasons
   03_verify.V2.json               # schema/dialect: pass/fail + reasons
   03_verify.V3.json               # intent fidelity judge: pass/fail + reasons
-  03_verify.V4.json               # result sanity (if run): pass/fail + reasons
+  03_verify.V4.json               # result sanity: "skipped" in v1 (deferred, §6); pass/fail when sample-run enabled
   04_rca.json                     # (on failure) layer diagnosis + recommended fix
   05_repair/<attempt_n>/...       # each repair attempt = full sub-folder, same shape
   run_manifest.json               # status, timings, attempt count, final verdict, token usage per stage
@@ -235,7 +237,8 @@ macros:
     sql_template: |
       -- vetted, tested CTE that renormalizes monthly mix across the reported
       -- indication set and applies it to the weekly total
-      ...
+      -- (full SQL body omitted in this sketch; lives in the macro registry,
+      --  proven by the linked test)
     tests: [tests/macros/indication_allocation_test.sql]
 ```
 
@@ -243,7 +246,7 @@ macros:
 
 ## 9. Component registry (track every piece)
 
-Each component has a stable ID. Roadmap phases (§10) deliver these; artifacts (§7) reference them.
+Each component has a stable ID. Roadmap phases (§10) deliver these; artifacts (§7) reference them. **"Core+LLM"** = deterministic scaffolding in L1, the single model call through the L2 `model_client` seam (§3) — so these stay portable, not harness-bound.
 
 | ID | Component | Layer | Phase |
 |----|-----------|-------|-------|
@@ -255,13 +258,14 @@ Each component has a stable ID. Roadmap phases (§10) deliver these; artifacts (
 | C-V1 | Static SQL safety verifier | Core | P3 |
 | C-V2 | Schema/dialect verifier (+dry-run) | Core | P3 |
 | C-V3 | Intent-fidelity judge | Core+LLM | P3 |
-| C-V4 | Result-sanity verifier (optional) | Core | P3 |
+| C-V4 | Result-sanity verifier (DEFERRED — interface only in v1, §6) | Core | P3 |
 | C-RCA | RCA engine + signature map | Core+LLM | P4 |
 | C-CAT | Physical schema catalog sync | Core | P3 |
 | C-IDX | Retrieval index over semantic model | Core | P1 |
 | C-RES | Resolve stage (NL→IR) | Orchestration+LLM | P4 |
 | C-REP | Repair loop controller | Orchestration | P4 |
 | C-TOOL | L2 tool contract (schemas) | Tool contract | P1 |
+| C-MC | `model_client` LLM seam (harness-swappable) | Tool contract | P1 |
 | C-OBS | Run-folder + manifest + tool-call trace | Core | P1 |
 | C-CHTR | System Charter doc | Knowledge | P1 |
 | C-EVAL | Golden eval set + harness + dashboard | Quality | P5 |
@@ -275,9 +279,9 @@ Each component has a stable ID. Roadmap phases (§10) deliver these; artifacts (
 Each phase is independently shippable and ends with an artifact you can inspect.
 
 - **P0 — Foundations & decisions.** Lock IR version, tool-contract names, run-folder layout, repo location. Write the Charter (C-CHTR). *Exit: this spec + Charter committed.*
-- **P1 — Core skeleton + observability.** IR schema/validator (C-IR), semantic-model loader (C-SM), retrieval index (C-IDX), L2 tool contract stubs (C-TOOL), run-folder/manifest/trace (C-OBS). *Exit: a hand-written IR flows through, every stage writes readable I/O artifacts.*
+- **P1 — Core skeleton + observability.** IR schema/validator (C-IR), semantic-model loader (C-SM), retrieval index (C-IDX), L2 tool contract stubs + `model_client` seam (C-TOOL, C-MC), run-folder/manifest/trace (C-OBS). *Exit: a hand-written IR flows through, every stage writes readable I/O artifacts.*
 - **P2 — Compiler + guardrails.** Deterministic IR→SQL (C-CMP), macro registry + tests (C-MR), guardrail enforcer (C-GP). *Exit: hand-written IR → valid Snowflake SQL, hard limits enforced, golden IR→SQL snapshots pass in CI.*
-- **P3 — Verify stack + catalog.** V1–V4 (C-V1..C-V4), schema catalog sync (C-CAT), Snowflake dry-run wiring. *Exit: bad SQL is reliably rejected with structured reasons; each verifier independently testable.*
+- **P3 — Verify stack + catalog.** V1–V3 live + V4 interface stub (C-V1..C-V4), schema catalog sync (C-CAT), Snowflake dry-run wiring. *Exit: bad SQL is reliably rejected with structured reasons; each verifier independently testable.*
 - **P4 — Resolve + RCA + repair loop + Claude Code adapter.** NL→IR Resolve (C-RES), RCA engine + signature map (C-RCA), repair controller (C-REP), thin Claude Code skill/subagent adapter (C-ADPT-CC). *Exit: full NL→SQL happy path + RCA-routed repair, end-to-end, on Claude Code.*
 - **P5 — Eval harness.** Golden set, harness, dashboard/report (C-EVAL). *Exit: system-wide pass rate + per-stage + RCA-layer breakdown reported; regressions caught in CI.*
 - **P6 — API migration.** Anthropic API agent adapter (C-ADPT-API) reusing identical L2 tools + core. *Exit: same behavior, no core changes; Claude Code adapter retired or kept as alt.*
@@ -290,13 +294,14 @@ Each phase is independently shippable and ends with an artifact you can inspect.
 - Grain floor: never below `grain_floor` (patient-grain = automatic refusal).
 - Caps: row limit, scanned-byte ceiling, statement timeout, cost ceiling — all present or reject.
 - No `SELECT *`; explicit column lists only.
+- **Parameterized values:** user/IR-supplied filter literals are emitted as bind parameters (or strictly escaped), never concatenated into SQL text. The IR carries values separately from the compiled template; V1 rejects any inlined literal. Closes the injection vector.
 - Every change to the semantic model / macros / guardrail policy is a versioned commit (reference-repo rule analog).
 
 ---
 
 ## 12. Open questions (resolve during writing-plans)
 1. **Default time window** for Resolve when none stated (reference repo leaves Weekly/Monthly defaults pending) — pick per warehouse.
-2. **V4 execution** — is a sample/`LIMIT` run permitted given "no execution" boundary, or is V4 deferred to whoever runs the SQL?
+2. **V4 activation** — decided deferred in v1 (§6). Open: what later event flips it on — a sandbox read-only role for `LIMIT` sampling, or handing V4 to whoever executes the SQL downstream?
 3. **Retrieval index tech** — embeddings store vs simple keyword/structured lookup for v1.
 4. **Macro test runner** — how macro SQL tests run without a live warehouse (parse-only vs ephemeral Snowflake).
 5. **Multi-table grain** — how the IR expresses cross-grain allocation (weekly×monthly analog) without leaking procedural logic into declarative metrics.
