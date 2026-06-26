@@ -22,3 +22,12 @@ relationships:
 # (TRX_ADJUSTED vs TRX_VOLUME), and different product granularity. PRODUCT is NOT
 # a clean row-join key — outside RULE-003 the labels diverge by case and dose/form.
 # Any join beyond the allocation edge above is a data gap: surface it, don't guess.
+#
+# sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (the gastro HCP universe table)
+# is STANDALONE — no validated edge to either table above. It is HCP-grain and uses
+# class-coded product labels (TNF, JAK, IL_23, ...) plus brand/biosimilar labels that
+# do NOT align with the Weekly/Monthly PRODUCT vocabulary, and it carries its own
+# positional weekly frx* series (different time encoding). Its only INTERNAL "join"
+# is self-alignment of (product_brand, indication_code, data_type) slices on
+# abv_customer_id (1:1, RULE-005) — that is within-table, not a cross-table edge.
+# Any cross-table join to it is a data gap: surface it, don't guess.
