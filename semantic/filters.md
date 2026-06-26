@@ -23,3 +23,20 @@
     constituent brand of IL_23_IL_12, not a separate rollup. If a future extract adds
     a new class code, extend this set.
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
+
+## RULE-102: Restrict HCP analyses to the analyzable (holdout) universe
+- applies_to: Holdout_HCP_Universe.abbott_customer_id, sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.abv_customer_id
+- category: filter
+- definition: >
+    Holdout_HCP_Universe is the authoritative set of in-scope HCPs for the gastro
+    holdout analysis. HCP-level analyses on the gastro universe should be RESTRICTED to
+    HCPs whose abv_customer_id is present in this list. It is a scope membership, NOT a
+    treatment/control split.
+- formula: >
+    gastro = gastro[gastro.abv_customer_id.isin(set(holdout.abbott_customer_id))]
+- caveats: >
+    The Holdout id set currently EQUALS the full gastro universe (1,040 / 1,040), so
+    this filter is a no-op today — but apply it anyway so analyses stay correct if a
+    future cut narrows the universe. Do not confuse "holdout" here with an experimental
+    control arm.
+- provenance: auto-saved | 2026-06-26 | R | run_id=discussion
