@@ -47,7 +47,7 @@ Only the indication-allocation rule is defined. Everything else was stripped (wa
   - **RULE-302 (context.md)** — gastro_segments (Influencers/Pragmatists/Fast Followers/Traditionalists/Unsegmented).
   - **RULE-303 (context.md)** — SKYRIZI=OBI, SKYRIZI_IV=IV; suffixes _IV/_SQ/_CDV; adalimumab+ustekinumab biosimilar landscape; delimiter dupes (ENTYVIO SQ vs _SQ) → normalise. OPEN: plain ENTYVIO/STELARA = all vs presentation? unresolved.
   - **RULE-304 (context.md)** — hits flags + phy_univ/true_1view/pdrp; ai*_cp_flag SET ASIDE (meaning unconfirmed, ai456=dead).
-  - **RULE-401 (time.md)** — frx anchor + date map; default window = cur_13wk when none stated.
+  - **RULE-401 (time.md)** — frx anchor + date map; default window = cur_13wk when none stated. Latest week (frx1, w/e 2026-06-05) is COMPLETE, not provisional (user-confirmed 2026-06-26).
 - `_rule_log.csv` — RULE-003, RULE-004, RULE-301 (reviewed=yes); RULE-005..008, 101, 302..304, 401 (reviewed=**no**).
 
 ## Runs completed
