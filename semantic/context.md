@@ -68,3 +68,24 @@
 - formula: n/a
 - caveats: "ai* flag semantics are a known open item to revisit with the user."
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
+
+## RULE-305: HCP geography authority and sales-geo hierarchy
+- applies_to: HCP_demographics (zip_code, state, Territory_name, District_name, Region_name); sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (zip_code, state)
+- category: context
+- definition: >
+    HCP_demographics is the PRIMARY (first) source for HCP geography. When the same HCP
+    has different zip_code/state in HCP_demographics vs the gastro universe table,
+    HCP_demographics WINS; the universe's zip/state is a fallback only (used when the
+    HCP is among the 5 with no demographics geo). HCP_demographics also uniquely
+    supplies the AbbVie sales-geography hierarchy, a strict containment:
+      Region (5: Central, Great Lakes, Northeast, Southeast, West)
+        > District (~31)
+          > Territory (~101, lowest tier).
+    Use these tiers to roll up / segment HCP volumes geographically.
+- formula: n/a
+- caveats: >
+    Apply RULE-009 (dedupe demographics to one row/HCP) before reading geography. The
+    state column is occasionally null even when Territory/District/Region are present;
+    Territory_name and District_name carry the state as a 'City,ST' suffix, so derive
+    state from there when null.
+- provenance: auto-saved | 2026-06-26 | R | run_id=discussion
