@@ -67,3 +67,77 @@
     month (2026-04-01) carry forward the latest available month's mix. Allocated
     indication volumes are ESTIMATES, not measured weekly indication counts.
 - provenance: auto-saved | 2026-06-04 | R | run_id=discussion | revised 2026-06-04 (renormalise within reported set; superseded the earlier true-share denominator)
+
+<!-- ===== Gastro HCP universe table (sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl) ===== -->
+
+## RULE-005: TRx and NBRx are stored measures selected by data_type (no arithmetic)
+- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (frx*, data_type, product_brand, indication_code, abv_customer_id)
+- category: metric
+- definition: >
+    In the gastro HCP universe table TRx (Total Rx) and NBRx (New-to-Brand Rx) are
+    NOT computed — they are stored as the frx* weekly series, and which one a row
+    carries is given by its data_type column ('TRx' or 'NBRx'). To get a brand's
+    NBRx (or TRx) in an indication, FILTER the rows and READ the series; never
+    derive one from the other.
+      brand X, indication Y, measure M (TRx|NBRx):
+        rows where product_brand = X AND indication_code = Y AND data_type = M
+    The canonical way to build an HCP-level multi-brand/measure view is to take each
+    (product_brand, indication_code, data_type) slice and align it on
+    abv_customer_id — the join is 1:1 (abv_customer_id is unique within a slice,
+    verified, no fan-out). This mirrors the source SQL, which LEFT JOINs each
+    filtered slice onto an HCP base on abbott_customer_id (= abv_customer_id).
+- formula: >
+    slice = df[(df.product_brand==X) & (df.indication_code==Y) & (df.data_type==M)]
+    # weekly series = slice[['frx1'..'frx399']]; per-HCP view = slice keyed on abv_customer_id
+- caveats: >
+    Apply RULE-101 (exclude class rollups) when X is meant to be an individual
+    brand. SKYRIZI = OBI presentation only (RULE-303). The frx series meaning is
+    governed by data_type — never mix a TRx row's series with an NBRx row's.
+- provenance: auto-saved | 2026-06-26 | R | run_id=discussion
+
+## RULE-006: frx* is a positional weekly value series
+- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (frx1 .. frx399)
+- category: metric
+- definition: >
+    frx1..frx399 are 399 consecutive WEEKLY values for the row. There is no date
+    column; dates are positional. frx1 is the MOST RECENT week (week ending
+    2026-06-05, a Friday, taken from the YYMMDD stamp in the file name); each higher
+    index is exactly one week earlier, so frx399 = week ending 2018-10-19. The value
+    is TRx or NBRx per the row's data_type (RULE-005). Date anchoring and the default
+    analysis window live in time.md (RULE-401).
+- formula: "week_ending(frxN) = date(2026-06-05) - (N-1) weeks"
+- caveats: >
+    On a future re-extract the anchor moves to that file's YYMMDD stamp and the
+    column count may grow; frx1 is always the latest week of that extract.
+- provenance: auto-saved | 2026-06-26 | R | run_id=discussion
+
+## RULE-007: Rolling-window sums and growth
+- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (cur_/pre_{4,13,26,52}wk, frx*)
+- category: metric
+- definition: >
+    cur_Nwk and pre_Nwk are pre-computed contiguous trailing-week sums of the frx*
+    series (verified against frx to ~1e-8):
+      cur_Nwk = sum(frx1 .. frxN)            -- most recent N weeks
+      pre_Nwk = sum(frx(N+1) .. frx(2N))     -- the N weeks immediately before
+    for N in {4, 13, 26, 52}. Use these columns directly for period volumes.
+    Period-over-period growth for window N:
+      growth_abs[N] = cur_Nwk - pre_Nwk
+      growth_pct[N] = (cur_Nwk - pre_Nwk) / pre_Nwk   (undefined/!NA when pre_Nwk = 0)
+- formula: "growth_pct_13wk = (cur_13wk - pre_13wk) / pre_13wk"
+- caveats: >
+    Growth % is undefined where pre_Nwk = 0 (new/zero-baseline HCPs) — report as NA,
+    not 0 or inf. Windows are non-overlapping (cur vs pre). Sum cur_/pre_ over the
+    HCP set you want; never sum across class rollups + their brands (RULE-101).
+- provenance: auto-saved | 2026-06-26 | R | run_id=discussion
+
+## RULE-008: Decile groupings (bio and hum)
+- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (bio_decile, bio_decile_group, hum_decile, hum_decile_group)
+- category: metric
+- definition: >
+    bio_decile and hum_decile are integer deciles 0-10 (10 = highest-volume decile;
+    0 = no measured volume). The pre-banded *_decile_group columns map them as
+    (verified by crosstab): LOW = 0-2, MEDIUM = 3-6, HIGH = 7-10. bio_decile ranks
+    biologic IBD prescribing; hum_decile ranks Humira prescribing.
+- formula: "group = LOW if decile<=2 else MEDIUM if decile<=6 else HIGH"
+- caveats: "Decile 0 (no volume) falls in LOW. Use the supplied *_decile_group columns rather than re-banding."
+- provenance: auto-saved | 2026-06-26 | R | run_id=discussion

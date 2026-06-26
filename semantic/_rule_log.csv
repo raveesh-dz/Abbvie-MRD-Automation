@@ -2,3 +2,12 @@ rule_id,file,date,user,run_id,provenance,reviewed
 RULE-003,metrics.md,2026-06-04,R,discussion,auto-saved,yes
 RULE-004,metrics.md,2026-06-04,R,run_2026-06-04_002,auto-saved-revised,yes
 RULE-301,context.md,2026-06-04,R,run_2026-06-04_002,auto-saved,yes
+RULE-005,metrics.md,2026-06-26,R,discussion,auto-saved,no
+RULE-006,metrics.md,2026-06-26,R,discussion,auto-saved,no
+RULE-007,metrics.md,2026-06-26,R,discussion,auto-saved,no
+RULE-008,metrics.md,2026-06-26,R,discussion,auto-saved,no
+RULE-101,filters.md,2026-06-26,R,discussion,auto-saved,no
+RULE-302,context.md,2026-06-26,R,discussion,auto-saved,no
+RULE-303,context.md,2026-06-26,R,discussion,auto-saved,no
+RULE-304,context.md,2026-06-26,R,discussion,auto-saved,no
+RULE-401,time.md,2026-06-26,R,discussion,auto-saved,no
