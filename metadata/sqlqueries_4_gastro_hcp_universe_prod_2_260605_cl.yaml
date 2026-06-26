@@ -1,0 +1,1367 @@
+table: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl
+description: "HCP-level (prescriber) gastro IBD universe extract. One row per HCP x product_brand x indication_code x data_type x version_flag, carrying a 399-week TRx/NBRx history (frx*) plus rolling-window sums and HCP targeting/segmentation attributes. Source: z_abv_cws_mabi_immun_analytics.gastro_hcp_universe; snapshot 2026-06-05."
+grain: "one row per HCP (abv_customer_id) per product_brand per indication_code per data_type per version_flag"
+date_range: "2018-10-19 to 2026-06-05 (frx series, weekly; frx1 = latest)"
+refresh: "periodic re-extract; each refresh is a new dated file (YYMMDD in the name = latest week = frx1)"
+known_issues:
+  - "SCOPE: IBD-only. indication_code is CD or UC only; all volumes are IBD (Crohn's / Ulcerative Colitis) usage."
+  - "product_brand mixes individual brands/biosimilars/presentations with CLASS ROLLUPS {SI_ORAL, TNF, JAK, IL_23, IL_23_IL_12, A4B7, S1P}. The rollups equal the sum of their constituent brands (verified ratio 1.000 for JAK/IL_23/IL_23_IL_12/A4B7/S1P; TNF likewise) and MUST be excluded when summing individual brands to avoid double counting (RULE-101). SI_ORAL is the market grand total."
+  - "SKYRIZI (plain) denotes SKYRIZI OBI (on-body injector) in this masterdata; SKYRIZI_IV carries the IV volumes. To get total Skyrizi, combine SKYRIZI + SKYRIZI_IV (RULE-303)."
+  - "Brand labels have delimiter/spacing duplicates for the same entity (e.g. 'ENTYVIO SQ' vs 'ENTYVIO_SQ'; 'ADALIMUMAB RYVK' vs 'ADALIMUMAB_RYVK' vs 'ADALIMUMAB-RYVK'). Normalise before grouping (RULE-303)."
+  - "frx* is a weekly value series whose meaning depends on data_type (TRx vs NBRx) for that row. frx1 = most recent week (week ending 2026-06-05); each higher index is one earlier week. No explicit date column exists; dates are positional (RULE-006/RULE-401)."
+  - "cur_/pre_{4,13,26,52}wk are contiguous trailing-week sums of frx* (cur = most recent N weeks, pre = the N weeks before). Use them directly; do not re-derive unless auditing (RULE-007)."
+  - "ai456_cp_flag is constant 'N' (dead column). The numeric meaning of the ai*_cp_flag codes is unconfirmed and set aside per user (2026-06-26)."
+  - "PII columns present (name, first/middle/last_name, address, npi_id). Do not emit raw PII in routine aggregate output."
+  - "pdrp_flag = Y marks PDRP opt-out HCPs; per user no suppression rule is applied (documented only)."
+  - "Values are projected/adjusted volumes carried to several decimals; they are not whole script counts."
+  - "A small number of rows have null specialty_description / pdrp_flag."
+columns:
+  - name: abv_customer_id
+    type: float
+    description: "AbbVie internal customer/HCP identifier and the PRIMARY HCP key for this table; this is the join key used to assemble HCP-level multi-brand views (= 'abbott_customer_id' in the source SQL). Unique within any (product_brand, indication_code, data_type) slice."
+  - name: npi_id
+    type: float
+    description: "National Provider Identifier (10-digit) for the HCP; may be blank for rows without an NPI."
+  - name: ims_id
+    type: float
+    description: "IQVIA (IMS) provider identifier for the HCP."
+  - name: name
+    type: string
+    description: "HCP full name. PII — do not emit in routine aggregate output."
+  - name: first_name
+    type: string
+    description: "HCP first name. PII."
+  - name: middle_name
+    type: string
+    description: "HCP middle name/initial. PII."
+  - name: last_name
+    type: string
+    description: "HCP last name. PII."
+  - name: address
+    type: string
+    description: "HCP practice street address. PII."
+  - name: city
+    type: string
+    description: "HCP practice city."
+  - name: state
+    type: string
+    description: "HCP practice state (USPS 2-letter)."
+    sample_values: [NY, OH, FL, PA, CA]
+  - name: zip_code
+    type: float
+    description: "HCP practice ZIP code (numeric; leading zeros lost)."
+  - name: phy_univ_flag
+    type: string
+    description: "Y if the HCP is in the physician universe (the in-scope target population); N otherwise."
+    sample_values: [Y, N]
+  - name: true_1view_flag
+    type: string
+    description: "Y if the HCP is part of the consolidated 'True 1View' customer view (mirrors phy_univ_flag in this extract)."
+    sample_values: [Y, N]
+  - name: ai4_cp_flag
+    type: string
+    description: "Call-plan inclusion flag (cp = call plan). Exact meaning of the numeric code UNCONFIRMED — set aside per user 2026-06-26; do not build rules on it yet."
+    sample_values: [Y, N]
+  - name: ai5_cp_flag
+    type: string
+    description: "Call-plan inclusion flag; numeric-code meaning UNCONFIRMED (set aside 2026-06-26)."
+    sample_values: [Y, N]
+  - name: ai6_cp_flag
+    type: string
+    description: "Call-plan inclusion flag; numeric-code meaning UNCONFIRMED (set aside 2026-06-26)."
+    sample_values: [Y, N]
+  - name: ai45_cp_flag
+    type: string
+    description: "Call-plan inclusion flag; numeric-code meaning UNCONFIRMED (set aside 2026-06-26)."
+    sample_values: [Y, N]
+  - name: ai456_cp_flag
+    type: string
+    description: "Call-plan inclusion flag. CONSTANT 'N' across the entire extract (dead column); numeric-code meaning UNCONFIRMED (set aside 2026-06-26)."
+    sample_values: [N]
+  - name: ai10_cp_flag
+    type: string
+    description: "Call-plan inclusion flag; numeric-code meaning UNCONFIRMED (set aside 2026-06-26)."
+    sample_values: [Y, N]
+  - name: all_cp_flag
+    type: string
+    description: "Call-plan inclusion flag (broadest call plan); numeric-code meaning UNCONFIRMED (set aside 2026-06-26)."
+    sample_values: [Y, N]
+  - name: pdrp_flag
+    type: string
+    description: "PDRP = Prescriber Data Restriction Program. Y = HCP opted out of having individual prescribing data shared. Per user decision (2026-06-26) NO suppression rule is applied; flag is documented only."
+    sample_values: [Y, N]
+  - name: abv_best_specialty_code
+    type: string
+    description: "AbbVie best-specialty code."
+    sample_values: [GE, PG, NRP, PHA, IM]
+  - name: specialty_description
+    type: string
+    description: "Specialty label; predominantly Gastroenterology."
+    sample_values: [Gastroenterology, Pediatric Gastroenterology, Nurse Practitioner, Physician Assistant, Internal Medicine]
+  - name: bio_decile
+    type: integer
+    description: "Biologics-writing decile, 0-10 (10 = top decile of biologic IBD prescribing; 0 = no measured biologic volume)."
+  - name: bio_decile_group
+    type: string
+    description: "Banded bio_decile: LOW=0-2, MEDIUM=3-6, HIGH=7-10 (RULE-008)."
+    sample_values: [LOW, MEDIUM, HIGH]
+  - name: hum_decile
+    type: integer
+    description: "Humira-writing decile, 0-10."
+  - name: hum_decile_group
+    type: string
+    description: "Banded hum_decile: LOW=0-2, MEDIUM=3-6, HIGH=7-10 (RULE-008)."
+    sample_values: [LOW, MEDIUM, HIGH]
+  - name: gastro_segments
+    type: string
+    description: "Behavioural HCP segment (RULE-302)."
+    sample_values: [Influencers, Pragmatists, Fast Followers, Traditionalists, Unsegmented]
+  - name: rinvoq_hits
+    type: string
+    description: "Y if the HCP is flagged as a Rinvoq promotional/engagement target ('hit'); N otherwise."
+    sample_values: [Y, N]
+  - name: skyrizi_hits
+    type: string
+    description: "Y if the HCP is flagged as a Skyrizi promotional/engagement target ('hit')."
+    sample_values: [Y, N]
+  - name: gastro_hits
+    type: string
+    description: "Y if the HCP is flagged as a gastro promotional/engagement target ('hit')."
+    sample_values: [Y, N]
+  - name: version_flag
+    type: string
+    description: "Data extract/snapshot version, single-valued (2026-06-05); identifies the masterdata cut."
+    sample_values: [2026-06-05]
+  - name: product_brand
+    type: string
+    description: "Brand, biosimilar, presentation, or CLASS-ROLLUP label. Class rollups {SI_ORAL, TNF, JAK, IL_23, IL_23_IL_12, A4B7, S1P} are sums over constituent brands — exclude from brand-level sums (RULE-101). SKYRIZI = SKYRIZI OBI; *_IV/_SQ/_CDV are presentation variants (RULE-303)."
+    sample_values: [HUMIRA, SKYRIZI, RINVOQ, STELARA, TNF]
+  - name: indication_code
+    type: string
+    description: "IBD indication: CD = Crohn's Disease, UC = Ulcerative Colitis. This table is IBD-only."
+    sample_values: [CD, UC]
+  - name: data_type
+    type: string
+    description: "Whether this row's frx* series holds Total Rx (TRx) or New-to-Brand Rx (NBRx). Selected by filter, not computed (RULE-005)."
+    sample_values: [TRx, NBRx]
+  - name: cur_4wk
+    type: float
+    description: "Current trailing-4-weeks sum of the frx* series: cur_4wk = sum(frx1..frx4), i.e. the most recent 4 weeks ending 2026-06-05 (RULE-007)."
+  - name: pre_4wk
+    type: float
+    description: "Prior trailing-4-weeks sum: pre_4wk = sum(frx5..frx8), the 4 weeks immediately before the current window (RULE-007)."
+  - name: cur_13wk
+    type: float
+    description: "Current trailing-13-weeks sum of the frx* series: cur_13wk = sum(frx1..frx13), i.e. the most recent 13 weeks ending 2026-06-05 (RULE-007)."
+  - name: pre_13wk
+    type: float
+    description: "Prior trailing-13-weeks sum: pre_13wk = sum(frx14..frx26), the 13 weeks immediately before the current window (RULE-007)."
+  - name: cur_26wk
+    type: float
+    description: "Current trailing-26-weeks sum of the frx* series: cur_26wk = sum(frx1..frx26), i.e. the most recent 26 weeks ending 2026-06-05 (RULE-007)."
+  - name: pre_26wk
+    type: float
+    description: "Prior trailing-26-weeks sum: pre_26wk = sum(frx27..frx52), the 26 weeks immediately before the current window (RULE-007)."
+  - name: cur_52wk
+    type: float
+    description: "Current trailing-52-weeks sum of the frx* series: cur_52wk = sum(frx1..frx52), i.e. the most recent 52 weeks ending 2026-06-05 (RULE-007)."
+  - name: pre_52wk
+    type: float
+    description: "Prior trailing-52-weeks sum: pre_52wk = sum(frx53..frx104), the 52 weeks immediately before the current window (RULE-007)."
+  - name: frx1
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-06-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx2
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-05-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx3
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-05-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx4
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-05-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx5
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-05-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx6
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-05-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx7
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-04-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx8
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-04-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx9
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-04-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx10
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-04-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx11
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-03-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx12
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-03-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx13
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-03-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx14
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-03-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx15
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-02-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx16
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-02-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx17
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-02-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx18
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-02-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx19
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-01-30. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx20
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-01-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx21
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-01-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx22
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-01-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx23
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2026-01-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx24
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-12-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx25
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-12-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx26
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-12-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx27
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-12-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx28
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-11-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx29
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-11-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx30
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-11-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx31
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-11-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx32
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-10-31. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx33
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-10-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx34
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-10-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx35
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-10-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx36
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-10-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx37
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-09-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx38
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-09-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx39
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-09-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx40
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-09-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx41
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-08-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx42
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-08-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx43
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-08-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx44
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-08-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx45
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-08-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx46
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-07-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx47
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-07-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx48
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-07-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx49
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-07-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx50
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-06-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx51
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-06-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx52
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-06-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx53
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-06-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx54
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-05-30. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx55
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-05-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx56
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-05-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx57
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-05-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx58
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-05-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx59
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-04-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx60
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-04-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx61
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-04-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx62
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-04-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx63
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-03-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx64
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-03-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx65
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-03-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx66
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-03-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx67
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-02-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx68
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-02-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx69
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-02-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx70
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-02-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx71
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-01-31. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx72
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-01-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx73
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-01-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx74
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-01-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx75
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2025-01-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx76
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-12-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx77
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-12-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx78
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-12-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx79
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-12-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx80
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-11-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx81
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-11-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx82
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-11-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx83
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-11-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx84
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-11-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx85
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-10-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx86
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-10-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx87
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-10-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx88
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-10-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx89
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-09-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx90
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-09-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx91
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-09-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx92
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-09-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx93
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-08-30. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx94
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-08-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx95
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-08-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx96
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-08-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx97
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-08-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx98
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-07-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx99
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-07-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx100
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-07-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx101
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-07-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx102
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-06-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx103
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-06-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx104
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-06-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx105
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-06-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx106
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-05-31. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx107
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-05-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx108
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-05-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx109
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-05-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx110
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-05-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx111
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-04-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx112
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-04-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx113
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-04-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx114
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-04-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx115
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-03-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx116
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-03-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx117
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-03-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx118
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-03-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx119
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-03-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx120
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-02-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx121
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-02-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx122
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-02-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx123
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-02-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx124
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-01-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx125
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-01-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx126
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-01-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx127
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2024-01-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx128
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-12-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx129
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-12-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx130
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-12-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx131
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-12-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx132
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-12-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx133
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-11-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx134
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-11-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx135
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-11-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx136
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-11-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx137
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-10-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx138
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-10-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx139
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-10-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx140
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-10-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx141
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-09-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx142
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-09-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx143
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-09-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx144
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-09-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx145
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-09-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx146
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-08-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx147
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-08-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx148
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-08-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx149
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-08-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx150
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-07-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx151
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-07-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx152
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-07-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx153
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-07-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx154
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-06-30. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx155
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-06-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx156
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-06-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx157
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-06-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx158
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-06-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx159
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-05-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx160
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-05-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx161
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-05-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx162
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-05-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx163
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-04-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx164
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-04-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx165
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-04-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx166
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-04-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx167
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-03-31. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx168
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-03-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx169
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-03-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx170
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-03-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx171
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-03-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx172
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-02-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx173
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-02-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx174
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-02-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx175
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-02-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx176
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-01-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx177
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-01-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx178
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-01-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx179
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2023-01-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx180
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-12-30. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx181
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-12-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx182
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-12-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx183
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-12-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx184
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-12-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx185
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-11-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx186
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-11-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx187
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-11-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx188
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-11-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx189
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-10-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx190
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-10-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx191
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-10-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx192
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-10-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx193
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-09-30. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx194
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-09-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx195
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-09-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx196
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-09-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx197
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-09-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx198
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-08-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx199
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-08-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx200
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-08-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx201
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-08-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx202
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-07-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx203
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-07-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx204
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-07-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx205
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-07-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx206
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-07-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx207
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-06-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx208
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-06-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx209
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-06-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx210
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-06-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx211
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-05-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx212
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-05-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx213
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-05-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx214
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-05-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx215
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-04-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx216
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-04-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx217
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-04-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx218
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-04-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx219
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-04-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx220
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-03-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx221
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-03-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx222
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-03-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx223
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-03-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx224
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-02-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx225
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-02-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx226
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-02-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx227
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-02-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx228
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-01-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx229
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-01-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx230
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-01-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx231
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2022-01-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx232
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-12-31. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx233
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-12-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx234
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-12-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx235
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-12-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx236
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-12-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx237
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-11-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx238
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-11-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx239
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-11-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx240
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-11-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx241
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-10-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx242
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-10-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx243
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-10-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx244
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-10-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx245
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-10-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx246
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-09-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx247
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-09-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx248
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-09-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx249
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-09-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx250
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-08-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx251
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-08-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx252
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-08-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx253
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-08-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx254
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-07-30. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx255
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-07-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx256
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-07-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx257
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-07-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx258
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-07-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx259
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-06-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx260
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-06-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx261
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-06-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx262
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-06-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx263
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-05-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx264
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-05-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx265
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-05-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx266
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-05-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx267
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-04-30. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx268
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-04-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx269
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-04-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx270
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-04-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx271
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-04-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx272
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-03-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx273
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-03-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx274
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-03-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx275
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-03-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx276
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-02-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx277
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-02-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx278
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-02-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx279
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-02-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx280
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-01-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx281
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-01-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx282
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-01-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx283
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-01-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx284
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2021-01-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx285
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-12-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx286
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-12-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx287
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-12-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx288
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-12-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx289
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-11-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx290
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-11-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx291
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-11-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx292
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-11-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx293
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-10-30. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx294
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-10-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx295
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-10-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx296
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-10-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx297
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-10-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx298
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-09-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx299
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-09-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx300
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-09-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx301
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-09-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx302
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-08-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx303
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-08-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx304
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-08-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx305
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-08-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx306
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-07-31. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx307
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-07-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx308
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-07-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx309
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-07-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx310
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-07-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx311
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-06-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx312
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-06-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx313
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-06-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx314
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-06-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx315
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-05-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx316
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-05-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx317
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-05-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx318
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-05-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx319
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-05-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx320
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-04-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx321
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-04-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx322
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-04-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx323
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-04-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx324
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-03-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx325
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-03-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx326
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-03-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx327
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-03-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx328
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-02-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx329
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-02-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx330
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-02-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx331
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-02-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx332
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-01-31. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx333
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-01-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx334
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-01-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx335
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-01-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx336
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2020-01-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx337
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-12-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx338
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-12-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx339
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-12-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx340
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-12-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx341
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-11-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx342
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-11-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx343
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-11-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx344
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-11-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx345
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-11-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx346
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-10-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx347
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-10-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx348
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-10-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx349
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-10-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx350
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-09-27. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx351
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-09-20. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx352
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-09-13. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx353
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-09-06. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx354
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-08-30. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx355
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-08-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx356
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-08-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx357
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-08-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx358
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-08-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx359
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-07-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx360
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-07-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx361
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-07-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx362
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-07-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx363
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-06-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx364
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-06-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx365
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-06-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx366
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-06-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx367
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-05-31. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx368
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-05-24. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx369
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-05-17. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx370
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-05-10. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx371
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-05-03. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx372
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-04-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx373
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-04-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx374
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-04-12. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx375
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-04-05. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx376
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-03-29. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx377
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-03-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx378
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-03-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx379
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-03-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx380
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-03-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx381
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-02-22. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx382
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-02-15. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx383
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-02-08. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx384
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-02-01. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx385
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-01-25. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx386
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-01-18. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx387
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-01-11. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx388
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2019-01-04. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx389
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2018-12-28. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx390
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2018-12-21. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx391
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2018-12-14. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx392
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2018-12-07. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx393
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2018-11-30. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx394
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2018-11-23. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx395
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2018-11-16. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx396
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2018-11-09. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx397
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2018-11-02. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx398
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2018-10-26. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
+  - name: frx399
+    type: float
+    description: "Weekly value (TRx or NBRx per data_type) for week ending 2018-10-19. frx1 = most recent (2026-06-05); each higher index is one week earlier (RULE-006, RULE-401)."
