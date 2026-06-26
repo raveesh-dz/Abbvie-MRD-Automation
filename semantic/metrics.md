@@ -141,3 +141,30 @@
 - formula: "group = LOW if decile<=2 else MEDIUM if decile<=6 else HIGH"
 - caveats: "Decile 0 (no volume) falls in LOW. Use the supplied *_decile_group columns rather than re-banding."
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
+
+## RULE-009: HCP_demographics dedup to one row per HCP
+- applies_to: HCP_demographics (abbott_customer_id, zip_code, Territory_name, Region_name, District_name, state)
+- category: metric
+- definition: >
+    HCP_demographics is delivered with up to 3 rows per HCP (multiple practice
+    locations) plus some all-null-geo rows, so it is not safe to join as-is. Reduce it
+    to ONE row per HCP before any join:
+      1. Drop rows where ALL geo fields {zip_code, Territory_name, Region_name,
+         District_name, state} are null.
+      2. Among the remaining rows for each abbott_customer_id, keep the row with the
+         most non-null geo fields (highest completeness).
+      3. Tie-break by original file order (keep the FIRST such row).
+    Result is deterministic: 1,035 HCPs with geography (5 HCPs have no geo at all and
+    are dropped here → null on a left join from the universe).
+- formula: >
+    geo = ['zip_code','Territory_name','Region_name','District_name','state']
+    d = demo.copy(); d['_c'] = d[geo].notna().sum(axis=1); d['_o'] = range(len(d))
+    d = d[d['_c'] > 0].sort_values(['abbott_customer_id','_c','_o'],
+                                   ascending=[True, False, True])
+    demo_1pp = d.drop_duplicates('abbott_customer_id', keep='first')
+- caveats: >
+    Always apply before using any HCP_demographics relationship edge, or the join fans
+    out. Completeness tie-breaks are resolved by file order, so the choice between two
+    equally-complete practice locations is arbitrary-but-stable. Pairs with RULE-305
+    (geography authority).
+- provenance: auto-saved | 2026-06-26 | R | run_id=discussion
