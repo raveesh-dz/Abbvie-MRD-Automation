@@ -168,3 +168,37 @@
     equally-complete practice locations is arbitrary-but-stable. Pairs with RULE-305
     (geography authority).
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
+
+## RULE-010: SKYRIZI Holdout classification (Crohn's new prescribing, NBRx)
+- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (SKYRIZI vs STELARA CD NBRx), per HCP
+- category: metric
+- definition: >
+    Classifies each HCP by whether they have shifted their NEW Crohn's-Disease prescribing
+    from STELARA to SKYRIZI. Uses NBRx only (new brand prescriptions), indication_code = CD,
+    over the most recent 13 weeks (cur_13wk = frx1..frx13, RULE-007). Per HCP take SKYRIZI
+    CD NBRx and STELARA CD NBRx, then:
+      - ratio = STELARA_NBRx / SKYRIZI_NBRx (defined only when SKYRIZI > 0).
+      - Holdout (NOT moved to SKYRIZI; conversion target):
+          * no_cd_nbrx        — SKYRIZI == 0 AND STELARA == 0 (no recent CD new starts)
+          * stelara_only      — STELARA > 0 AND SKYRIZI == 0
+          * both_lean_stelara — both > 0 AND ratio >= 0.5
+      - Non-Holdout (SKYRIZI wins new prescribing; retention):
+          * skyrizi_only      — STELARA == 0 AND SKYRIZI > 0
+          * both_lean_skyrizi — both > 0 AND ratio < 0.5
+    Brand scope by default = the SKYRIZI and STELARA brand labels EXACTLY (SKYRIZI excludes
+    SKYRIZI_IV; STELARA excludes STELARA_IV, plain USTEKINUMAB, and ustekinumab biosimilars).
+    Confirmed by user 2026-06-26.
+- formula: >
+    sky = Σ frx1..13 where product_brand=='SKYRIZI', indication_code=='CD', data_type=='NBRx'
+    stel = Σ frx1..13 where product_brand=='STELARA', indication_code=='CD', data_type=='NBRx'
+    ratio = stel/sky if sky>0 else undefined
+    holdout = (sky==0) or (sky>0 and stel>0 and ratio>=0.5)
+- caveats: >
+    Ratio undefined when SKYRIZI==0 (denominator 0) — those HCPs are classified by the
+    zero-SKYRIZI branch, and the emitted ratio column is a STRING showing the number for
+    defined rows or "undefined_stelara_only"/"undefined_no_cd_nbrx" otherwise. The Holdout
+    bucket mixes silent HCPs (no_cd_nbrx — no new CD starts at all) with active STELARA
+    prescribers; for targeting, separate them (active leaners = true switch list). NBRx-only
+    by design — ignores the existing TRx book. Threshold 0.5 and brand scope are user choices,
+    not source-defined. Run universe = Holdout_HCP_Universe (RULE-102).
+- provenance: auto-saved | 2026-06-26 | R | run_id=run_2026-06-26_001
