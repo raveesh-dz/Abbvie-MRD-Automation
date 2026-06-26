@@ -1,0 +1,36 @@
+table: HCP_demographics
+description: "Primary (first) source for HCP demographics/geography — practice ZIP and the AbbVie sales-geography hierarchy (Territory / District / Region) per HCP. Keyed on abbott_customer_id."
+grain: "one row per HCP per practice location (RAW; up to 3 rows/HCP). Dedupe to one row per HCP via RULE-009 before joining."
+date_range: n/a (static reference snapshot)
+refresh: static reference (re-issued per analysis cut)
+known_issues:
+  - "NOT one row per HCP as delivered: 60 HCPs have 2-3 rows (multiple practice ZIPs/territories) and there are 14 all-null-geo rows. Apply RULE-009 (drop all-null-geo rows, keep most-complete row, tie-break = first) -> 1,035 HCPs with geography for a 1:1 join."
+  - "5 HCPs have NO geography at all (only null-geo rows); they drop out of the deduped demographics and will be null on a left join from the universe."
+  - "AUTHORITATIVE source for HCP geography: when zip_code/state differ from the gastro universe table, HCP_demographics WINS; the universe's zip/state is fallback only (RULE-305). It also uniquely supplies Territory/District/Region."
+  - "state is occasionally null (~0.4% after dedup) even when other geo is present; Territory_name carries the state as a suffix (e.g. 'Atlanta N,GA'), so state is derivable from it."
+  - "All ids match the gastro universe / Holdout_HCP_Universe exactly; abbott_customer_id is the same key/value space as the gastro universe's abv_customer_id (verified)."
+  - "zip_code is numeric (leading zeros lost)."
+  - "Sales geography is a strict hierarchy: Region (5) contains Districts (31) contain Territories (101)."
+columns:
+  - name: abbott_customer_id
+    type: integer
+    description: "AbbVie HCP identifier; the join key (= sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.abv_customer_id and Holdout_HCP_Universe.abbott_customer_id)."
+  - name: zip_code
+    type: float
+    description: "HCP practice ZIP code (numeric; leading zeros lost). Authoritative over the gastro universe's zip_code (RULE-305)."
+  - name: Territory_name
+    type: string
+    description: "AbbVie sales TERRITORY (lowest geo tier; ~101). Format 'City,ST' (e.g. 'Atlanta N,GA') — the trailing state is reliable even when the state column is null."
+    sample_values: ["Atlanta N,GA", "Omaha,NE", "Columbus,GA"]
+  - name: Region_name
+    type: string
+    description: "AbbVie sales REGION (top geo tier; exactly 5)."
+    sample_values: ["Central", "Great Lakes", "Northeast", "Southeast", "West"]
+  - name: District_name
+    type: string
+    description: "AbbVie sales DISTRICT (middle geo tier; ~31). Format 'City,ST'."
+    sample_values: ["Atlanta,GA", "Chicago N,IL", "New Orleans,LA"]
+  - name: state
+    type: string
+    description: "HCP practice state (USPS 2-letter). Occasionally null even when other geo is present; derive from Territory_name suffix when missing. Authoritative over the gastro universe's state (RULE-305)."
+    sample_values: ["GA", "NE", "AL"]

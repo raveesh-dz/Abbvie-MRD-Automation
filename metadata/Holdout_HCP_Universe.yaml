@@ -1,0 +1,13 @@
+table: Holdout_HCP_Universe
+description: "Authoritative analyzable-HCP universe for the gastro holdout analysis — the canonical set of in-scope HCPs (a membership list, one column). Keyed on abbott_customer_id."
+grain: one row per HCP (abbott_customer_id)
+date_range: n/a (static reference snapshot)
+refresh: static reference list (re-issued per analysis cut)
+known_issues:
+  - "Scope/membership list: HCP analyses on the gastro universe should be RESTRICTED to these ids (RULE-102). It currently equals the full gastro universe exactly (1,040 / 1,040 ids match), so the restriction is a no-op today, but this is the authoritative analyzable scope if a future cut narrows it."
+  - "Defines the analyzable population; it is NOT a treatment/control split. Presence of an id simply means the HCP is in scope."
+  - "abbott_customer_id is the same key/value space as the gastro universe's abv_customer_id (verified: identical 1,040-id set) and HCP_demographics.abbott_customer_id."
+columns:
+  - name: abbott_customer_id
+    type: integer
+    description: "AbbVie HCP identifier; the join key (= sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.abv_customer_id and HCP_demographics.abbott_customer_id). Presence = HCP is in the analyzable holdout universe."
