@@ -24,10 +24,39 @@ relationships:
 # Any join beyond the allocation edge above is a data gap: surface it, don't guess.
 #
 # sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (the gastro HCP universe table)
-# is STANDALONE — no validated edge to either table above. It is HCP-grain and uses
-# class-coded product labels (TNF, JAK, IL_23, ...) plus brand/biosimilar labels that
-# do NOT align with the Weekly/Monthly PRODUCT vocabulary, and it carries its own
-# positional weekly frx* series (different time encoding). Its only INTERNAL "join"
-# is self-alignment of (product_brand, indication_code, data_type) slices on
-# abv_customer_id (1:1, RULE-005) — that is within-table, not a cross-table edge.
-# Any cross-table join to it is a data gap: surface it, don't guess.
+# uses class-coded product labels (TNF, JAK, IL_23, ...) plus brand/biosimilar labels
+# that do NOT align with the Weekly/Monthly PRODUCT vocabulary, and it carries its own
+# positional weekly frx* series — so it has NO edge to the Weekly/Monthly tables. Its
+# internal slice self-alignment of (product_brand, indication_code, data_type) on
+# abv_customer_id (1:1, RULE-005) is within-table, not a cross-table edge.
+#
+# It DOES join, on the HCP key, to the two HCP reference tables below. The HCP key is
+# the same value space across all three: gastro abv_customer_id == HCP_demographics
+# .abbott_customer_id == Holdout_HCP_Universe.abbott_customer_id (verified: identical
+# 1,040-id set). HCP_demographics MUST be deduped to one row per HCP (RULE-009) before
+# any of its edges are used, or the join fans out (raw demo is up to 3 rows/HCP).
+
+  - left: HCP_demographics.abbott_customer_id
+    right: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.abv_customer_id
+    type: one-to-one
+    notes: >
+      HCP demographics enrichment. Dedupe HCP_demographics to one row/HCP per RULE-009
+      FIRST (raw is up to 3 rows/HCP → otherwise many-to-one fan-out). Left join from
+      the gastro universe; 5 HCPs have no geo and will be null. HCP_demographics is the
+      authoritative geography source (RULE-305): its zip/state override the universe's.
+
+  - left: Holdout_HCP_Universe.abbott_customer_id
+    right: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.abv_customer_id
+    type: one-to-one
+    notes: >
+      Analyzable-universe membership. Use to RESTRICT gastro HCP analyses to in-scope
+      HCPs (RULE-102). Currently the id set equals the universe exactly (no-op today),
+      but it is the authoritative scope if a future cut narrows it.
+
+  - left: HCP_demographics.abbott_customer_id
+    right: Holdout_HCP_Universe.abbott_customer_id
+    type: one-to-one
+    notes: >
+      Direct edge between the two HCP reference tables (e.g. demographics of the holdout
+      universe without going through the gastro fact table). Dedupe HCP_demographics per
+      RULE-009 first.
