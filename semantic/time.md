@@ -18,7 +18,7 @@
 - formula: "week_ending(frxN) = date(2026-06-05) - (N-1)*7 days"
 - caveats: >
     The anchor is extract-specific: a future re-extract re-anchors frx1 to that
-    file's stamp. The latest week may be provisional/incomplete (no provisional rule
-    defined yet for this table — flag if it matters). Weekly Friday convention matches
-    the Weekly_Data_Tabular table.
+    file's stamp. The latest week (frx1, w/e 2026-06-05) is COMPLETE, not provisional
+    (user-confirmed 2026-06-26) — no latest-week exclusion or incompleteness caveat
+    applies. Weekly Friday convention matches the Weekly_Data_Tabular table.
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
