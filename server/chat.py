@@ -75,7 +75,7 @@ def post_message(text: str, in_reply_to=None, chosen=None) -> dict:
     with _LOCK:
         raw = _read_raw()
         thread = json.loads(raw) if raw else _new_thread()
-        if thread["messages"] and thread["turn"] == "engine":
+        if thread["turn"] == "engine":
             raise Conflict()
         msg = {"seq": len(thread["messages"]) + 1, "role": "user",
                "ts": datetime.now().isoformat(timespec="seconds"),
@@ -93,7 +93,8 @@ def post_message(text: str, in_reply_to=None, chosen=None) -> dict:
         if _read_raw() != raw:
             raise Conflict()
         # spec §7: never write an append whose computed seq duplicates an existing one.
-        assert msg["seq"] not in {m["seq"] for m in thread["messages"][:-1]}
+        if msg["seq"] in {m["seq"] for m in thread["messages"][:-1]}:
+            raise RuntimeError("duplicate seq")
         _atomic_write(thread)
         return thread
 
