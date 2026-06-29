@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>670 or 43? How one question became a board-ready answer</title>
+<title>700 or 30? How one question became a board-ready answer</title>
 <meta name="description" content="A leadership walkthrough: how a plain-English question became a validated SKYRIZI Holdout answer and a board-ready deck. Run run_2026-06-26_001.">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Roboto:wght@400;500;700&display=swap');
@@ -278,17 +278,17 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
   <div class="herogrid">
     <div class="heroL">
       <div class="reframe">
-        <span class="strike">670</span>
+        <span class="strike">456</span>
         <span class="arrow" aria-hidden="true">&rarr;</span>
-        <span class="hero43">43</span>
+        <span class="hero43">30</span>
         <span class="hlabel">the real STELARA switch list</span>
       </div>
-      <p class="herolead">The obvious answer was <b>670 Holdouts</b> to convert. The real switch list is <span class="h">43</span>. The other <b>627</b> aren't switchers, they're <b>silent</b>.</p>
+      <p class="herolead">The obvious answer was <b>456 Holdouts</b> to convert. The real switch list is <span class="h">30</span>. The other <b>426</b> aren't switchers, they're <b>silent</b>.</p>
       <p class="small gloss">Holdout = no SKYRIZI shift for new Crohn's starts &nbsp;·&nbsp; NBRx = new prescriptions</p>
     </div>
     <div class="heroR">
-      <div class="stakes"><b>Why it matters:</b> a naive 670-name target list spends <b>~93% of effort (627/670)</b> on HCPs with no recent Crohn's starts to switch.</div>
-      <p class="trustline">Every figure here traces to one validated result file (1,040 rows, validation PASS). Full lineage below.</p>
+      <div class="stakes"><b>Why it matters:</b> a naive 456-name target list spends <b>~93% of effort (426/456)</b> on HCPs with no recent Crohn's starts to switch.</div>
+      <p class="trustline">Every figure here traces to one validated result file (700 rows, validation PASS). Full lineage below.</p>
     </div>
   </div>
   <div class="divider">How we got the answer: optional walkthrough <svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></div>
@@ -334,7 +334,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-
         <table class="data"><thead><tr><th>Decision</th><th>Locked as</th></tr></thead><tbody>
         <tr><td>SKYRIZI scope</td><td>label <b>SKYRIZI</b> only, SKYRIZI_IV excluded <span class="muted">(user confirmed)</span></td></tr>
         <tr><td>STELARA scope</td><td>label <b>STELARA</b> only, STELARA_IV + ustekinumab biosimilars excluded <span class="muted">(user confirmed)</span></td></tr>
-        <tr><td>Universe</td><td>full <b>1,040</b>-HCP holdout universe, incl. zero-CD doctors <span class="muted">(user confirmed)</span></td></tr>
+        <tr><td>Universe</td><td>700-HCP holdout universe (subset of full ~1040 gastro universe), incl. zero-CD doctors <span class="muted">(user confirmed)</span></td></tr>
         <tr><td>Default: "no CD NBRx"</td><td>13-week sum exactly <b>0</b></td></tr>
         <tr><td>Default: ratio boundary</td><td>ratio <b>= 0.5 &rarr; Holdout</b> (i.e. &ge; 0.5)</td></tr>
         </tbody></table>
@@ -404,7 +404,7 @@ Tables excluded            : none
 <section id="s5"><div class="reveal">
   <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-code"/></svg><span class="idx">05</span><span class="of">/ 12</span><span>How the answer was computed</span></div><div class="strip-rule"></div>
   <span class="aud">Technical · proof</span>
-  <h2 class="stitle">This is the code that turns 670 into the 43 you'll act on</h2>
+  <h2 class="stitle">This is the code that turns 456 into the 30 you'll act on</h2>
   <p class="dek">Standalone pandas: load, join, classify, output. Nothing ships until it passes validation.</p>
   <p class="narr prose">The engine never hand-calculates; every number is computed in pandas. Three sub-steps tell the story: build the full spine, classify, and a deliberate data-quality decision on the ratio column.</p>
   <div class="split">
@@ -434,8 +434,8 @@ ratio_str -> <span class="s">"undefined_stelara_only"</span> | <span class="s">"
       </div>
       <div data-sample data-name="validation: re-derivable evidence (not a badge)">
         <div class="sample__pad small"><ul>
-        <li>row count = <b>1,040</b> == expected_row_count 1,040</li>
-        <li>join audit: spine <b>1,040 &rarr; 1,040</b> after left-join, no fan-out</li>
+        <li>row count = <b>700</b> == expected_row_count 700</li>
+        <li>join audit: spine <b>700 &rarr; 700</b> after left-join, no fan-out</li>
         <li>no unexpected nulls in metric columns</li>
         </ul></div>
       </div>
@@ -446,18 +446,18 @@ ratio_str -> <span class="s">"undefined_stelara_only"</span> | <span class="s">"
 
 <!-- 6 -->
 <section id="s6"><div class="reveal">
-  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-filter"/></svg><span class="idx">06</span><span class="of">/ 12</span><span>The result: 670 collapses to 43</span></div><div class="strip-rule"></div>
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-filter"/></svg><span class="idx">06</span><span class="of">/ 12</span><span>The result: 456 collapses to 30</span></div><div class="strip-rule"></div>
   <span class="aud exec">Exec · the summit</span>
-  <h2 class="stitle">670 Holdouts collapse to 43 real switch targets</h2>
+  <h2 class="stitle">456 Holdouts collapse to 30 real switch targets</h2>
   <p class="dek">The whole decision in one picture: most "Holdouts" simply aren't prescribing.</p>
-  <div class="dist" role="img" aria-label="Classification of 1,040 HCPs: no CD NBRx 627, SKYRIZI only 367, STELARA only 26, both lean STELARA 17, both lean SKYRIZI 3.">
-    <div class="row silent"><div class="lab"><svg class="ic" style="color:var(--gray)" aria-hidden="true"><use href="#i-mute"/></svg>No CD NBRx (silent)</div><div class="track"><div class="fill" style="width:100%;background:var(--gray)"></div></div><div class="val">627</div></div>
-    <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>SKYRIZI only</div><div class="track"><div class="fill" style="width:58.5%;background:var(--teal)"></div></div><div class="val">367</div></div>
-    <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>STELARA only</div><div class="track"><div class="fill" style="width:4.1%;background:var(--magenta)"></div></div><div class="val">26</div></div>
-    <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>Both · lean STELARA</div><div class="track"><div class="fill" style="width:2.7%;background:var(--amber)"></div></div><div class="val">17</div></div>
-    <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>Both · lean SKYRIZI</div><div class="track"><div class="fill" style="width:0.5%;background:var(--teal-soft)"></div></div><div class="val">3</div></div>
+  <div class="dist" role="img" aria-label="Classification of 700 HCPs: no CD NBRx 426, SKYRIZI only 243, STELARA only 17, both lean STELARA 13, both lean SKYRIZI 1.">
+    <div class="row silent"><div class="lab"><svg class="ic" style="color:var(--gray)" aria-hidden="true"><use href="#i-mute"/></svg>No CD NBRx (silent)</div><div class="track"><div class="fill" style="width:100%;background:var(--gray)"></div></div><div class="val">426</div></div>
+    <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>SKYRIZI only</div><div class="track"><div class="fill" style="width:57.0%;background:var(--teal)"></div></div><div class="val">243</div></div>
+    <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>STELARA only</div><div class="track"><div class="fill" style="width:4.0%;background:var(--magenta)"></div></div><div class="val">17</div></div>
+    <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>Both · lean STELARA</div><div class="track"><div class="fill" style="width:3.1%;background:var(--amber)"></div></div><div class="val">13</div></div>
+    <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>Both · lean SKYRIZI</div><div class="track"><div class="fill" style="width:0.2%;background:var(--teal-soft)"></div></div><div class="val">1</div></div>
   </div>
-  <p class="narr prose"><b>670</b> Holdouts, but <b>627</b> wrote no Crohn's NBRx at all. The active STELARA-leaners (<b>26</b> STELARA-only + <b>17</b> both-lean-STELARA) are <span style="color:var(--magenta-text);font-weight:700">the 43</span>. <span class="muted">Canonical view: 1,040 in scope &rarr; 413 actively prescribing &rarr; 43 switch targets (627 silent, parked aside).</span></p>
+  <p class="narr prose"><b>456</b> Holdouts, but <b>426</b> wrote no Crohn's NBRx at all. The active STELARA-leaners (<b>17</b> STELARA-only + <b>13</b> both-lean-STELARA) are <span style="color:var(--magenta-text);font-weight:700">the 30</span>. <span class="muted">Canonical view: 700 in scope &rarr; 274 actively prescribing &rarr; 30 switch targets (426 silent, parked aside).</span></p>
   <div class="split">
     <div class="col-aside">
       <div data-sample data-name="result.csv: one verified row per group (both ratio sentinels)">
@@ -469,14 +469,14 @@ ratio_str -> <span class="s">"undefined_stelara_only"</span> | <span class="s">"
         <tr><td>86131</td><td>2.0</td><td>1.0</td><td>0.5000</td><td>both_lean_stelara</td><td>Holdout</td></tr>
         <tr><td>3870464</td><td>3.0</td><td>1.0</td><td>0.3333</td><td>both_lean_skyrizi</td><td>Non-Holdout</td></tr>
         </tbody></table>
-        <p class="cap">Real rows from <code class="inline">result.csv</code> (1,040 total). Two string sentinels where SKYRIZI = 0 and the ratio is undefined.</p></div>
+        <p class="cap">Real rows from <code class="inline">result.csv</code> (700 total). Two string sentinels where SKYRIZI = 0 and the ratio is undefined.</p></div>
       </div>
     </div>
     <div class="col-aside">
       <div data-sample data-name="takeaways.md: #1 and #3 (verbatim)">
         <div class="sample__pad small">
-        <p><b>#1</b>: “SKYRIZI drew 666 CD NBRx over the last 13 weeks versus 49 for STELARA (≈13.6× more new SKYRIZI starts). Among the 413 HCPs who wrote any CD NBRx, 370 (90%) are Non-Holdouts … only 43 still lean on STELARA.”</p>
-        <p><b>#3</b>: “The real switch list is 43 active STELARA-leaners … 26 write STELARA only … and 17 write both but lean STELARA (ratio ≥ 0.5).”</p>
+        <p><b>#1</b>: “SKYRIZI drew 436 CD NBRx over the last 13 weeks versus 32 for STELARA (approximately 13.6x more new SKYRIZI starts). Among the 274 HCPs who wrote any CD NBRx, 244 (89%) are Non-Holdouts ... only 30 still lean on STELARA.”</p>
+        <p><b>#3</b>: “The real switch list is 30 active STELARA-leaners ... 17 write STELARA only ... and 13 write both but lean STELARA (ratio &ge; 0.5).”</p>
         </div>
       </div>
     </div>
@@ -489,17 +489,17 @@ ratio_str -> <span class="s">"undefined_stelara_only"</span> | <span class="s">"
   <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-presentation"/></svg><span class="idx">07</span><span class="of">/ 12</span><span>Why a funnel, not a bar</span></div><div class="strip-rule"></div>
   <span class="aud">Technical · proof</span>
   <h2 class="stitle">We tried a bar first, then chose the funnel</h2>
-  <p class="dek">The funnel makes the 670 to 43 collapse a single visual argument.</p>
+  <p class="dek">The funnel makes the 456 to 30 collapse a single visual argument.</p>
   <p class="narr prose">The first instinct was a plain bar of the five groups. You asked to make it stronger; the engine offered three layouts. You chose the funnel: it tells the collapse as one continuous story; two slides split it across a page-turn; stacked cards lose the magnitude.</p>
   <div data-sample data-name="v1 bar: first instinct (reconstruction)">
     <div class="sample__pad">
     <span class="tag-recon">Reconstruction: superseded concept (no exported artifact)</span>
     <div class="dist">
-      <div class="row"><div class="lab"><svg class="ic" style="color:var(--gray)" aria-hidden="true"><use href="#i-mute"/></svg>No CD NBRx</div><div class="track"><div class="fill" style="width:100%;background:var(--gray)"></div></div><div class="val">627</div></div>
-      <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>SKYRIZI only</div><div class="track"><div class="fill" style="width:58.5%;background:var(--teal)"></div></div><div class="val">367</div></div>
-      <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>STELARA only</div><div class="track"><div class="fill" style="width:4.1%;background:var(--magenta)"></div></div><div class="val">26</div></div>
-      <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>Both lean STELARA</div><div class="track"><div class="fill" style="width:2.7%;background:var(--amber)"></div></div><div class="val">17</div></div>
-      <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>Both lean SKYRIZI</div><div class="track"><div class="fill" style="width:.5%;background:var(--teal-soft)"></div></div><div class="val">3</div></div>
+      <div class="row"><div class="lab"><svg class="ic" style="color:var(--gray)" aria-hidden="true"><use href="#i-mute"/></svg>No CD NBRx</div><div class="track"><div class="fill" style="width:100%;background:var(--gray)"></div></div><div class="val">426</div></div>
+      <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>SKYRIZI only</div><div class="track"><div class="fill" style="width:57.0%;background:var(--teal)"></div></div><div class="val">243</div></div>
+      <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>STELARA only</div><div class="track"><div class="fill" style="width:4.0%;background:var(--magenta)"></div></div><div class="val">17</div></div>
+      <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>Both lean STELARA</div><div class="track"><div class="fill" style="width:3.1%;background:var(--amber)"></div></div><div class="val">13</div></div>
+      <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>Both lean SKYRIZI</div><div class="track"><div class="fill" style="width:0.2%;background:var(--teal-soft)"></div></div><div class="val">1</div></div>
     </div>
     </div>
   </div>
@@ -523,31 +523,31 @@ ratio_str -> <span class="s">"undefined_stelara_only"</span> | <span class="s">"
   <h2 class="stitle">The board-ready slide</h2>
   <p class="dek">An HTML re-creation of the funnel slide, and the real .pptx to download.</p>
 
-  <div class="funnel" role="img" aria-label="Funnel: analysis pool 1,040 splits into Holdout 670 (64%) and Non-Holdout 370 (36%); the five groups are No CD NBRx 627, STELARA only 26, both lean STELARA 17, SKYRIZI only 367, both lean SKYRIZI 3; the 26 plus 17 active STELARA leaners form the 43-prescriber switch list.">
+  <div class="funnel" role="img" aria-label="Funnel: analysis pool 700 splits into Holdout 456 (65%) and Non-Holdout 244 (35%); the five groups are No CD NBRx 426, STELARA only 17, both lean STELARA 13, SKYRIZI only 243, both lean SKYRIZI 1; the 17 plus 13 active STELARA leaners form the 30-prescriber switch list.">
     <div class="fstrip">SKYRIZI HOLDOUT &nbsp;·&nbsp; CROHN'S NEW PRESCRIBING (NBRX, LAST 13 WEEKS)</div>
-    <div class="ftitle">1,040 Crohn's HCPs Narrow to a 43-Prescriber STELARA Switch List</div>
+    <div class="ftitle">700 Crohn's HCPs Narrow to a 30-Prescriber STELARA Switch List</div>
     <div class="fdek">Every in-scope gastro HCP classified by SKYRIZI vs STELARA Crohn's NBRx over the last 13 weeks. Most Holdouts are not actively prescribing; the real conversion target is small and specific.</div>
     <div class="fflow">
       <svg class="fconnect" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 100 100"><path d="M16 50 H30 M30 28 H46 M30 72 H46" stroke="var(--rule-strong)" stroke-width="1" fill="none" opacity=".7"/><path d="M30 50 V28 M30 50 V72" stroke="var(--rule-strong)" stroke-width="1" fill="none" opacity=".7"/></svg>
-      <div class="node pool"><div class="nt">ANALYSIS POOL</div><div class="nv">1,040</div></div>
+      <div class="node pool"><div class="nt">ANALYSIS POOL</div><div class="nv">700</div></div>
       <div class="splits">
-        <div class="node hold"><div class="nt">HOLDOUT</div><div class="nv">670 · 64%</div></div>
-        <div class="node nonh"><div class="nt">NON-HOLDOUT</div><div class="nv">370 · 36%</div></div>
+        <div class="node hold"><div class="nt">HOLDOUT</div><div class="nv">456 · 65%</div></div>
+        <div class="node nonh"><div class="nt">NON-HOLDOUT</div><div class="nv">244 · 35%</div></div>
       </div>
       <div class="leaves">
-        <div class="leaf"><span class="lname"><svg class="ic" style="color:var(--gray)" aria-hidden="true"><use href="#i-mute"/></svg>No CD NBRx</span><span class="lbar"><i style="width:100%;background:var(--gray)"></i></span><span class="lval">627</span></div>
-        <div class="leaf active"><span class="lname"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>STELARA only</span><span class="lbar"><i style="width:4.1%;background:var(--magenta)"></i></span><span class="lval">26</span></div>
-        <div class="leaf active"><span class="lname"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>Both · lean STELARA</span><span class="lbar"><i style="width:2.7%;background:var(--amber)"></i></span><span class="lval">17</span></div>
-        <div class="leaf"><span class="lname"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>SKYRIZI only</span><span class="lbar"><i style="width:58.5%;background:var(--teal)"></i></span><span class="lval">367</span></div>
-        <div class="leaf"><span class="lname"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>Both · lean SKYRIZI</span><span class="lbar"><i style="width:.5%;background:var(--teal-soft)"></i></span><span class="lval">3</span></div>
+        <div class="leaf"><span class="lname"><svg class="ic" style="color:var(--gray)" aria-hidden="true"><use href="#i-mute"/></svg>No CD NBRx</span><span class="lbar"><i style="width:100%;background:var(--gray)"></i></span><span class="lval">426</span></div>
+        <div class="leaf active"><span class="lname"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>STELARA only</span><span class="lbar"><i style="width:4.0%;background:var(--magenta)"></i></span><span class="lval">17</span></div>
+        <div class="leaf active"><span class="lname"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>Both · lean STELARA</span><span class="lbar"><i style="width:3.1%;background:var(--amber)"></i></span><span class="lval">13</span></div>
+        <div class="leaf"><span class="lname"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>SKYRIZI only</span><span class="lbar"><i style="width:57.0%;background:var(--teal)"></i></span><span class="lval">243</span></div>
+        <div class="leaf"><span class="lname"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>Both · lean SKYRIZI</span><span class="lbar"><i style="width:0.2%;background:var(--teal-soft)"></i></span><span class="lval">1</span></div>
       </div>
     </div>
     <div class="callouts">
-      <div class="callout g"><h4><svg class="ic" aria-hidden="true"><use href="#i-mute"/></svg>627 are silent</h4>Wrote no Crohn's NBRx at all: an activation and sizing question, not a STELARA switch. Keep them off the target list.</div>
-      <div class="callout m"><h4><svg class="ic" aria-hidden="true"><use href="#i-target"/></svg>43 active STELARA prescribers</h4>26 write STELARA only and 17 write both but lean STELARA. The concentrated, high-yield conversion target.</div>
-      <div class="callout t"><h4><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg>SKYRIZI already wins</h4>666 vs 49 Crohn's NBRx (13.6×). Among Non-Holdouts the priority is retention, not conversion.</div>
+      <div class="callout g"><h4><svg class="ic" aria-hidden="true"><use href="#i-mute"/></svg>426 are silent</h4>Wrote no Crohn's NBRx at all: an activation and sizing question, not a STELARA switch. Keep them off the target list.</div>
+      <div class="callout m"><h4><svg class="ic" aria-hidden="true"><use href="#i-target"/></svg>30 active STELARA prescribers</h4>17 write STELARA only and 13 write both but lean STELARA. The concentrated, high-yield conversion target.</div>
+      <div class="callout t"><h4><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg>SKYRIZI already wins</h4>436 vs 32 Crohn's NBRx (13.6x). Among Non-Holdouts the priority is retention, not conversion.</div>
     </div>
-    <div class="bottomline"><b>Bottom line:</b> &nbsp;Put conversion effort on the 43 active STELARA-leaning prescribers; the 370 Non-Holdouts are a retention play.</div>
+    <div class="bottomline"><b>Bottom line:</b> &nbsp;Put conversion effort on the 30 active STELARA-leaning prescribers; the 244 Non-Holdouts are a retention play.</div>
   </div>
   <p class="cap">HTML re-creation, not a render of deck.pptx; the .pptx download is the canonical, structurally-verified artifact (no soffice on box). Slide count = 1, pure-shape (no chart object).</p>
   <a class="btn-dl" id="deckdl" download="skyrizi-holdout-deck.pptx" href="data:application/vnd.openxmlformats-officedocument.presentationml.presentation;base64,__DECK_BASE64__">
@@ -588,8 +588,8 @@ ratio_str -> <span class="s">"undefined_stelara_only"</span> | <span class="s">"
       <p class="small" style="color:var(--teal-soft);margin-top:8px">RULE-009 / RULE-305 never fire: the demographics join is OFF by user choice.</p>
     </div>
     <div>
-      <button class="outnode code" data-out="code"><h4><svg class="ic-lg" aria-hidden="true"><use href="#i-code"/></svg>CODE + DATA</h4><div class="trace">result.csv · 1,040 rows<br>627 / 367 / 26 / 17 / 3 · PASS</div></button>
-      <button class="outnode deck" data-out="deck"><h4><svg class="ic-lg" aria-hidden="true"><use href="#i-presentation"/></svg>DECK</h4><div class="trace">funnel · 43-switch list<br>SKY 666 vs STEL 49 (13.6×)</div></button>
+      <button class="outnode code" data-out="code"><h4><svg class="ic-lg" aria-hidden="true"><use href="#i-code"/></svg>CODE + DATA</h4><div class="trace">result.csv · 700 rows<br>426 / 243 / 17 / 13 / 1 · PASS</div></button>
+      <button class="outnode deck" data-out="deck"><h4><svg class="ic-lg" aria-hidden="true"><use href="#i-presentation"/></svg>DECK</h4><div class="trace">funnel · 30-switch list<br>SKY 436 vs STEL 32 (13.6x)</div></button>
       <p class="small muted">result.csv feeds <b>both</b>: the data to deck spine (the deck reads its numbers from result.csv at build time).</p>
     </div>
   </div>
@@ -620,7 +620,7 @@ ratio_str -> <span class="s">"undefined_stelara_only"</span> | <span class="s">"
     <li><svg class="ic ic-lg" aria-hidden="true"><use href="#i-commit"/></svg><span><b>RULE-010 saved + committed</b> (<code class="inline">63c87bd</code>): reusable next time.</span></li>
   </ul>
   <div data-sample data-name="takeaways.md #4: closing evidence">
-    <div class="sample__pad small"><p>“Non-Holdouts (370, 36%) are a retention play, and they are nearly all decisive. 367 are SKYRIZI-only and just 3 write both while still favouring SKYRIZI. With almost no both-brand, SKYRIZI-leaning middle.”</p></div>
+    <div class=”sample__pad small”><p>”Non-Holdouts (244, 35%) are a retention play, and they are nearly all decisive. 243 are SKYRIZI-only and just 1 writes both while still favouring SKYRIZI. With almost no both-brand, SKYRIZI-leaning middle.”</p></div>
   </div>
   <p class="trans">And what it unlocks next.</p>
 </div></section>
@@ -633,17 +633,17 @@ ratio_str -> <span class="s">"undefined_stelara_only"</span> | <span class="s">"
   <p class="dek">The whole decision, recapped: who to convert, who to retain, who to park.</p>
   <div class="exec" aria-labelledby="exech">
     <p class="small muted">Adapted from the <code class="inline">context.md</code> headline:</p>
-    <p>“670 of 1,040 gastro HCPs (64%) are SKYRIZI Holdouts for Crohn's new prescribing, but 627 of those simply wrote no CD NBRx in the last 13 weeks; only 43 active prescribers are still defaulting to STELARA.”</p>
-    <div class="segrow">
-      <div class="seg switch"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-target"/></svg><div class="n">43</div><div class="l">switch targets: convert</div></div>
-      <div class="seg retain"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-handshake"/></svg><div class="n">370</div><div class="l">Non-Holdouts: retain</div></div>
-      <div class="seg silent"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-mute"/></svg><div class="n">627</div><div class="l">silent: activate / size separately</div></div>
+    <p>”456 of 700 gastro HCPs (65%) are SKYRIZI Holdouts for Crohn's new prescribing, but 426 of those simply wrote no CD NBRx in the last 13 weeks; only 30 active prescribers are still defaulting to STELARA.”</p>
+    <div class=”segrow”>
+      <div class=”seg switch”><svg class=”ic ic-lg” aria-hidden=”true”><use href=”#i-target”/></svg><div class=”n”>30</div><div class=”l”>switch targets: convert</div></div>
+      <div class=”seg retain”><svg class=”ic ic-lg” aria-hidden=”true”><use href=”#i-handshake”/></svg><div class=”n”>244</div><div class=”l”>Non-Holdouts: retain</div></div>
+      <div class=”seg silent”><svg class=”ic ic-lg” aria-hidden=”true”><use href=”#i-mute”/></svg><div class=”n”>426</div><div class=”l”>silent: activate / size separately</div></div>
     </div>
-    <p class="recon">43 + 370 + 627 = 1,040 &nbsp;·&nbsp; (370 = 367 SKYRIZI-only + 3 both-lean-SKYRIZI)</p>
-    <div class="action"><span class="k">Recommended action: a resourcing decision</span>
-      <p>Approve redirecting rep conversion effort from the 670-name list to the <b>43</b> active STELARA-leaners. This frees ~93% of mis-targeted calls (the 627 silent HCPs). Hold the <b>370</b> Non-Holdouts as a retention play; route the <b>627</b> silent HCPs to activation/sizing, not the switch deck.</p>
+    <p class=”recon”>30 + 244 + 426 = 700 &nbsp;·&nbsp; (244 = 243 SKYRIZI-only + 1 both-lean-SKYRIZI)</p>
+    <div class=”action”><span class=”k”>Recommended action: a resourcing decision</span>
+      <p>Approve redirecting rep conversion effort from the 456-name list to the <b>30</b> active STELARA-leaners. This frees ~93% of mis-targeted calls (the 426 silent HCPs). Hold the <b>244</b> Non-Holdouts as a retention play; route the <b>426</b> silent HCPs to activation/sizing, not the switch deck.</p>
     </div>
-    <p class="spine">Canonical view: <span class="b">1,040 in scope &rarr; 413 actively prescribing &rarr; 43 switch targets</span> (627 silent, parked aside).</p>
+    <p class=”spine”>Canonical view: <span class=”b”>700 in scope &rarr; 274 actively prescribing &rarr; 30 switch targets</span> (426 silent, parked aside).</p>
   </div>
 </div></section>
 
@@ -652,7 +652,7 @@ ratio_str -> <span class="s">"undefined_stelara_only"</span> | <span class="s">"
   <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-unlock"/></svg><span class="idx">12</span><span class="of">/ 12</span><span>What this unlocks</span></div><div class="strip-rule"></div>
   <span class="aud exec">Exec</span>
   <h2 class="stitle">The next brand-switch question is days, not a project</h2>
-  <p class="narr prose">The same one-question workflow now answers the next brand-switch target list (e.g. SKYRIZI vs ustekinumab biosimilars) in days, not a re-scoped analysis. <span class="muted">(Under the hood, RULE-010 is saved and reusable, so the engine doesn't re-learn "Holdout" next time.)</span> <b>The 43-name list is ready to action now.</b></p>
+  <p class="narr prose">The same one-question workflow now answers the next brand-switch target list (e.g. SKYRIZI vs ustekinumab biosimilars) in days, not a re-scoped analysis. <span class="muted">(Under the hood, RULE-010 is saved and reusable, so the engine doesn't re-learn "Holdout" next time.)</span> <b>The 30-name list is ready to action now.</b></p>
 </div></section>
 
 </main>

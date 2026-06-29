@@ -16,8 +16,8 @@ SRC = ROOT / "docs/walkthrough/_src.html"
 OUT = ROOT / "docs/walkthrough/holdout-case-study.html"
 DECK = ROOT / "output/run_2026-06-26_001/deck.pptx"
 
-FROZEN_SHA = "b800e6366b61fef5259dcb241a9494f9b3de0472303ed5ff1218a5a7572c28df"
-FROZEN_LEN = 31485
+FROZEN_SHA = "d02728cfd72da4ea664a44af7b56399a3fb23e1ab34b631ec9fdfcdd6576a519"
+FROZEN_LEN = 31486
 
 
 def fail(msg):
@@ -36,21 +36,26 @@ def main():
         fail(f"deck sha256 {sha} != frozen {FROZEN_SHA} (deck rebuilt? update blob+hash together)")
     b64 = base64.b64encode(raw).decode("ascii")
 
-    html = SRC.read_text(encoding="utf-8")
-    if "__DECK_BASE64__" not in html:
+    src = SRC.read_text(encoding="utf-8")
+    if "__DECK_BASE64__" not in src:
         fail("placeholder __DECK_BASE64__ not found in source")
-    html = html.replace("__DECK_BASE64__", b64)
+    html = src.replace("__DECK_BASE64__", b64)
 
     # --- segment reconciliation gate ---
-    segs = {"627": 627, "367": 367, "26": 26, "17": 17, "3": 3}
-    if sum(segs.values()) != 1040:
-        fail("segment counts do not sum to 1040")
-    if 43 + 370 + 627 != 1040:
-        fail("switch+retain+silent != 1040")
+    segs = {"426": 426, "243": 243, "17": 17, "13": 13, "1": 1}
+    if sum(segs.values()) != 700:
+        fail("segment counts do not sum to 700")
+    if 30 + 244 + 426 != 700:
+        fail("switch+nonholdout+no_cd_nbrx != 700")
     # the five segment values must appear in the rendered funnel + climax
-    for v in ("627", "367", "26", "17", "3", "1,040", "670", "370", "43"):
+    for v in ("426", "243", "17", "13", "1", "700", "456", "244", "30"):
         if v not in html:
             fail(f"required figure {v} missing from page")
+    # --- absence gate: fail if stale old figures remain in source (checked pre-b64 to
+    #     avoid false positives from coincidental matches inside the base64 blob) ---
+    for v in ("1,040", "670", "627", "367", "370"):
+        if v in src:
+            fail(f"stale old figure {v} still in page")
 
     # --- forbidden ad-hoc gray scan (only tokens allowed) ---
     bad = re.findall(r"#(?:666|999|ccc|cccccc|888|aaa)\b", html, re.I)
@@ -79,7 +84,7 @@ def main():
     print(f"OK -> {OUT}")
     print(f"   deck {len(raw)} bytes, sha256 {sha[:12]}..., base64 {len(b64)} chars")
     print(f"   final html {len(html):,} chars")
-    print("   gates: length OK, sha OK, segments=1040 OK, 43+370+627=1040 OK, figures present OK, no ad-hoc grays OK, round-trip OK")
+    print("   gates: length OK, sha OK, segments=700 OK, 30+244+426=700 OK, figures present OK, no stale old figures OK, no ad-hoc grays OK, round-trip OK")
 
 
 if __name__ == "__main__":
