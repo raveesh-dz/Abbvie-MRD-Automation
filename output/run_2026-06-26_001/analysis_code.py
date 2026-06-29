@@ -13,7 +13,7 @@ import pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(HERE, "..", "..", "data")
 
-GASTRO = os.path.join(DATA, "sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.csv")
+GASTRO = os.path.join(DATA, "Gastro_prod_sales_260605.csv")
 UNIVERSE = os.path.join(DATA, "Holdout_HCP_Universe.csv")
 
 ID = "abv_customer_id"

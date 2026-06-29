@@ -1,4 +1,4 @@
-table: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl
+table: Gastro_prod_sales_260605
 description: "HCP-level (prescriber) gastro IBD universe extract. One row per HCP x product_brand x indication_code x data_type x version_flag, carrying a 399-week TRx/NBRx history (frx*) plus rolling-window sums and HCP targeting/segmentation attributes. Source: z_abv_cws_mabi_immun_analytics.gastro_hcp_universe; snapshot 2026-06-05."
 grain: "one row per HCP (abv_customer_id) per product_brand per indication_code per data_type per version_flag"
 date_range: "2018-10-19 to 2026-06-05 (frx series, weekly; frx1 = latest)"

@@ -2,10 +2,10 @@
 query: "For each doctor, have they shifted their new prescribing for Crohn's Disease from STELARA over to SKYRIZI? NBRx only, CD indication, most recent 13 weeks. Per HCP compute STELARA-to-SKYRIZI NBRx ratio (threshold 0.5) and classify Holdout vs Non-Holdout. Keep all computation columns."
 base_plan: none
 tables:
-  - sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (gastro HCP universe, NBRx slices)
+  - Gastro_prod_sales_260605 (gastro HCP universe, NBRx slices)
   - Holdout_HCP_Universe (scope membership, RULE-102)
 joins:
-  - Holdout_HCP_Universe.abbott_customer_id → sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.abv_customer_id (one-to-one, per relationships.yaml) — used ONLY to restrict to the in-scope HCP universe (RULE-102). No-op today (id sets identical). No demographics join (enrichment off, user choice).
+  - Holdout_HCP_Universe.abbott_customer_id → Gastro_prod_sales_260605.abv_customer_id (one-to-one, per relationships.yaml) — used ONLY to restrict to the in-scope HCP universe (RULE-102). No-op today (id sets identical). No demographics join (enrichment off, user choice).
 filters_applied:
   - data_type == 'NBRx' (RULE-005: NBRx is stored, selected by filter — not computed)
   - indication_code == 'CD'

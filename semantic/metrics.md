@@ -68,10 +68,10 @@
     indication volumes are ESTIMATES, not measured weekly indication counts.
 - provenance: auto-saved | 2026-06-04 | R | run_id=discussion | revised 2026-06-04 (renormalise within reported set; superseded the earlier true-share denominator)
 
-<!-- ===== Gastro HCP universe table (sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl) ===== -->
+<!-- ===== Gastro HCP universe table (Gastro_prod_sales_260605) ===== -->
 
 ## RULE-005: TRx and NBRx are stored measures selected by data_type (no arithmetic)
-- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (frx*, data_type, product_brand, indication_code, abv_customer_id)
+- applies_to: Gastro_prod_sales_260605 (frx*, data_type, product_brand, indication_code, abv_customer_id)
 - category: metric
 - definition: >
     In the gastro HCP universe table TRx (Total Rx) and NBRx (New-to-Brand Rx) are
@@ -96,7 +96,7 @@
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
 
 ## RULE-006: frx* is a positional weekly value series
-- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (frx1 .. frx399)
+- applies_to: Gastro_prod_sales_260605 (frx1 .. frx399)
 - category: metric
 - definition: >
     frx1..frx399 are 399 consecutive WEEKLY values for the row. There is no date
@@ -112,7 +112,7 @@
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
 
 ## RULE-007: Rolling-window sums and growth
-- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (cur_/pre_{4,13,26,52}wk, frx*)
+- applies_to: Gastro_prod_sales_260605 (cur_/pre_{4,13,26,52}wk, frx*)
 - category: metric
 - definition: >
     cur_Nwk and pre_Nwk are pre-computed contiguous trailing-week sums of the frx*
@@ -131,7 +131,7 @@
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
 
 ## RULE-008: Decile groupings (bio and hum)
-- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (bio_decile, bio_decile_group, hum_decile, hum_decile_group)
+- applies_to: Gastro_prod_sales_260605 (bio_decile, bio_decile_group, hum_decile, hum_decile_group)
 - category: metric
 - definition: >
     bio_decile and hum_decile are integer deciles 0-10 (10 = highest-volume decile;
@@ -170,7 +170,7 @@
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
 
 ## RULE-010: SKYRIZI Holdout classification (Crohn's new prescribing, NBRx)
-- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (SKYRIZI vs STELARA CD NBRx), per HCP
+- applies_to: Gastro_prod_sales_260605 (SKYRIZI vs STELARA CD NBRx), per HCP
 - category: metric
 - definition: >
     Classifies each HCP by whether they have shifted their NEW Crohn's-Disease prescribing

@@ -23,7 +23,7 @@ relationships:
 # a clean row-join key — outside RULE-003 the labels diverge by case and dose/form.
 # Any join beyond the allocation edge above is a data gap: surface it, don't guess.
 #
-# sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (the gastro HCP universe table)
+# Gastro_prod_sales_260605 (the gastro HCP universe table)
 # uses class-coded product labels (TNF, JAK, IL_23, ...) plus brand/biosimilar labels
 # that do NOT align with the Weekly/Monthly PRODUCT vocabulary, and it carries its own
 # positional weekly frx* series — so it has NO edge to the Weekly/Monthly tables. Its
@@ -37,7 +37,7 @@ relationships:
 # any of its edges are used, or the join fans out (raw demo is up to 3 rows/HCP).
 
   - left: HCP_demographics.abbott_customer_id
-    right: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.abv_customer_id
+    right: Gastro_prod_sales_260605.abv_customer_id
     type: one-to-one
     notes: >
       HCP demographics enrichment. Dedupe HCP_demographics to one row/HCP per RULE-009
@@ -46,7 +46,7 @@ relationships:
       authoritative geography source (RULE-305): its zip/state override the universe's.
 
   - left: Holdout_HCP_Universe.abbott_customer_id
-    right: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.abv_customer_id
+    right: Gastro_prod_sales_260605.abv_customer_id
     type: one-to-one
     notes: >
       Analyzable-universe membership. Use to RESTRICT gastro HCP analyses to in-scope

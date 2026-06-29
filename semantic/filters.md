@@ -2,7 +2,7 @@
 <!-- Applied UNCONDITIONALLY at the top of every generated script. -->
 
 ## RULE-101: Exclude product_brand class rollups from brand-level sums
-- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.product_brand
+- applies_to: Gastro_prod_sales_260605.product_brand
 - category: filter
 - definition: >
     product_brand mixes individual brands/biosimilars/presentations with CLASS
@@ -25,7 +25,7 @@
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
 
 ## RULE-102: Restrict HCP analyses to the analyzable (holdout) universe
-- applies_to: Holdout_HCP_Universe.abbott_customer_id, sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.abv_customer_id
+- applies_to: Holdout_HCP_Universe.abbott_customer_id, Gastro_prod_sales_260605.abv_customer_id
 - category: filter
 - definition: >
     Holdout_HCP_Universe is the authoritative set of in-scope HCPs for the gastro

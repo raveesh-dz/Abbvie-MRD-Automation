@@ -14,7 +14,7 @@ known_issues:
 columns:
   - name: abbott_customer_id
     type: integer
-    description: "AbbVie HCP identifier; the join key (= sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.abv_customer_id and Holdout_HCP_Universe.abbott_customer_id)."
+    description: "AbbVie HCP identifier; the join key (= Gastro_prod_sales_260605.abv_customer_id and Holdout_HCP_Universe.abbott_customer_id)."
   - name: zip_code
     type: float
     description: "HCP practice ZIP code (numeric; leading zeros lost). Authoritative over the gastro universe's zip_code (RULE-305)."

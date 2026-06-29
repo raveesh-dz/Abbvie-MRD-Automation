@@ -10,4 +10,4 @@ known_issues:
 columns:
   - name: abbott_customer_id
     type: integer
-    description: "AbbVie HCP identifier; the join key (= sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.abv_customer_id and HCP_demographics.abbott_customer_id). Presence = HCP is in the analyzable holdout universe."
+    description: "AbbVie HCP identifier; the join key (= Gastro_prod_sales_260605.abv_customer_id and HCP_demographics.abbott_customer_id). Presence = HCP is in the analyzable holdout universe."

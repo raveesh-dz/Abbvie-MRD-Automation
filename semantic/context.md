@@ -9,10 +9,10 @@
 - caveats: This does NOT apply to the Monthly table, which is national and spans all 11 indications. The monthly mix is used only to derive the UC:CD ratio applied to the weekly IBD total.
 - provenance: auto-saved | 2026-06-04 | R | run_id=run_2026-06-04_002
 
-<!-- ===== Gastro HCP universe table (sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl) ===== -->
+<!-- ===== Gastro HCP universe table (Gastro_prod_sales_260605) ===== -->
 
 ## RULE-302: Gastro HCP behavioural segments
-- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.gastro_segments
+- applies_to: Gastro_prod_sales_260605.gastro_segments
 - category: context
 - definition: >
     gastro_segments classifies each HCP into a behavioural adoption segment used for
@@ -29,7 +29,7 @@
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
 
 ## RULE-303: Product presentation semantics and biosimilar landscape
-- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl.product_brand
+- applies_to: Gastro_prod_sales_260605.product_brand
 - category: context
 - definition: >
     product_brand encodes presentation and the IBD biosimilar landscape:
@@ -52,7 +52,7 @@
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
 
 ## RULE-304: HCP targeting and engagement flags
-- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (rinvoq_hits, skyrizi_hits, gastro_hits, phy_univ_flag, true_1view_flag, pdrp_flag, ai*_cp_flag)
+- applies_to: Gastro_prod_sales_260605 (rinvoq_hits, skyrizi_hits, gastro_hits, phy_univ_flag, true_1view_flag, pdrp_flag, ai*_cp_flag)
 - category: context
 - definition: >
     - rinvoq_hits / skyrizi_hits / gastro_hits = Y when the HCP is a promotional/
@@ -70,7 +70,7 @@
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion
 
 ## RULE-305: HCP geography authority and sales-geo hierarchy
-- applies_to: HCP_demographics (zip_code, state, Territory_name, District_name, Region_name); sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (zip_code, state)
+- applies_to: HCP_demographics (zip_code, state, Territory_name, District_name, Region_name); Gastro_prod_sales_260605 (zip_code, state)
 - category: context
 - definition: >
     HCP_demographics is the PRIMARY (first) source for HCP geography. When the same HCP

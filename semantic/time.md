@@ -3,7 +3,7 @@
      consumed during query parsing. -->
 
 ## RULE-401: frx* weekly anchor, date map, and default window
-- applies_to: sqlqueries_4_gastro_hcp_universe_prod_2_260605_cl (frx1 .. frx399, cur_/pre_*wk)
+- applies_to: Gastro_prod_sales_260605 (frx1 .. frx399, cur_/pre_*wk)
 - category: time
 - definition: >
     The frx* series has no date column — dates are POSITIONAL and anchored to the
