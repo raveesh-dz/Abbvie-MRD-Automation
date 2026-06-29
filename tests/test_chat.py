@@ -1,3 +1,6 @@
+import os
+import subprocess
+import sys
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -214,3 +217,46 @@ def test_engine_chat_md_is_transport_contract_not_script():
     # old per-tick script framing is GONE
     assert "Each tick" not in text
     assert "do nothing this tick" not in text
+
+
+def _run_wait(repo_copy, extra_args):
+    return subprocess.run(
+        [sys.executable, str(REPO / "scripts" / "wait_engine_turn.py"), *extra_args],
+        capture_output=True, text=True,
+        env={**os.environ, "QTS_ROOT": str(repo_copy)},
+    )
+
+
+def test_wait_engine_turn_returns_when_engine(repo_copy):
+    from server import chat
+    chat._dir()
+    chat._atomic_write({
+        "thread_id": "chat_20260629_010101000000", "created_at": "2026-06-29T01:01:01",
+        "status": "awaiting_engine", "turn": "engine", "engine_status": None,
+        "run_folder": None, "view_id": None, "brainstorm_phase": "gathering",
+        "skill_invocations": [], "messages": [],
+    })
+    r = _run_wait(repo_copy, ["--interval", "0.1", "--timeout", "5"])
+    assert r.returncode == 0
+    assert "ENGINE_TURN" in r.stdout
+
+
+def test_wait_engine_turn_times_out_when_user(repo_copy):
+    from server import chat
+    chat._dir()
+    chat._atomic_write({
+        "thread_id": "chat_20260629_020202000000", "created_at": "2026-06-29T02:02:02",
+        "status": "awaiting_user", "turn": "user", "engine_status": None,
+        "run_folder": None, "view_id": None, "brainstorm_phase": "gathering",
+        "skill_invocations": [], "messages": [],
+    })
+    r = _run_wait(repo_copy, ["--interval", "0.1", "--timeout", "0.5"])
+    assert r.returncode == 2
+    assert "TIMEOUT" in r.stdout
+
+
+def test_wait_engine_turn_handles_missing_file(repo_copy):
+    # no active.json at all -> behaves like turn=user (keep waiting, then timeout)
+    r = _run_wait(repo_copy, ["--interval", "0.1", "--timeout", "0.5"])
+    assert r.returncode == 2
+    assert "TIMEOUT" in r.stdout
