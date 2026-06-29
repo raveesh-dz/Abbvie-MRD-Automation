@@ -108,7 +108,14 @@ Server (`server/app.py`) mounts only `web/` statically; `data/` + `output/` reac
 - **Spec + plan committed (4b0e2a4, branch demo_v3):**
   - SPEC: `docs/superpowers/specs/2026-06-29-interactive-ask-the-engine-design.md` (adversarially reviewed: in-process `threading.Lock` closes server-vs-server RMW race, `os.replace` PermissionError retry on Windows, `config.assert_within_output` path containment for `/result`+`/deck`, `reset-turn` dead-loop recovery, full 6-file contract + run_meta schema matched to views.py:108-119).
   - PLAN: `docs/superpowers/plans/2026-06-29-interactive-ask-the-engine.md` — 6 tasks, TDD (pytest+repo_copy) for backend, manual browser verify for JS (no JS test harness in repo). Multi-agent reviewed to 956/1000, zero critical/major. Real bugs caught+fixed in-plan: 409-detection must use `e.status` (api.js:8 throws detail string, not "409" → api.js gains `err.status`); stalled-repaint loop fixed via composite `lastKey`.
-- **Build order (Tasks):** 1 `config.engine_chat_dir()` + `ENGINE_CHAT.md` protocol doc · 2 `server/chat.py` locked atomic broker · 3 `/api/chat message|get|reset-turn|new` routes · 4 `assert_within_output` containment on `/result`+`/deck` · 5 `web/js/chat.js` + mode toggle + `api.js` `.status` · 6 MEMORY.md final update + full `pytest -q`. EXECUTING NOW via subagent-driven (fresh agent per task, review between). Update this section as tasks land.
+- **Build (subagent-driven, fresh agent + review per task). Tasks 1-5 DONE + committed on demo_v3:**
+  - T1 `16b8503` — `config.engine_chat_dir()` + `ENGINE_CHAT.md` loop-protocol doc.
+  - T2 `c707137`+fix `364621c` — `server/chat.py` locked atomic broker (module `threading.Lock`, `os.replace` PermissionError retry, cross-process detect-and-reject). Fix aligned conflict guard to spec (`if turn=="engine"`) + assert→RuntimeError.
+  - T3 `d3924d1` — `/api/chat` `message|get|reset-turn|new` routes in `app.py` (ValueError→400, Conflict→409). Inbox path untouched.
+  - T4 `acb9ea4` — `config.assert_within_output()` path containment on `/result`+`/deck` (Path.parents membership, bypass-proof).
+  - T5 `c800a09` — `web/js/chat.js` + mode toggle in `index.html` + `wireChat()` in `main.js` + `api.js` now sets `err.status` + chat styles. node --check clean.
+  - **tests/test_chat.py = 16 tests.** Suite has 6 PRE-EXISTING unrelated failures (perturbed-demo-data: test_simulate/test_datasets/test_snapshot/test_api::test_reset_without_backup) — NOT regressions.
+- **REMAINING:** T6 (this MEMORY update + full pytest sign-off), then a final whole-branch code review + a batch fix of deferred Minors (notably: chat.js reset-turn onclick should try/catch+toast; `.msg.status` CSS rule; T3 import alphabetization), then the **manual browser E2E** (needs a running `py -3 run_dashboard.py` + a live `/loop check engine_chat` session — deferred to user). SDD ledger: `.superpowers/sdd/progress.md`.
 
 ## STILL PENDING (user will add later — do NOT invent these)
 Foundational rules still undefined; engine should ask before assuming:
