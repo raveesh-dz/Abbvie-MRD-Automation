@@ -102,6 +102,14 @@ Server (`server/app.py`) mounts only `web/` statically; `data/` + `output/` reac
 3. `data/.snapshot.json` acknowledged to perturbed live.
 4. **Caveat removal:** dashboard surfaces `takeaways.md` (via `/api/views/{id}/result`) and `run_meta.json` — neither mentions perturbation now (regen drops the caveat; `data_state` dropped). Verified `grep -i perturb` over takeaways/run_meta = clean. `context.md` clean; decks never mentioned it.
 
+## Interactive "Ask the Engine" — chat mode (IN PROGRESS, started 2026-06-29)
+- **Goal:** make "Ask the engine" a real conversation, NOT just the fire-and-forget inbox. Browser chats a live Claude `/loop` session: brainstorm → clarifying Qs → run CLAUDE.md workflow → deliver → offer/download deck → revise. Lives ALONGSIDE the one-shot inbox (inbox path `engine.py`/`engine.js`/`/api/engine*` stays untouched, zero regression).
+- **Approach = B1 file-thread bridge** (user picked over Agent SDK / `claude -p` headless — too heavy for a demo). Server stays a DUMB FILE BROKER (no LLM). Bus = single `engine_chat/active.json`; `turn` field = server↔loop mutex; `engine_status` = ephemeral progress line; archive to `engine_chat/archive/<thread_id>.json` on New chat. Brain = live session running `/loop check engine_chat and process the active conversation`.
+- **Spec + plan committed (4b0e2a4, branch demo_v3):**
+  - SPEC: `docs/superpowers/specs/2026-06-29-interactive-ask-the-engine-design.md` (adversarially reviewed: in-process `threading.Lock` closes server-vs-server RMW race, `os.replace` PermissionError retry on Windows, `config.assert_within_output` path containment for `/result`+`/deck`, `reset-turn` dead-loop recovery, full 6-file contract + run_meta schema matched to views.py:108-119).
+  - PLAN: `docs/superpowers/plans/2026-06-29-interactive-ask-the-engine.md` — 6 tasks, TDD (pytest+repo_copy) for backend, manual browser verify for JS (no JS test harness in repo). Multi-agent reviewed to 956/1000, zero critical/major. Real bugs caught+fixed in-plan: 409-detection must use `e.status` (api.js:8 throws detail string, not "409" → api.js gains `err.status`); stalled-repaint loop fixed via composite `lastKey`.
+- **Build order (Tasks):** 1 `config.engine_chat_dir()` + `ENGINE_CHAT.md` protocol doc · 2 `server/chat.py` locked atomic broker · 3 `/api/chat message|get|reset-turn|new` routes · 4 `assert_within_output` containment on `/result`+`/deck` · 5 `web/js/chat.js` + mode toggle + `api.js` `.status` · 6 MEMORY.md final update + full `pytest -q`. EXECUTING NOW via subagent-driven (fresh agent per task, review between). Update this section as tasks land.
+
 ## STILL PENDING (user will add later — do NOT invent these)
 Foundational rules still undefined; engine should ask before assuming:
 1. **Market share denominator** — MARKET_TOTAL row vs sum of PRODUCT rows? Within-indication for Monthly?
