@@ -184,3 +184,33 @@ def test_durable_fields_survive_reset_turn(repo_copy):
     reread = chat.get_active()
     assert reread["brainstorm_phase"] == "gathering"
     assert reread["skill_invocations"] == []
+
+
+def test_engine_chat_md_is_transport_contract_not_script():
+    import re
+    text = (REPO / "ENGINE_CHAT.md").read_text(encoding="utf-8")
+    # (5a) transport/rendering contract
+    for kind in ["text", "question", "result", "deck_offer", "deck_ready", "error"]:
+        assert kind in text, f"missing message kind: {kind}"
+    assert "engine_status" in text and "thinking" in text          # proof-of-pickup
+    assert "turn=user" in text or 'turn="user"' in text
+    # durable phase marker + all five values
+    assert "brainstorm_phase" in text
+    for phase in ["gathering", "approaches_presented", "awaiting_approval", "approved", "converged"]:
+        assert phase in text, f"missing phase value: {phase}"
+    assert "skill_invocations" in text                              # §11 provenance marker
+    # (5b) delegation, not a script
+    assert "superpowers:brainstorming" in text
+    assert "behave" in text.lower() and "terminal" in text.lower()
+    # (6) approval gate-check + Approve/Revise (literal option labels — case-sensitive, as a paired gate option)
+    assert re.search(r"Approve.{0,40}Revise|Revise.{0,40}Approve", text), "Approve/Revise gate options not found together in ENGINE_CHAT.md"
+    # (6) retained deterministic routing (case-insensitive — headings may be Title-cased)
+    low = text.lower()
+    for route in ["follow-up", "deck-revise", "base_plan"]:
+        assert route in low, f"missing routing rule: {route}"
+    # (7) recovery
+    assert "compaction" in low
+    assert "analysis_plan.md" in text
+    # old per-tick script framing is GONE
+    assert "Each tick" not in text
+    assert "do nothing this tick" not in text
