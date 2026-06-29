@@ -7,7 +7,7 @@ from fastapi import Body, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import config, datasets, engine, jobs, pipeline, runner, simulate, snapshot, views
+from . import config, datasets, engine, jobs, pipeline, runner, simulate, snapshot, views, chat
 
 
 @asynccontextmanager
@@ -188,6 +188,32 @@ def create_app() -> FastAPI:
         if not item:
             raise HTTPException(404, "no such question")
         return item
+
+    @app.post("/api/chat/message")
+    def api_chat_message(body: dict | None = Body(None)):
+        try:
+            return chat.post_message((body or {}).get("text"),
+                                     (body or {}).get("in_reply_to"),
+                                     (body or {}).get("chosen"))
+        except ValueError:
+            raise HTTPException(400, "text is required")
+        except chat.Conflict:
+            raise HTTPException(409, "engine is mid-turn")
+
+    @app.get("/api/chat")
+    def api_chat_get():
+        return chat.get_active()
+
+    @app.post("/api/chat/reset-turn")
+    def api_chat_reset():
+        return chat.reset_turn()
+
+    @app.post("/api/chat/new")
+    def api_chat_new(body: dict | None = Body(None)):
+        try:
+            return chat.new_chat(bool((body or {}).get("force")))
+        except chat.Conflict:
+            raise HTTPException(409, "engine is mid-turn; pass force to discard")
 
     # Static page mounted LAST so explicit /api routes win. check_dir=False so
     # construction never fails when web/ is absent (temp repo copy, or before Task 9).

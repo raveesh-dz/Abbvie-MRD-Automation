@@ -90,3 +90,37 @@ def test_post_cross_process_write_conflicts(repo_copy, monkeypatch):
     monkeypatch.setattr(chat, "_read_raw", racy)
     with pytest.raises(chat.Conflict):
         chat.post_message("q1")
+
+
+def test_api_post_and_get(repo_copy):
+    with _client(repo_copy) as c:
+        t = c.post("/api/chat/message", json={"text": "weekly tremfya by indication"}).json()
+        assert t["turn"] == "engine"
+        assert c.get("/api/chat").json()["messages"][0]["text"] == "weekly tremfya by indication"
+
+
+def test_api_empty_text_400(repo_copy):
+    with _client(repo_copy) as c:
+        assert c.post("/api/chat/message", json={"text": "  "}).status_code == 400
+
+
+def test_api_engine_turn_409(repo_copy):
+    with _client(repo_copy) as c:
+        c.post("/api/chat/message", json={"text": "q1"})
+        assert c.post("/api/chat/message", json={"text": "q2"}).status_code == 409
+
+
+def test_api_reset_turn(repo_copy):
+    with _client(repo_copy) as c:
+        c.post("/api/chat/message", json={"text": "q1"})
+        t = c.post("/api/chat/reset-turn").json()
+        assert t["turn"] == "user"
+        assert c.post("/api/chat/message", json={"text": "q2"}).status_code == 200
+
+
+def test_api_new_force_and_guard(repo_copy):
+    with _client(repo_copy) as c:
+        c.post("/api/chat/message", json={"text": "q1"})
+        assert c.post("/api/chat/new").status_code == 409
+        assert c.post("/api/chat/new", json={"force": True}).json() == {"thread_id": None}
+        assert c.get("/api/chat").json() == {"thread_id": None}
