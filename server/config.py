@@ -44,3 +44,7 @@ def original_backup_dir() -> Path:
 
 def engine_inbox_dir() -> Path:
     return get_root() / "engine_inbox"
+
+
+def engine_chat_dir() -> Path:
+    return get_root() / "engine_chat"
