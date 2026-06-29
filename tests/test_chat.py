@@ -180,3 +180,7 @@ def test_durable_fields_survive_reset_turn(repo_copy):
     assert thread["turn"] == "user"
     assert thread["engine_status"] is None
     assert thread["brainstorm_phase"] == "gathering"   # reset must not drop it
+    # prove survival to disk, not just the in-memory return (mirror the post_message test)
+    reread = chat.get_active()
+    assert reread["brainstorm_phase"] == "gathering"
+    assert reread["skill_invocations"] == []
