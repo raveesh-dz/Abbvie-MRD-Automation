@@ -47,7 +47,7 @@ function render(thread) {
   if (engineTurn) {
     html += `<div class="msg eng status"><span class="spin"></span>${esc(thread.engine_status || 'engine working…')}</div>`;
     if (stalled) {
-      html += `<div class="msg eng err">waiting for the engine — is the /loop session running?` +
+      html += `<div class="msg eng err">waiting for the engine — is the engine session running?` +
         `<div class="chip-row"><button class="chip-btn" id="chat-reset">Reset turn</button></div></div>`;
     }
   }
