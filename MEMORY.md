@@ -117,6 +117,32 @@ Server (`server/app.py`) mounts only `web/` statically; `data/` + `output/` reac
   - **tests/test_chat.py = 16 tests.** Suite has 6 PRE-EXISTING unrelated failures (perturbed-demo-data: test_simulate/test_datasets/test_snapshot/test_api::test_reset_without_backup) — NOT regressions.
 - **REMAINING:** T6 (this MEMORY update + full pytest sign-off), then a final whole-branch code review + a batch fix of deferred Minors (notably: chat.js reset-turn onclick should try/catch+toast; `.msg.status` CSS rule; T3 import alphabetization), then the **manual browser E2E** (needs a running `py -3 run_dashboard.py` + a live `/loop check engine_chat` session — deferred to user). SDD ledger: `.superpowers/sdd/progress.md`.
 
+### Engine brain model — CLI Mirror (T6, 2026-06-29)
+
+The "Brainstorm chat" brain is now ONE always-on continuous session launched via `/serve-engine` (`.claude/commands/serve-engine.md`). It runs a single persistent foreground serve-loop: block on `scripts/wait_engine_turn.py` until `turn==engine`, handle that turn **in-process with full context**, set `turn=user`, and re-block. This design REPLACES the committed `/loop check engine_chat` fresh-context brain that preceded it.
+
+**Why the switch was necessary.** The old per-tick `/loop` was fresh-context on every tick — the `superpowers:brainstorming` skill's multi-turn process (gathering → approaches → approval gate → converged) could not persist across ticks because each tick started a new context window. The serve-loop carries context AND a loaded skill across turns within one foreground session. This was proven by the Task 1 spike (see `docs/superpowers/specs/spike-results-monitor-continuation.md`): a sentinel token + a mid-flight skill process both survived a `run_in_background` blocking event and re-invocation without re-reading any file.
+
+**ENGINE_CHAT.md is NOT a script.** It is the transport/rendering contract (§5a, message kinds, atomic write pattern, turn ownership), plus behavioral delegation (§5b, behave like the terminal), plus §6 brainstorming-to-thread mapping and approval gate overrides, plus retained deterministic routing (follow-up / deck-revise / bare-deck / ambiguity guard), plus §7 compaction and crash recovery. A fresh session re-reads it once on launch; the serve-loop does not re-read it per turn.
+
+**Durable non-rendered fields on `active.json`.** Two fields are written by the engine every turn and preserved unchanged by the server (the server's broker code only touches `messages`, `turn`, and `engine_status`):
+- `brainstorm_phase`: one of `gathering | approaches_presented | awaiting_approval | approved | converged`. This is the authoritative source for the approval gate-check and for compaction/crash recovery. The thread tail is corroboration only; on conflict the durable field wins.
+- `skill_invocations`: a list of `{skill, seq}` objects. Each time `superpowers:brainstorming` is invoked on a turn, an entry is appended before any message append. This is the automatable §11 proof that brainstorming actually fired on a given turn (checkable via a single `py -3 -c` or `jq` invocation on `active.json`, no transcript archaeology needed).
+
+**What is unchanged.** Server code (`server/chat.py`, `server/app.py`, `server/views.py`), transport layer, UI (`web/js/chat.js`, `web/js/main.js`, `web/js/api.js`, `web/index.html`), and all tests are UNCHANGED except one copy-edit at `chat.js:50` ("/loop" → "engine"). The one-shot inbox path (`engine.py` / `engine.js` / `/api/engine*`) is entirely untouched.
+
+**Known non-blocking follow-up.** `server/views.py run_view_core` still lacks a `holdout_segments`/by-region builder branch. A chat-built non-line-chart deck (e.g. the holdout funnel from run_2026-06-26_001) re-run from the dashboard mis-renders because `run_view_core` dispatches unknown `chart_kind` to `build_deck_pptx.py`. The chat build path itself is always correct; this is a server-side gap to wire separately.
+
+**Regression sign-off (2026-06-29).** `py -3 -m pytest -q` result: **66 passed, 6 failed** in 178s. All 6 failures are the documented pre-existing perturbed-demo-data failures: `test_api::test_reset_without_backup_returns_400`, `test_datasets::test_weekly_table_info_against_real_data`, `test_datasets::test_monthly_min_max`, `test_simulate::test_reset_restores_byte_identical`, `test_simulate::test_reset_without_backup_is_noop`, `test_snapshot::test_snapshot_detects_a_changed_max`. Zero new failures introduced by the CLI-mirror build.
+
+**§11 automatable provenance check.** To confirm `superpowers:brainstorming` fired on a live engine turn without transcript archaeology, run (PowerShell, after the engine has handled at least one analytical request):
+
+```powershell
+py -3 -c "import json; d=json.load(open('engine_chat/active.json',encoding='utf-8')); print([s for s in d.get('skill_invocations',[]) if s['skill']=='superpowers:brainstorming'])"
+```
+
+On Bash/Git Bash the same one-liner works as-is (single-quotes are valid there). In PowerShell the nested single-quotes require the `py -3 -c "..."` outer-double-quote form shown above, or save the body to a `.py` file and run it. Expected output: a list of `{skill, seq}` dicts — one per turn on which brainstorming was invoked. An empty list `[]` means brainstorming has not yet been invoked. Fallback if the marker is absent: `grep` the Claude Code session JSONL under `~/.claude/projects/C--Users-RounakSuranshe-Documents-Projects-Abbvie-MRD-Automation/<session>.jsonl` for a tool-use entry naming `superpowers:brainstorming`.
+
 ## STILL PENDING (user will add later — do NOT invent these)
 Foundational rules still undefined; engine should ask before assuming:
 1. **Market share denominator** — MARKET_TOTAL row vs sum of PRODUCT rows? Within-indication for Monthly?
