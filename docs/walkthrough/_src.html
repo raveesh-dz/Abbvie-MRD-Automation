@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>670 or 43? How one question became a board-ready answer</title>
+<meta name="description" content="A leadership walkthrough: how a plain-English question became a validated SKYRIZI Holdout answer and a board-ready deck. Run run_2026-06-26_001.">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Roboto:wght@400;500;700&display=swap');
+
+:root{
+  --navy:#071D49; --magenta:#E40D62; --teal:#07B2AC;
+  --pink-fill:#FBE3EA; --blue-fill:#ECF1F8; --gray:#50535A; --rule:#D9DEE8;
+  --amber:#FFC000; --teal-soft:#9BD9D6; --teal-fill:#E4F5F4; --track:#EFF1F5;
+  --magenta-text:#C00050; --teal-text:#06756F; --rule-strong:#9AA6BE;
+  --white:#fff;
+  --font-title:"Montserrat Medium","Montserrat",system-ui,"Segoe UI",sans-serif;
+  --font-body:"Roboto",system-ui,"Segoe UI",Arial,sans-serif;
+  --sticky-offset:60px; --maxw:1200px; --rail:1120px; --measure:68ch;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:var(--sticky-offset)}
+body{margin:0;font-family:var(--font-body);color:var(--navy);background:#fff;line-height:1.6;font-size:16px}
+h1,h2,h3,.t{font-family:var(--font-title);font-weight:500}
+p{margin:.5em 0}
+a{color:var(--magenta-text)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+@media(min-width:760px){.wrap{padding:0 32px}}
+.prose{max-width:var(--measure)}
+.muted{color:var(--gray)}
+.small{font-size:14px}
+
+/* icons */
+.ic{width:1em;height:1em;flex:0 0 auto;vertical-align:-.125em}
+.ic-strip{width:18px;height:18px;color:var(--magenta);flex:0 0 auto}
+.ic-lg{width:22px;height:22px}
+.seg svg.ic-lg{display:block;margin-bottom:4px}
+.seg.switch svg{color:var(--magenta-text)} .seg.retain svg{color:var(--teal-text)} .seg.silent svg{color:var(--gray)}
+
+/* top rail */
+nav.rail{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--rule)}
+nav.rail .wrap{display:flex;gap:6px;overflow-x:auto;padding:8px 20px;scrollbar-width:thin}
+@media(min-width:760px){nav.rail .wrap{padding:8px 32px}}
+nav.rail a{flex:0 0 auto;font-family:var(--font-title);font-size:12px;color:var(--gray);text-decoration:none;padding:5px 9px;border-radius:6px;border:1px solid transparent;white-space:nowrap}
+nav.rail a:hover{background:var(--blue-fill);color:var(--navy)}
+nav.rail a.active{background:var(--navy);color:#fff}
+nav.rail a:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+
+/* section chrome */
+section{padding:48px 0;border-top:1px solid var(--rule)}
+section:first-of-type{border-top:0}
+.strip{display:flex;align-items:center;gap:10px;font-family:var(--font-title);font-size:12px;letter-spacing:.05em;color:var(--navy);text-transform:uppercase}
+.strip .idx{color:var(--magenta);font-weight:600}
+.strip .of{color:var(--gray)}
+.strip-rule{height:1px;background:var(--rule);margin:8px 0 14px}
+.stitle{font-size:28px;line-height:1.12;margin:.1em 0 .15em;color:var(--navy)}
+@media(max-width:600px){.stitle{font-size:23px}}
+.dek{font-style:italic;color:var(--gray);max-width:64ch;margin-bottom:6px}
+.aud{display:inline-block;font-family:var(--font-title);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:99px;border:1px solid var(--rule-strong);color:var(--gray);margin-bottom:6px}
+.aud.exec{color:var(--magenta-text);border-color:var(--magenta-text)}
+.narr{font-size:17px}
+.trans{margin-top:20px;color:var(--gray);font-style:italic;border-left:3px solid var(--rule-strong);padding-left:12px;max-width:62ch}
+
+/* layout grids */
+@media(min-width:900px){.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:38px;align-items:start}.split .col-text{max-width:var(--measure)}.split .col-aside{min-width:0}}
+@media(min-width:860px){.herogrid{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center}.herogrid .heroR{min-width:0}}
+
+/* hero */
+header.hero{padding:50px 0 26px}
+.eyebrow{font-family:var(--font-title);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--magenta-text)}
+.reframe{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin:14px 0}
+.reframe .strike{font-family:var(--font-title);font-size:54px;color:var(--gray);text-decoration:line-through;text-decoration-color:var(--rule-strong);opacity:.7}
+.reframe .arrow{color:var(--rule-strong);font-size:34px}
+.reframe .hero43{font-family:var(--font-title);font-size:108px;line-height:.9;color:var(--magenta)}
+.reframe .hlabel{font-family:var(--font-title);font-size:15px;color:var(--navy);max-width:18ch}
+@media(max-width:600px){.reframe .hero43{font-size:76px}.reframe .strike{font-size:40px}}
+.herolead{font-size:21px;max-width:54ch;line-height:1.4}
+.herolead .h{color:var(--magenta-text);font-weight:700}
+.gloss{font-style:italic;color:var(--gray)}
+.stakes{margin-top:6px;background:var(--pink-fill);border-left:5px solid var(--magenta);padding:14px 18px;border-radius:0 10px 10px 0}
+.trustline{margin-top:14px;font-size:14px;color:var(--gray)}
+
+/* exec band (now in recap section) */
+.exec{background:var(--blue-fill);border:1px solid var(--rule);border-radius:14px;padding:24px;margin-top:14px}
+.segrow{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0}
+.seg{flex:1 1 180px;background:#fff;border:1px solid var(--rule);border-radius:10px;padding:14px 16px}
+.seg .n{font-family:var(--font-title);font-size:36px;line-height:1}
+.seg .l{font-size:13px;color:var(--gray);margin-top:3px}
+.seg.switch{border-top:4px solid var(--magenta)} .seg.switch .n{color:var(--magenta-text)}
+.seg.retain{border-top:4px solid var(--teal)} .seg.retain .n{color:var(--teal-text)}
+.seg.silent{border-top:4px solid var(--rule-strong)} .seg.silent .n{color:var(--gray)}
+.recon{font-size:13px;color:var(--gray);font-family:var(--font-title)}
+.action{margin-top:14px;background:#fff;border:1px solid var(--rule-strong);border-radius:10px;padding:16px}
+.action .k{font-family:var(--font-title);color:var(--magenta-text);text-transform:uppercase;font-size:11px;letter-spacing:.08em}
+.spine{margin-top:14px;font-family:var(--font-title);color:var(--navy);font-size:15px}
+.spine .b{color:var(--magenta-text)}
+
+.divider{display:flex;align-items:center;gap:12px;color:var(--gray);font-family:var(--font-title);font-size:13px;letter-spacing:.05em;text-transform:uppercase;margin:24px 0 4px}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--rule)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.chip{font-family:var(--font-title);font-size:12px;background:var(--blue-fill);border:1px solid var(--rule-strong);color:var(--navy);border-radius:99px;padding:4px 11px}
+
+/* disclosure */
+.sample{margin:14px 0;border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.sample__btn{width:100%;display:flex;align-items:center;gap:10px;background:#fff;border:0;padding:11px 14px;cursor:pointer;font-family:var(--font-title);font-size:13.5px;color:var(--navy);text-align:left}
+.sample__btn:hover{background:var(--blue-fill)}
+.sample__btn:focus-visible{outline:2px solid var(--magenta);outline-offset:-2px}
+.sample__btn .chev{margin-left:auto;width:18px;height:18px;transition:transform .2s ease;color:var(--gray)}
+.sample[data-open] .sample__btn .chev{transform:rotate(180deg)}
+.sample[data-open] .sample__btn{border-bottom:1px solid var(--rule)}
+.sample__panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .22s ease}
+.sample[data-open] .sample__panel{grid-template-rows:1fr}
+.sample__inner{overflow:hidden;min-height:0}
+.sample__pad{padding:14px}
+.tag-recon{display:inline-block;font-family:var(--font-title);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;background:var(--amber);color:var(--navy);padding:2px 8px;border-radius:4px;margin-bottom:8px}
+.expand-all{font-family:var(--font-title);font-size:12px;background:#fff;border:1px solid var(--rule-strong);color:var(--navy);border-radius:7px;padding:5px 10px;cursor:pointer;margin-left:auto}
+.expand-all:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+
+pre{background:#0c1530;color:#e7ecf7;border-radius:8px;padding:14px;overflow-x:auto;font-size:12.5px;line-height:1.5;font-family:"Roboto Mono",ui-monospace,Consolas,monospace}
+pre .c{color:#8aa0c8}
+pre .k{color:#7fd6cf}
+pre .s{color:#ffcf6b}
+code.inline{background:var(--blue-fill);border:1px solid var(--rule);border-radius:4px;padding:1px 5px;font-size:.9em}
+
+table.data{width:100%;border-collapse:collapse;font-size:13px}
+table.data th,table.data td{border:1px solid var(--rule);padding:6px 9px;text-align:left;font-variant-numeric:tabular-nums}
+table.data th{background:var(--navy);color:#fff;font-family:var(--font-title);font-weight:500}
+table.data tr:nth-child(even) td{background:var(--blue-fill)}
+.scrollx{overflow-x:auto}
+
+/* distribution infographic */
+.dist{margin:16px 0}
+.dist .row{display:flex;align-items:center;gap:10px;margin:7px 0}
+.dist .row.silent{background:var(--track);border-radius:6px;padding:6px;margin-left:-6px}
+.dist .lab{flex:0 0 220px;font-size:13px;display:flex;align-items:center;gap:8px}
+.dist .track{flex:1;background:var(--track);border-radius:5px;height:22px;position:relative;border:1px solid var(--rule-strong)}
+.dist .fill{height:100%;border-radius:4px}
+.dist .val{flex:0 0 48px;text-align:right;font-family:var(--font-title);font-size:15px}
+
+/* funnel */
+.funnel{border:1px solid var(--rule);border-radius:14px;padding:24px;background:#fff;margin:16px 0}
+.funnel .fstrip{font-family:var(--font-title);font-size:11px;letter-spacing:.05em;color:var(--navy);text-transform:uppercase;margin-bottom:4px}
+.funnel .ftitle{font-family:var(--font-title);font-size:22px;color:var(--navy);margin:2px 0 4px;line-height:1.15}
+.funnel .fdek{font-style:italic;color:var(--gray);font-size:13px;margin-bottom:18px}
+.fflow{display:grid;grid-template-columns:minmax(120px,auto) minmax(150px,auto) minmax(0,1.4fr);gap:16px;align-items:center;position:relative}
+@media(max-width:760px){.fflow{grid-template-columns:1fr}}
+.fconnect{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.fflow>*:not(.fconnect){position:relative;z-index:1}
+@media(max-width:760px){.fconnect{display:none}}
+.node{border-radius:10px;padding:12px;text-align:center;border:1.5px solid}
+.node .nt{font-family:var(--font-title);font-size:12px;letter-spacing:.04em}
+.node .nv{font-family:var(--font-title);font-size:18px;margin-top:3px}
+.node.pool{background:var(--navy);border-color:var(--navy);color:#fff}
+.node.pool .nv{font-size:28px}
+.node.hold{background:var(--pink-fill);border-color:var(--magenta)} .node.hold .nv{color:var(--magenta-text)}
+.node.nonh{background:var(--teal-fill);border-color:var(--teal)} .node.nonh .nv{color:var(--teal-text)}
+.splits{display:flex;flex-direction:column;gap:40px}
+.leaves{display:flex;flex-direction:column;gap:8px}
+.leaf{display:flex;align-items:center;gap:9px}
+.leaf .lname{flex:0 0 168px;font-size:12.5px;display:flex;align-items:center;gap:7px}
+@media(max-width:760px){.leaf .lname{flex:0 0 140px}}
+.leaf .lbar{flex:1;height:16px;background:var(--track);border-radius:4px;border:1px solid var(--rule-strong)}
+.leaf .lbar i{display:block;height:100%;border-radius:3px}
+.leaf .lval{flex:0 0 40px;text-align:right;font-family:var(--font-title);font-size:13px}
+.leaf.active{background:linear-gradient(90deg,var(--pink-fill),transparent);border-left:4px solid var(--magenta);padding-left:6px;margin-left:-10px;border-radius:4px}
+.callouts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+@media(max-width:760px){.callouts{grid-template-columns:1fr}}
+.callout{border-radius:10px;padding:12px;border-left:5px solid;font-size:12.5px}
+.callout h4{margin:0 0 4px;font-family:var(--font-title);font-size:13px;display:flex;align-items:center;gap:7px}
+.callout.g{background:#f1f2f5;border-color:var(--rule-strong)} .callout.g h4{color:var(--gray)}
+.callout.m{background:var(--pink-fill);border-color:var(--magenta)} .callout.m h4{color:var(--magenta-text)}
+.callout.t{background:var(--teal-fill);border-color:var(--teal)} .callout.t h4{color:var(--teal-text)}
+.bottomline{margin-top:18px;background:var(--pink-fill);border-left:6px solid var(--magenta);padding:12px 16px;border-radius:0 8px 8px 0;font-size:13.5px}
+.bottomline b{color:var(--magenta-text)}
+.cap{font-size:12px;color:var(--gray);font-style:italic;margin-top:8px}
+
+.btn-dl{display:inline-flex;align-items:center;gap:9px;background:var(--magenta);color:#fff;font-family:var(--font-title);font-size:15px;text-decoration:none;padding:13px 22px;border-radius:10px;margin:12px 0;border:0;cursor:pointer}
+.btn-dl:hover{background:#c50b56}
+.btn-dl:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+
+/* option cards */
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}
+@media(max-width:760px){.opts{grid-template-columns:1fr}}
+.opt{border:1px solid var(--rule);border-radius:10px;padding:14px;background:#fff}
+.opt.chosen{border:2px solid var(--magenta);background:var(--pink-fill)}
+.opt h4{font-family:var(--font-title);margin:0 0 6px;font-size:14px}
+.opt .badge{font-family:var(--font-title);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--magenta-text);display:flex;align-items:center;gap:5px}
+
+/* lineage */
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;margin:12px 0}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.lin{display:grid;grid-template-columns:1.3fr .8fr 1fr;gap:18px;align-items:start;margin:16px 0}
+@media(max-width:860px){.lin{grid-template-columns:1fr}}
+.linrail{display:flex;flex-direction:column;gap:8px}
+.lnode{display:flex;gap:9px;align-items:flex-start;width:100%;text-align:left;background:#fff;border:1px solid var(--rule);border-radius:9px;padding:9px 11px;cursor:pointer;font-family:var(--font-body);font-size:12.5px;color:var(--navy)}
+.lnode .role{display:block;font-size:11px;color:var(--gray);margin-top:2px;overflow-wrap:anywhere}
+.lnode:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+.lnode[data-feeds=code]{border-left:4px solid var(--teal)}
+.lnode[data-feeds=deck]{border-left:4px dashed var(--magenta)}
+.lnode[data-feeds=both]{border-left:4px dotted var(--navy)}
+.lnode[data-feeds=code] svg{color:var(--teal-text)} .lnode[data-feeds=deck] svg{color:var(--magenta-text)} .lnode[data-feeds=both] svg{color:var(--navy)} .lnode[data-na] svg{color:var(--gray)}
+.lnode[data-na]{opacity:.6;border-style:dashed}
+.lnode.dim{opacity:.3}
+.lnode.hot{box-shadow:0 0 0 2px var(--magenta)}
+.engine{background:var(--navy);color:#fff;border-radius:11px;padding:16px;font-size:13px}
+.engine .gate{margin-top:8px;background:rgba(255,255,255,.1);border:1px solid var(--teal);border-radius:7px;padding:8px;color:var(--teal-soft);font-family:var(--font-title);font-size:12px}
+.outnode{background:#fff;border:1px solid var(--rule-strong);border-radius:11px;padding:14px;box-shadow:0 6px 18px rgba(7,29,73,.1);margin-bottom:12px;cursor:pointer;width:100%;text-align:left}
+.outnode:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+.outnode h4{font-family:var(--font-title);margin:0 0 5px;display:flex;align-items:center;gap:7px}
+.outnode.code{border-top:4px solid var(--teal)} .outnode.deck{border-top:4px solid var(--magenta)}
+.outnode .trace{font-size:12px;color:var(--gray);font-variant-numeric:tabular-nums}
+.edges td:first-child{font-family:var(--font-title)}
+.fired{color:var(--teal-text);font-family:var(--font-title)}
+.unused{color:var(--gray)}
+
+/* trust */
+.guards{list-style:none;padding:0;margin:14px 0;display:grid;gap:8px}
+.guards li{background:var(--blue-fill);border:1px solid var(--rule);border-radius:8px;padding:11px 14px;font-size:14px;display:flex;align-items:flex-start;gap:10px}
+.guards b{font-family:var(--font-title)}
+.guards svg.ic{color:var(--teal-text);margin-top:2px}
+
+/* footer */
+footer{background:var(--navy);color:#fff;padding:32px 0;margin-top:10px}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.wordmark{display:flex;align-items:center;gap:8px;font-family:var(--font-title);font-weight:600;font-size:18px}
+.prov{font-size:12px;color:#9fb0d6;font-family:var(--font-title)}
+
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.reveal{opacity:1}
+@media (prefers-reduced-motion: no-preference){
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .4s ease,transform .4s ease}
+  .reveal.in{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion: reduce){
+  *{scroll-behavior:auto!important}
+  .sample__panel{transition:none} .sample__btn .chev{transition:none}
+  .reveal{opacity:1!important;transform:none!important}
+}
+@media print{
+  nav.rail{position:static} .sample__panel{grid-template-rows:1fr} .reveal{opacity:1!important;transform:none!important}
+  .btn-dl{display:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-rule" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+<symbol id="i-merge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6 4-4 4 4"/><path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22"/><path d="m20 22-5-5"/></symbol>
+<symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+<symbol id="i-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></symbol>
+<symbol id="i-presentation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></symbol>
+<symbol id="i-git" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></symbol>
+<symbol id="i-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-unlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+<symbol id="i-handshake" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></symbol>
+<symbol id="i-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></symbol>
+<symbol id="i-calculator" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></symbol>
+<symbol id="i-files" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></symbol>
+<symbol id="i-commit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><line x1="3" x2="9" y1="12" y2="12"/><line x1="15" x2="21" y1="12" y2="12"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+<symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-ban" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol>
+<symbol id="i-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></symbol>
+</defs></svg>
+
+<nav class="rail" aria-label="Section navigation"><div class="wrap" id="rail"></div></nav>
+
+<header class="hero"><div class="wrap reveal">
+  <div class="eyebrow">SKYRIZI Holdout · Crohn's new prescribing · NBRx · last 13 weeks</div>
+  <div class="herogrid">
+    <div class="heroL">
+      <div class="reframe">
+        <span class="strike">670</span>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+        <span class="hero43">43</span>
+        <span class="hlabel">the real STELARA switch list</span>
+      </div>
+      <p class="herolead">The obvious answer was <b>670 Holdouts</b> to convert. The real switch list is <span class="h">43</span>. The other <b>627</b> aren't switchers, they're <b>silent</b>.</p>
+      <p class="small gloss">Holdout = no SKYRIZI shift for new Crohn's starts &nbsp;·&nbsp; NBRx = new prescriptions</p>
+    </div>
+    <div class="heroR">
+      <div class="stakes"><b>Why it matters:</b> a naive 670-name target list spends <b>~93% of effort (627/670)</b> on HCPs with no recent Crohn's starts to switch.</div>
+      <p class="trustline">Every figure here traces to one validated result file (1,040 rows, validation PASS). Full lineage below.</p>
+    </div>
+  </div>
+  <div class="divider">How we got the answer: optional walkthrough <svg class="ic" aria-hidden="true"><use href="#i-chevron-down"/></svg></div>
+</div></header>
+
+<main class="wrap">
+
+<!-- 1 -->
+<section id="s1"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-help"/></svg><span class="idx">01</span><span class="of">/ 12</span><span>The question</span></div><div class="strip-rule"></div>
+  <span class="aud exec">Exec</span>
+  <h2 class="stitle">It started as one plain-English question</h2>
+  <p class="dek">No SQL, no spec: a business question typed in English.</p>
+  <div class="split">
+    <div class="col-text prose">
+      <p class="narr">A commercial lead asked, in effect: <em>for each doctor, have they shifted their new Crohn's prescribing from STELARA to SKYRIZI?</em> That one sentence is what the engine had to turn into a governed, auditable answer, and ultimately into <b>the 43</b>.</p>
+      <div class="chips"><span class="chip">NBRx (new Rx)</span><span class="chip">CD indication</span><span class="chip">cur_13wk</span><span class="chip">STELARA to SKYRIZI ratio</span><span class="chip">threshold 0.5</span></div>
+    </div>
+    <div class="col-aside">
+      <div data-sample data-name="query.txt (verbatim)">
+        <div class="sample__pad"><p class="small muted">Source: <code class="inline">output/run_2026-06-26_001/query.txt</code></p>
+        <p>“For each doctor, have they shifted their new prescribing for Crohn's Disease (CD) from STELARA over to SKYRIZI? Use only NBRx … over the most recent 13 weeks. Per HCP, take SKYRIZI CD NBRx and STELARA CD NBRx; compute the STELARA-to-SKYRIZI ratio; classify each doctor as Holdout … or Non-Holdout …”</p></div>
+      </div>
+      <div data-sample data-name="the 13-week window (time)">
+        <div class="sample__pad small"><p><b>cur_13wk</b> = frx1 (week ending <b>2026-06-05</b>, anchor) … frx13 (week ending <b>2026-03-13</b>). frx1 is complete, not provisional. <span class="muted">(RULE-401 / RULE-006; positional weekly series, frx1 = latest, each higher index one week earlier.)</span></p></div>
+      </div>
+    </div>
+  </div>
+  <p class="trans">But the engine can't answer it yet: two words, <em>Holdout</em> and <em>shifted</em>, have no definition.</p>
+</div></section>
+
+<!-- 2 -->
+<section id="s2"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-lock"/></svg><span class="idx">02</span><span class="of">/ 12</span><span>The decisions we locked</span></div><div class="strip-rule"></div>
+  <span class="aud exec">Exec</span>
+  <h2 class="stitle">We agreed the scope before computing anything</h2>
+  <p class="dek">Three brand-scope decisions and two defaults, confirmed, then frozen into the plan.</p>
+  <div class="split">
+    <div class="col-text prose"><p class="narr">Rather than guess, the engine surfaced the ambiguities as plain choices. Each was confirmed and recorded as an assumption in the analysis plan.</p></div>
+    <div class="col-aside">
+      <div data-sample data-name="the 3 confirmed decisions + 2 defaults" data-open>
+        <div class="sample__pad">
+        <table class="data"><thead><tr><th>Decision</th><th>Locked as</th></tr></thead><tbody>
+        <tr><td>SKYRIZI scope</td><td>label <b>SKYRIZI</b> only, SKYRIZI_IV excluded <span class="muted">(user confirmed)</span></td></tr>
+        <tr><td>STELARA scope</td><td>label <b>STELARA</b> only, STELARA_IV + ustekinumab biosimilars excluded <span class="muted">(user confirmed)</span></td></tr>
+        <tr><td>Universe</td><td>full <b>1,040</b>-HCP holdout universe, incl. zero-CD doctors <span class="muted">(user confirmed)</span></td></tr>
+        <tr><td>Default: "no CD NBRx"</td><td>13-week sum exactly <b>0</b></td></tr>
+        <tr><td>Default: ratio boundary</td><td>ratio <b>= 0.5 &rarr; Holdout</b> (i.e. &ge; 0.5)</td></tr>
+        </tbody></table>
+        <p class="cap">Source: <code class="inline">analysis_plan.md</code> · assumptions block.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="trans">With scope agreed, one word still had no formula: what exactly makes an HCP a <em>Holdout</em>?</p>
+</div></section>
+
+<!-- 3 -->
+<section id="s3"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-rule"/></svg><span class="idx">03</span><span class="of">/ 12</span><span>A rule is born: RULE-010</span></div><div class="strip-rule"></div>
+  <span class="aud">Technical · proof</span>
+  <h2 class="stitle">"Holdout" became a precise, reusable rule</h2>
+  <p class="dek">The definition that produces <b>the 43</b>, saved and git-committed so the engine never re-learns it.</p>
+  <div class="split">
+    <div class="col-text prose"><p class="narr">We co-defined Holdout as a five-way classification on a single ratio. It was auto-saved as <b>RULE-010</b> and committed, meaning the next holdout question reuses it for free.</p></div>
+    <div class="col-aside">
+      <div data-sample data-name="RULE-010: the classification" data-open>
+        <div class="sample__pad small">
+        <table class="data"><thead><tr><th>Group</th><th>Condition</th><th>Status</th></tr></thead><tbody>
+        <tr><td>no_cd_nbrx</td><td>SKY = 0 and STEL = 0</td><td><b>Holdout</b></td></tr>
+        <tr><td>stelara_only</td><td>STEL &gt; 0 and SKY = 0</td><td><b>Holdout</b></td></tr>
+        <tr><td>both_lean_stelara</td><td>both &gt; 0 and ratio <b>&ge; 0.5</b></td><td><b>Holdout</b></td></tr>
+        <tr><td>both_lean_skyrizi</td><td>both &gt; 0 and ratio &lt; 0.5</td><td>Non-Holdout</td></tr>
+        <tr><td>skyrizi_only</td><td>STEL = 0 and SKY &gt; 0</td><td>Non-Holdout</td></tr>
+        </tbody></table>
+        <p class="cap">ratio = STELARA / SKYRIZI. Boundary is <b>&ge; 0.5</b> (not "&gt; 0.5"). Committed: <code class="inline">rule: RULE-010 SKYRIZI Holdout classification</code> (<code class="inline">63c87bd</code>).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="trans">A definition isn't enough: the engine still refuses to act until the join to the holdout universe is <em>declared</em>.</p>
+</div></section>
+
+<!-- 4 -->
+<section id="s4"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-merge"/></svg><span class="idx">04</span><span class="of">/ 12</span><span>How the data connects</span></div><div class="strip-rule"></div>
+  <span class="aud">Technical · proof</span>
+  <h2 class="stitle">The engine only joins what's been declared</h2>
+  <p class="dek">A schema gate and a single declared edge: governed plumbing, no guessing.</p>
+  <div class="split">
+    <div class="col-text prose"><p class="narr">Before any analysis, the schema gate must pass, and the only join used is the one declared in <code class="inline">relationships.yaml</code>. Undeclared joins are refused, not guessed.</p></div>
+    <div class="col-aside">
+      <div data-sample data-name="schema gate: verbatim output">
+        <div class="sample__pad"><pre><span class="c">$ py -3 scripts/validate_schema.py</span>
+SCHEMA VALIDATION REPORT
+Tables active for analysis : [5 tables]
+Tables excluded            : none
+
+<span class="k">RESULT: ALL CLEAR.</span></pre>
+        <p class="cap small">Positional NBRx columns <b>frx1..frx13</b> validated (frx1 = w/e 2026-06-05). Source: <code class="inline">validate_schema.py</code>.</p></div>
+      </div>
+      <div data-sample data-name="the declared join (relationships.yaml)">
+        <div class="sample__pad"><pre>Holdout_HCP_Universe.abbott_customer_id
+   <span class="k">&rarr;</span> sqlqueries_...gastro....abv_customer_id   <span class="c">(one-to-one)</span>
+<span class="c"># restrict to in-scope universe (RULE-102); no-op today</span></pre></div>
+      </div>
+    </div>
+  </div>
+  <p class="trans">Join declared. Now the rule and the join become runnable code.</p>
+</div></section>
+
+<!-- 5 -->
+<section id="s5"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-code"/></svg><span class="idx">05</span><span class="of">/ 12</span><span>How the answer was computed</span></div><div class="strip-rule"></div>
+  <span class="aud">Technical · proof</span>
+  <h2 class="stitle">This is the code that turns 670 into the 43 you'll act on</h2>
+  <p class="dek">Standalone pandas: load, join, classify, output. Nothing ships until it passes validation.</p>
+  <p class="narr prose">The engine never hand-calculates; every number is computed in pandas. Three sub-steps tell the story: build the full spine, classify, and a deliberate data-quality decision on the ratio column.</p>
+  <div class="split">
+    <div class="col-aside">
+      <div data-sample data-name="spine build + left-join (every HCP appears)">
+        <div class="sample__pad"><pre><span class="c"># spine from the holdout universe: every in-scope HCP appears</span>
+spine = uni.rename(columns={<span class="s">"abbott_customer_id"</span>: ID})[[ID]].drop_duplicates()
+res = spine.merge(sky, on=ID, how=<span class="s">"left"</span>).merge(stel, on=ID, how=<span class="s">"left"</span>)
+res[<span class="s">"skyrizi_cd_nbrx_13wk"</span>] = res[<span class="s">"skyrizi_cd_nbrx_13wk"</span>].fillna(<span class="k">0.0</span>)</pre></div>
+      </div>
+      <div data-sample data-name="RULE-010 classify(): verbatim">
+        <div class="sample__pad"><pre><span class="k">def</span> group(row):
+    sk, st, ra = row[<span class="s">"skyrizi..."</span>], row[<span class="s">"stelara..."</span>], row[<span class="s">"_ratio_num"</span>]
+    <span class="k">if</span> sk == 0 <span class="k">and</span> st == 0: <span class="k">return</span> <span class="s">"no_cd_nbrx"</span>
+    <span class="k">if</span> sk == 0 <span class="k">and</span> st &gt; 0: <span class="k">return</span> <span class="s">"stelara_only"</span>
+    <span class="k">if</span> st == 0 <span class="k">and</span> sk &gt; 0: <span class="k">return</span> <span class="s">"skyrizi_only"</span>
+    <span class="k">return</span> <span class="s">"both_lean_stelara"</span> <span class="k">if</span> ra &gt;= RATIO_THRESHOLD <span class="k">else</span> <span class="s">"both_lean_skyrizi"</span></pre></div>
+      </div>
+    </div>
+    <div class="col-aside">
+      <div data-sample data-name="ratio-as-string: a deliberate data-quality decision">
+        <div class="sample__pad"><pre><span class="c"># NOT emitted as a numeric column because a NaN there reads as a
+# bad-join signal to the gate. It is undefined-by-design (denom 0),
+# so we surface it as a labeled string column instead.</span>
+ratio_str -> <span class="s">"undefined_stelara_only"</span> | <span class="s">"undefined_no_cd_nbrx"</span></pre>
+        <p class="cap small">Source: <code class="inline">analysis_code.py</code>. Honest divide-by-zero handling is what let the result pass the gate cleanly.</p></div>
+      </div>
+      <div data-sample data-name="validation: re-derivable evidence (not a badge)">
+        <div class="sample__pad small"><ul>
+        <li>row count = <b>1,040</b> == expected_row_count 1,040</li>
+        <li>join audit: spine <b>1,040 &rarr; 1,040</b> after left-join, no fan-out</li>
+        <li>no unexpected nulls in metric columns</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+  <p class="trans">Code ran, but nothing ships until it passes validation. It did. Here's what came out.</p>
+</div></section>
+
+<!-- 6 -->
+<section id="s6"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-filter"/></svg><span class="idx">06</span><span class="of">/ 12</span><span>The result: 670 collapses to 43</span></div><div class="strip-rule"></div>
+  <span class="aud exec">Exec · the summit</span>
+  <h2 class="stitle">670 Holdouts collapse to 43 real switch targets</h2>
+  <p class="dek">The whole decision in one picture: most "Holdouts" simply aren't prescribing.</p>
+  <div class="dist" role="img" aria-label="Classification of 1,040 HCPs: no CD NBRx 627, SKYRIZI only 367, STELARA only 26, both lean STELARA 17, both lean SKYRIZI 3.">
+    <div class="row silent"><div class="lab"><svg class="ic" style="color:var(--gray)" aria-hidden="true"><use href="#i-mute"/></svg>No CD NBRx (silent)</div><div class="track"><div class="fill" style="width:100%;background:var(--gray)"></div></div><div class="val">627</div></div>
+    <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>SKYRIZI only</div><div class="track"><div class="fill" style="width:58.5%;background:var(--teal)"></div></div><div class="val">367</div></div>
+    <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>STELARA only</div><div class="track"><div class="fill" style="width:4.1%;background:var(--magenta)"></div></div><div class="val">26</div></div>
+    <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>Both · lean STELARA</div><div class="track"><div class="fill" style="width:2.7%;background:var(--amber)"></div></div><div class="val">17</div></div>
+    <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>Both · lean SKYRIZI</div><div class="track"><div class="fill" style="width:0.5%;background:var(--teal-soft)"></div></div><div class="val">3</div></div>
+  </div>
+  <p class="narr prose"><b>670</b> Holdouts, but <b>627</b> wrote no Crohn's NBRx at all. The active STELARA-leaners (<b>26</b> STELARA-only + <b>17</b> both-lean-STELARA) are <span style="color:var(--magenta-text);font-weight:700">the 43</span>. <span class="muted">Canonical view: 1,040 in scope &rarr; 413 actively prescribing &rarr; 43 switch targets (627 silent, parked aside).</span></p>
+  <div class="split">
+    <div class="col-aside">
+      <div data-sample data-name="result.csv: one verified row per group (both ratio sentinels)">
+        <div class="sample__pad scrollx">
+        <table class="data"><thead><tr><th>id</th><th>SKY</th><th>STEL</th><th>ratio</th><th>group</th><th>status</th></tr></thead><tbody>
+        <tr><td>12649</td><td>1.0</td><td>0.0</td><td>0.0000</td><td>skyrizi_only</td><td>Non-Holdout</td></tr>
+        <tr><td>1806</td><td>0.0</td><td>0.0</td><td>undefined_no_cd_nbrx</td><td>no_cd_nbrx</td><td>Holdout</td></tr>
+        <tr><td>128326</td><td>0.0</td><td>1.0</td><td>undefined_stelara_only</td><td>stelara_only</td><td>Holdout</td></tr>
+        <tr><td>86131</td><td>2.0</td><td>1.0</td><td>0.5000</td><td>both_lean_stelara</td><td>Holdout</td></tr>
+        <tr><td>3870464</td><td>3.0</td><td>1.0</td><td>0.3333</td><td>both_lean_skyrizi</td><td>Non-Holdout</td></tr>
+        </tbody></table>
+        <p class="cap">Real rows from <code class="inline">result.csv</code> (1,040 total). Two string sentinels where SKYRIZI = 0 and the ratio is undefined.</p></div>
+      </div>
+    </div>
+    <div class="col-aside">
+      <div data-sample data-name="takeaways.md: #1 and #3 (verbatim)">
+        <div class="sample__pad small">
+        <p><b>#1</b>: “SKYRIZI drew 666 CD NBRx over the last 13 weeks versus 49 for STELARA (≈13.6× more new SKYRIZI starts). Among the 413 HCPs who wrote any CD NBRx, 370 (90%) are Non-Holdouts … only 43 still lean on STELARA.”</p>
+        <p><b>#3</b>: “The real switch list is 43 active STELARA-leaners … 26 write STELARA only … and 17 write both but lean STELARA (ratio ≥ 0.5).”</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="trans">The 43 are the decision. The only thing left is to make a board <em>see</em> the collapse as fast as you just did, which is exactly what the funnel does.</p>
+</div></section>
+
+<!-- 7+8 -->
+<section id="s7"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-presentation"/></svg><span class="idx">07</span><span class="of">/ 12</span><span>Why a funnel, not a bar</span></div><div class="strip-rule"></div>
+  <span class="aud">Technical · proof</span>
+  <h2 class="stitle">We tried a bar first, then chose the funnel</h2>
+  <p class="dek">The funnel makes the 670 to 43 collapse a single visual argument.</p>
+  <p class="narr prose">The first instinct was a plain bar of the five groups. You asked to make it stronger; the engine offered three layouts. You chose the funnel: it tells the collapse as one continuous story; two slides split it across a page-turn; stacked cards lose the magnitude.</p>
+  <div data-sample data-name="v1 bar: first instinct (reconstruction)">
+    <div class="sample__pad">
+    <span class="tag-recon">Reconstruction: superseded concept (no exported artifact)</span>
+    <div class="dist">
+      <div class="row"><div class="lab"><svg class="ic" style="color:var(--gray)" aria-hidden="true"><use href="#i-mute"/></svg>No CD NBRx</div><div class="track"><div class="fill" style="width:100%;background:var(--gray)"></div></div><div class="val">627</div></div>
+      <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>SKYRIZI only</div><div class="track"><div class="fill" style="width:58.5%;background:var(--teal)"></div></div><div class="val">367</div></div>
+      <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>STELARA only</div><div class="track"><div class="fill" style="width:4.1%;background:var(--magenta)"></div></div><div class="val">26</div></div>
+      <div class="row"><div class="lab"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>Both lean STELARA</div><div class="track"><div class="fill" style="width:2.7%;background:var(--amber)"></div></div><div class="val">17</div></div>
+      <div class="row"><div class="lab"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>Both lean SKYRIZI</div><div class="track"><div class="fill" style="width:.5%;background:var(--teal-soft)"></div></div><div class="val">3</div></div>
+    </div>
+    </div>
+  </div>
+  <div data-sample data-name="the 3 options offered (reconstruction)">
+    <div class="sample__pad">
+    <span class="tag-recon">Reconstruction: options narrated in MEMORY.md, no artifact</span>
+    <div class="opts">
+      <div class="opt"><span class="badge">option</span><h4>Two slides</h4><p class="small muted">Overview slide + detail slide. Clean, but splits the collapse across a page-turn.</p></div>
+      <div class="opt chosen"><span class="badge"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg> chosen</span><h4>One-slide funnel</h4><p class="small muted">Pool, split, five groups in one continuous visual argument. The collapse is the story.</p></div>
+      <div class="opt"><span class="badge">option</span><h4>Stacked</h4><p class="small muted">Pool split on top, bar below. Compact, but loses the magnitude.</p></div>
+    </div>
+    </div>
+  </div>
+  <p class="trans">The funnel won because it makes the collapse a single visual argument. Here it is, in the final deck.</p>
+</div></section>
+
+<!-- 8 deck -->
+<section id="s9"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-presentation"/></svg><span class="idx">08</span><span class="of">/ 12</span><span>The final deck</span></div><div class="strip-rule"></div>
+  <span class="aud exec">Exec · the payoff</span>
+  <h2 class="stitle">The board-ready slide</h2>
+  <p class="dek">An HTML re-creation of the funnel slide, and the real .pptx to download.</p>
+
+  <div class="funnel" role="img" aria-label="Funnel: analysis pool 1,040 splits into Holdout 670 (64%) and Non-Holdout 370 (36%); the five groups are No CD NBRx 627, STELARA only 26, both lean STELARA 17, SKYRIZI only 367, both lean SKYRIZI 3; the 26 plus 17 active STELARA leaners form the 43-prescriber switch list.">
+    <div class="fstrip">SKYRIZI HOLDOUT &nbsp;·&nbsp; CROHN'S NEW PRESCRIBING (NBRX, LAST 13 WEEKS)</div>
+    <div class="ftitle">1,040 Crohn's HCPs Narrow to a 43-Prescriber STELARA Switch List</div>
+    <div class="fdek">Every in-scope gastro HCP classified by SKYRIZI vs STELARA Crohn's NBRx over the last 13 weeks. Most Holdouts are not actively prescribing; the real conversion target is small and specific.</div>
+    <div class="fflow">
+      <svg class="fconnect" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 100 100"><path d="M16 50 H30 M30 28 H46 M30 72 H46" stroke="var(--rule-strong)" stroke-width="1" fill="none" opacity=".7"/><path d="M30 50 V28 M30 50 V72" stroke="var(--rule-strong)" stroke-width="1" fill="none" opacity=".7"/></svg>
+      <div class="node pool"><div class="nt">ANALYSIS POOL</div><div class="nv">1,040</div></div>
+      <div class="splits">
+        <div class="node hold"><div class="nt">HOLDOUT</div><div class="nv">670 · 64%</div></div>
+        <div class="node nonh"><div class="nt">NON-HOLDOUT</div><div class="nv">370 · 36%</div></div>
+      </div>
+      <div class="leaves">
+        <div class="leaf"><span class="lname"><svg class="ic" style="color:var(--gray)" aria-hidden="true"><use href="#i-mute"/></svg>No CD NBRx</span><span class="lbar"><i style="width:100%;background:var(--gray)"></i></span><span class="lval">627</span></div>
+        <div class="leaf active"><span class="lname"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>STELARA only</span><span class="lbar"><i style="width:4.1%;background:var(--magenta)"></i></span><span class="lval">26</span></div>
+        <div class="leaf active"><span class="lname"><svg class="ic" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-target"/></svg>Both · lean STELARA</span><span class="lbar"><i style="width:2.7%;background:var(--amber)"></i></span><span class="lval">17</span></div>
+        <div class="leaf"><span class="lname"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>SKYRIZI only</span><span class="lbar"><i style="width:58.5%;background:var(--teal)"></i></span><span class="lval">367</span></div>
+        <div class="leaf"><span class="lname"><svg class="ic" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-check"/></svg>Both · lean SKYRIZI</span><span class="lbar"><i style="width:.5%;background:var(--teal-soft)"></i></span><span class="lval">3</span></div>
+      </div>
+    </div>
+    <div class="callouts">
+      <div class="callout g"><h4><svg class="ic" aria-hidden="true"><use href="#i-mute"/></svg>627 are silent</h4>Wrote no Crohn's NBRx at all: an activation and sizing question, not a STELARA switch. Keep them off the target list.</div>
+      <div class="callout m"><h4><svg class="ic" aria-hidden="true"><use href="#i-target"/></svg>43 active STELARA prescribers</h4>26 write STELARA only and 17 write both but lean STELARA. The concentrated, high-yield conversion target.</div>
+      <div class="callout t"><h4><svg class="ic" aria-hidden="true"><use href="#i-trophy"/></svg>SKYRIZI already wins</h4>666 vs 49 Crohn's NBRx (13.6×). Among Non-Holdouts the priority is retention, not conversion.</div>
+    </div>
+    <div class="bottomline"><b>Bottom line:</b> &nbsp;Put conversion effort on the 43 active STELARA-leaning prescribers; the 370 Non-Holdouts are a retention play.</div>
+  </div>
+  <p class="cap">HTML re-creation, not a render of deck.pptx; the .pptx download is the canonical, structurally-verified artifact (no soffice on box). Slide count = 1, pure-shape (no chart object).</p>
+  <a class="btn-dl" id="deckdl" download="skyrizi-holdout-deck.pptx" href="data:application/vnd.openxmlformats-officedocument.presentationml.presentation;base64,__DECK_BASE64__">
+    <svg class="ic-lg" aria-hidden="true"><use href="#i-download"/></svg> Download deck.pptx (31 KB)
+  </a>
+  <p class="trans">You've seen the answer and the deck. Here's every input that shaped them, in one view.</p>
+</div></section>
+
+<!-- 9 lineage -->
+<section id="s10"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-git"/></svg><span class="idx">09</span><span class="of">/ 12</span><span>Anatomy of an answer</span></div><div class="strip-rule"></div>
+  <span class="aud">Technical · proof</span>
+  <h2 class="stitle">Every input that shaped the code, the data, and the deck</h2>
+  <p class="dek">What fed the result vs what fed the slide, governed end to end. Click any node to trace its chain.</p>
+  <div class="legend">
+    <span><svg class="ic-lg" style="color:var(--teal-text)" aria-hidden="true"><use href="#i-code"/></svg> feeds Code + Data</span>
+    <span><svg class="ic-lg" style="color:var(--magenta-text)" aria-hidden="true"><use href="#i-presentation"/></svg> feeds Deck</span>
+    <span><svg class="ic-lg" style="color:var(--navy)" aria-hidden="true"><use href="#i-merge"/></svg> feeds Both</span>
+  </div>
+  <div class="lin">
+    <div class="linrail" role="group" aria-label="Inputs">
+      <button class="lnode" data-feeds="both"><svg class="ic-lg" aria-hidden="true"><use href="#i-merge"/></svg><div><b>Business question</b><span class="role">parsed entities &rarr; both outputs</span></div></button>
+      <button class="lnode" data-feeds="both"><svg class="ic-lg" aria-hidden="true"><use href="#i-merge"/></svg><div><b>Q&amp;A decisions</b><span class="role">scope + defaults &rarr; both outputs</span></div></button>
+      <button class="lnode" data-feeds="code"><svg class="ic-lg" aria-hidden="true"><use href="#i-code"/></svg><div><b>Semantic rules 005/006/007/010/102/401</b><span class="role">NBRx stored · frx positional · cur_13wk · classification · universe scope · anchor</span></div></button>
+      <button class="lnode" data-feeds="code"><svg class="ic-lg" aria-hidden="true"><use href="#i-shield-check"/></svg><div><b>Metadata + schema gate</b><span class="role">dictionaries; RESULT: ALL CLEAR</span></div></button>
+      <button class="lnode" data-feeds="code"><svg class="ic-lg" aria-hidden="true"><use href="#i-merge"/></svg><div><b>relationships.yaml</b><span class="role">holdout to gastro edge (RULE-102)</span></div></button>
+      <button class="lnode" data-feeds="code"><svg class="ic-lg" aria-hidden="true"><use href="#i-database"/></svg><div><b>Data CSVs</b><span class="role">gastro universe · Holdout_HCP_Universe</span></div></button>
+      <button class="lnode" data-feeds="code"><svg class="ic-lg" aria-hidden="true"><use href="#i-code"/></svg><div><b>cur_13wk window</b><span class="role">frx1..frx13</span></div></button>
+      <button class="lnode" data-na><svg class="ic-lg" aria-hidden="true"><use href="#i-ban"/></svg><div><b>RULE-101</b><span class="role">considered, not applied (brands, not class rollups)</span></div></button>
+      <button class="lnode" data-feeds="deck"><svg class="ic-lg" aria-hidden="true"><use href="#i-presentation"/></svg><div><b>deck_spec.json</b><span class="role">narrative templates + callouts</span></div></button>
+      <button class="lnode" data-feeds="deck"><svg class="ic-lg" aria-hidden="true"><use href="#i-presentation"/></svg><div><b>takeaways / context wording</b><span class="role">insight copy</span></div></button>
+      <button class="lnode" data-feeds="deck"><svg class="ic-lg" aria-hidden="true"><use href="#i-presentation"/></svg><div><b>apex brand tokens + SKILL</b><span class="role">design language</span></div></button>
+      <button class="lnode" data-feeds="deck"><svg class="ic-lg" aria-hidden="true"><use href="#i-presentation"/></svg><div><b>build_deck_holdout.py + funnel choice</b><span class="role">renderer + your layout pick</span></div></button>
+    </div>
+    <div class="engine">
+      <b>ENGINE</b><br>plan &rarr; code &rarr; validation
+      <div class="gate">validate_result.py PASS · join audit · schema gate</div>
+      <p class="small" style="color:var(--teal-soft);margin-top:8px">RULE-009 / RULE-305 never fire: the demographics join is OFF by user choice.</p>
+    </div>
+    <div>
+      <button class="outnode code" data-out="code"><h4><svg class="ic-lg" aria-hidden="true"><use href="#i-code"/></svg>CODE + DATA</h4><div class="trace">result.csv · 1,040 rows<br>627 / 367 / 26 / 17 / 3 · PASS</div></button>
+      <button class="outnode deck" data-out="deck"><h4><svg class="ic-lg" aria-hidden="true"><use href="#i-presentation"/></svg>DECK</h4><div class="trace">funnel · 43-switch list<br>SKY 666 vs STEL 49 (13.6×)</div></button>
+      <p class="small muted">result.csv feeds <b>both</b>: the data to deck spine (the deck reads its numbers from result.csv at build time).</p>
+    </div>
+  </div>
+  <div data-sample data-name="declared joins: which fired (governance)">
+    <div class="sample__pad scrollx">
+    <table class="data edges"><thead><tr><th>Declared edge</th><th>This run</th></tr></thead><tbody>
+    <tr><td>holdout to gastro (RULE-102)</td><td class="fired">FIRED</td></tr>
+    <tr><td>demo to gastro</td><td class="unused">declared, unused</td></tr>
+    <tr><td>demo to holdout</td><td class="unused">declared, unused</td></tr>
+    <tr><td>Weekly to Monthly allocation</td><td class="unused">declared, unused</td></tr>
+    </tbody></table></div>
+  </div>
+  <table class="vh"><caption>Lineage routing</caption><tbody><tr><td>Business question</td><td>both</td></tr><tr><td>Q&amp;A decisions</td><td>both</td></tr><tr><td>Semantic rules</td><td>code+data</td></tr><tr><td>Metadata/schema gate</td><td>code+data</td></tr><tr><td>relationships.yaml</td><td>code+data</td></tr><tr><td>Data CSVs</td><td>code+data</td></tr><tr><td>cur_13wk</td><td>code+data</td></tr><tr><td>result.csv</td><td>both</td></tr><tr><td>deck_spec.json</td><td>deck</td></tr><tr><td>takeaways/context</td><td>deck</td></tr><tr><td>brand tokens</td><td>deck</td></tr><tr><td>build_deck_holdout.py</td><td>deck</td></tr></tbody></table>
+  <p class="trans">You trusted the 43 because the story flowed, here's the proof that flow was governed end to end.</p>
+</div></section>
+
+<!-- 10 trust -->
+<section id="s11"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-shield-check"/></svg><span class="idx">10</span><span class="of">/ 12</span><span>Why you can trust it</span></div><div class="strip-rule"></div>
+  <span class="aud exec">Exec</span>
+  <h2 class="stitle">Every number traces to one validated source</h2>
+  <p class="dek">The guardrails behind the answer.</p>
+  <ul class="guards">
+    <li><svg class="ic ic-lg" aria-hidden="true"><use href="#i-calculator"/></svg><span><b>No hand-arithmetic</b>: all computation runs in pandas, never estimated.</span></li>
+    <li><svg class="ic ic-lg" aria-hidden="true"><use href="#i-merge"/></svg><span><b>Declared-joins-only</b>: 4 edges declared, 1 fired; undeclared joins are refused.</span></li>
+    <li><svg class="ic ic-lg" aria-hidden="true"><use href="#i-shield-check"/></svg><span><b>Schema gate</b>: <code class="inline">validate_schema.py</code> &rarr; RESULT: ALL CLEAR.</span></li>
+    <li><svg class="ic ic-lg" aria-hidden="true"><use href="#i-files"/></svg><span><b>6-file audit trail</b>: query · plan · code · result.csv · context · takeaways.</span></li>
+    <li><svg class="ic ic-lg" aria-hidden="true"><use href="#i-commit"/></svg><span><b>RULE-010 saved + committed</b> (<code class="inline">63c87bd</code>): reusable next time.</span></li>
+  </ul>
+  <div data-sample data-name="takeaways.md #4: closing evidence">
+    <div class="sample__pad small"><p>“Non-Holdouts (370, 36%) are a retention play, and they are nearly all decisive. 367 are SKYRIZI-only and just 3 write both while still favouring SKYRIZI. With almost no both-brand, SKYRIZI-leaning middle.”</p></div>
+  </div>
+  <p class="trans">And what it unlocks next.</p>
+</div></section>
+
+<!-- 11 decision recap (relocated executive summary) -->
+<section id="summary"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-target"/></svg><span class="idx">11</span><span class="of">/ 12</span><span>Decision recap</span></div><div class="strip-rule"></div>
+  <span class="aud exec">Exec</span>
+  <h2 class="stitle" id="exech">The 60-second read: act on the 43</h2>
+  <p class="dek">The whole decision, recapped: who to convert, who to retain, who to park.</p>
+  <div class="exec" aria-labelledby="exech">
+    <p class="small muted">Adapted from the <code class="inline">context.md</code> headline:</p>
+    <p>“670 of 1,040 gastro HCPs (64%) are SKYRIZI Holdouts for Crohn's new prescribing, but 627 of those simply wrote no CD NBRx in the last 13 weeks; only 43 active prescribers are still defaulting to STELARA.”</p>
+    <div class="segrow">
+      <div class="seg switch"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-target"/></svg><div class="n">43</div><div class="l">switch targets: convert</div></div>
+      <div class="seg retain"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-handshake"/></svg><div class="n">370</div><div class="l">Non-Holdouts: retain</div></div>
+      <div class="seg silent"><svg class="ic ic-lg" aria-hidden="true"><use href="#i-mute"/></svg><div class="n">627</div><div class="l">silent: activate / size separately</div></div>
+    </div>
+    <p class="recon">43 + 370 + 627 = 1,040 &nbsp;·&nbsp; (370 = 367 SKYRIZI-only + 3 both-lean-SKYRIZI)</p>
+    <div class="action"><span class="k">Recommended action: a resourcing decision</span>
+      <p>Approve redirecting rep conversion effort from the 670-name list to the <b>43</b> active STELARA-leaners. This frees ~93% of mis-targeted calls (the 627 silent HCPs). Hold the <b>370</b> Non-Holdouts as a retention play; route the <b>627</b> silent HCPs to activation/sizing, not the switch deck.</p>
+    </div>
+    <p class="spine">Canonical view: <span class="b">1,040 in scope &rarr; 413 actively prescribing &rarr; 43 switch targets</span> (627 silent, parked aside).</p>
+  </div>
+</div></section>
+
+<!-- 12 close -->
+<section id="close"><div class="reveal">
+  <div class="strip"><svg class="ic-strip" aria-hidden="true"><use href="#i-unlock"/></svg><span class="idx">12</span><span class="of">/ 12</span><span>What this unlocks</span></div><div class="strip-rule"></div>
+  <span class="aud exec">Exec</span>
+  <h2 class="stitle">The next brand-switch question is days, not a project</h2>
+  <p class="narr prose">The same one-question workflow now answers the next brand-switch target list (e.g. SKYRIZI vs ustekinumab biosimilars) in days, not a re-scoped analysis. <span class="muted">(Under the hood, RULE-010 is saved and reusable, so the engine doesn't re-learn "Holdout" next time.)</span> <b>The 43-name list is ready to action now.</b></p>
+</div></section>
+
+</main>
+
+<footer><div class="wrap">
+  <div class="wordmark"><svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><path d="M0 0 L14 8 L0 16 Z" fill="#E40D62"/></svg> DataZymes</div>
+  <div class="prov">run_2026-06-26_001 · 2026-06-26 · anchor frx1 = w/e 2026-06-05 · every figure traces to result.csv</div>
+</div></footer>
+
+<script>
+(function(){
+  var rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var secs = [['s1','01 Question'],['s2','02 Decisions'],['s3','03 RULE-010'],['s4','04 Joins'],['s5','05 Code'],['s6','06 Result'],['s7','07 Funnel'],['s9','08 Deck'],['s10','09 Anatomy'],['s11','10 Trust'],['summary','11 Decision recap'],['close','12 Unlocks']];
+  var rail=document.getElementById('rail');
+  secs.forEach(function(s){var a=document.createElement('a');a.href='#'+s[0];a.textContent=s[1];a.dataset.t=s[0];rail.appendChild(a);});
+
+  var sid=0;
+  document.querySelectorAll('[data-sample]').forEach(function(el){
+    sid++; var pid='sp'+sid;
+    var name=el.getAttribute('data-name')||'sample';
+    var open=el.hasAttribute('data-open');
+    var inner=el.innerHTML;
+    el.innerHTML='';
+    el.classList.add('sample');
+    var btn=document.createElement('button');
+    btn.className='sample__btn'; btn.type='button';
+    btn.setAttribute('aria-expanded',open?'true':'false');
+    btn.setAttribute('aria-controls',pid);
+    btn.setAttribute('aria-label','Show sample: '+name);
+    btn.innerHTML='<span>Sample · '+name+'</span><svg class="chev" aria-hidden="true"><use href="#i-chevron-down"/></svg>';
+    var panel=document.createElement('div'); panel.className='sample__panel'; panel.id=pid;
+    var innr=document.createElement('div'); innr.className='sample__inner';
+    innr.innerHTML='<div class="sample__pad" style="padding:0">'+inner+'</div>';
+    panel.appendChild(innr); el.appendChild(btn); el.appendChild(panel);
+    if(open){el.setAttribute('data-open','');} else {innr.setAttribute('inert','');innr.setAttribute('aria-hidden','true');}
+    btn.addEventListener('click',function(){toggle(el,btn,innr);});
+  });
+  function toggle(el,btn,innr,force){
+    var willOpen = force===undefined ? !el.hasAttribute('data-open') : force;
+    if(willOpen){el.setAttribute('data-open','');btn.setAttribute('aria-expanded','true');innr.removeAttribute('inert');innr.removeAttribute('aria-hidden');}
+    else{
+      if(el.contains(document.activeElement)){btn.focus();}
+      el.removeAttribute('data-open');btn.setAttribute('aria-expanded','false');innr.setAttribute('inert','');innr.setAttribute('aria-hidden','true');
+    }
+  }
+
+  document.querySelectorAll('section').forEach(function(sec){
+    var samples=sec.querySelectorAll('.sample');
+    if(samples.length<2) return;
+    var strip=sec.querySelector('.strip');
+    var b=document.createElement('button'); b.className='expand-all'; b.type='button';
+    b.textContent='Expand all'; b.setAttribute('aria-label','Toggle all samples in this section');
+    strip.appendChild(b);
+    b.addEventListener('click',function(){
+      var anyClosed=[].some.call(samples,function(s){return !s.hasAttribute('data-open');});
+      [].forEach.call(samples,function(s){toggle(s,s.querySelector('.sample__btn'),s.querySelector('.sample__inner'),anyClosed);});
+      b.textContent=anyClosed?'Collapse all':'Expand all';
+    });
+  });
+
+  window.addEventListener('beforeprint',function(){document.querySelectorAll('.sample').forEach(function(s){toggle(s,s.querySelector('.sample__btn'),s.querySelector('.sample__inner'),true);});});
+
+  var links={}; rail.querySelectorAll('a').forEach(function(a){links[a.dataset.t]=a;});
+  if('IntersectionObserver' in window){
+    if(!rm){
+      var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target);}});},{rootMargin:'0px 0px -12% 0px'});
+      document.querySelectorAll('.reveal').forEach(function(e){ro.observe(e);});
+    } else {
+      document.querySelectorAll('.reveal').forEach(function(e){e.classList.add('in');});
+    }
+    var lastActive=null;
+    var ao=new IntersectionObserver(function(es){es.forEach(function(e){var l=links[e.target.id];if(l&&e.isIntersecting){if(l===lastActive)return;lastActive=l;rail.querySelectorAll('a').forEach(function(x){x.classList.remove('active');});l.classList.add('active');var c=rail,lo=l.offsetLeft,lw=l.offsetWidth,cs=c.scrollLeft,cw=c.clientWidth;if(lo<cs){c.scrollLeft=lo-12;}else if(lo+lw>cs+cw){c.scrollLeft=lo+lw-cw+12;}}});},{rootMargin:'-40% 0px -55% 0px'});
+    document.querySelectorAll('section[id]').forEach(function(s){ao.observe(s);});
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(e){e.classList.add('in');});
+  }
+  setTimeout(function(){document.querySelectorAll('.reveal:not(.in)').forEach(function(e){e.classList.add('in');});},1200);
+
+  var lnodes=document.querySelectorAll('.lnode'); var outs=document.querySelectorAll('.outnode');
+  function clearLin(){lnodes.forEach(function(n){n.classList.remove('dim','hot');});}
+  lnodes.forEach(function(n){
+    function hot(){clearLin(); n.classList.add('hot'); lnodes.forEach(function(o){if(o!==n)o.classList.add('dim');});}
+    n.addEventListener('mouseenter',hot); n.addEventListener('focus',hot);
+    n.addEventListener('click',hot);
+    n.addEventListener('mouseleave',clearLin); n.addEventListener('blur',clearLin);
+  });
+  outs.forEach(function(o){
+    function up(){var f=o.dataset.out;clearLin();lnodes.forEach(function(n){var feeds=n.getAttribute('data-feeds');if(feeds===f||feeds==='both'){n.classList.add('hot');}else{n.classList.add('dim');}});}
+    o.addEventListener('mouseenter',up);o.addEventListener('focus',up);o.addEventListener('click',up);
+    o.addEventListener('mouseleave',clearLin);o.addEventListener('blur',clearLin);
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')clearLin();});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "chart_kind": "holdout_segments",
+  "section_strip": "SKYRIZI HOLDOUT  ·  CROHN'S NEW PRESCRIBING (NBRX, LAST 13 WEEKS)",
+  "statement_title": "1,040 Crohn's HCPs Narrow to a {switch_n}-Prescriber STELARA Switch List",
+  "dek_template": "Every in-scope gastro HCP classified by SKYRIZI vs STELARA Crohn's NBRx over the last 13 weeks. Most Holdouts are not actively prescribing; the real conversion target is small and specific.",
+  "callouts": [
+    {"accent": "gray", "head": "{no_cd_nbrx:,} are silent",
+     "body_template": "Wrote no Crohn's NBRx at all: an activation and sizing question, not a STELARA switch. Keep them off the target list."},
+    {"accent": "magenta", "head": "{switch_n} active STELARA prescribers",
+     "body_template": "{stelara_only} write STELARA only and {both_lean_stelara} write both but lean STELARA. The concentrated, high-yield conversion target."},
+    {"accent": "teal", "head": "SKYRIZI already wins",
+     "body_template": "{sky_total:,.0f} vs {stel_total:,.0f} Crohn's NBRx ({sky_mult:.1f}x). Among Non-Holdouts the priority is retention, not conversion."}
+  ],
+  "tldr": "Put conversion effort on the {switch_n} active STELARA-leaning prescribers; the {nonholdout_n:,} Non-Holdouts are a retention play."
+}

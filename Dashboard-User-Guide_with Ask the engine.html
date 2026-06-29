@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How to Use the Dashboard · Query-to-Slide</title>
+<meta name="description" content="A step-by-step illustrated guide to the Query-to-Slide dashboard for business users: check your data, update reports, read results, and ask new questions." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Design system: ui-ux-pro-max — FAQ/Documentation pattern over the dashboard's
+   Data-Dense tokens (web/styles.css is the source of truth for color + type). */
+:root{
+  --primary:#1E40AF; --on-primary:#FFFFFF; --secondary:#3B82F6; --accent:#D97706;
+  --bg:#F8FAFC; --fg:#1E3A8A; --text:#1E293B; --gray:#64748B;
+  --muted:#E9EEF6; --border:#DBEAFE; --destructive:#DC2626; --ring:#1E40AF;
+  --ok:#15803D; --ok-bg:#DCFCE7; --warn:#92400E; --warn-bg:#FEF3C7;
+  --fail:#B91C1C; --fail-bg:#FEE2E2; --info-bg:#DBEAFE;
+  --title:"Plus Jakarta Sans","Segoe UI",sans-serif;
+  --body:"Plus Jakarta Sans","Segoe UI",sans-serif;
+  --mono:"Fira Code",Consolas,monospace;
+  --r:12px; --shadow:0 1px 2px rgba(15,23,42,.05);
+  --lift:0 6px 16px rgba(30,64,175,.10); --t:200ms ease;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.65}
+:focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+.skip{position:absolute;left:-9999px;top:0;background:#fff;color:var(--fg);padding:8px 14px;
+  border-radius:0 0 8px 0;z-index:100;font-weight:700}
+.skip:focus{left:0}
+a{color:var(--primary)}
+svg{flex:none}
+em{font-style:normal;font-weight:700;color:var(--fg)}
+
+/* ── topbar ── */
+.topbar{position:sticky;top:0;z-index:40;height:56px;display:flex;justify-content:space-between;
+  align-items:center;background:#fff;border-bottom:1px solid var(--border);
+  padding:0 28px;font-family:var(--title);box-shadow:var(--shadow);gap:12px}
+.brand{font-weight:800;letter-spacing:-.01em;color:var(--fg);white-space:nowrap}
+.brand .mark{color:var(--accent)}
+.brand .sep{opacity:.35;margin:0 6px}
+.topbar .back{font-size:13px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.topbar .back:hover{text-decoration:underline}
+
+/* ── layout: sticky TOC + content ── */
+.wrap{max-width:1200px;margin:0 auto;padding:28px 28px 80px;display:grid;
+  grid-template-columns:230px minmax(0,1fr);gap:36px;align-items:start}
+nav.toc{position:sticky;top:76px}
+nav.toc h2{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);margin:0 0 10px}
+nav.toc ol{list-style:none;margin:0;padding:0;border-left:2px solid var(--border)}
+nav.toc a{display:block;padding:6px 0 6px 14px;font-size:13.5px;color:var(--text);
+  text-decoration:none;border-left:2px solid transparent;margin-left:-2px;transition:color var(--t)}
+nav.toc a:hover{color:var(--primary)}
+nav.toc a b{font-family:var(--mono);font-weight:600;color:var(--accent);margin-right:6px;font-size:12px}
+@media (max-width:920px){
+  .wrap{grid-template-columns:1fr;gap:20px}
+  nav.toc{position:static}
+  nav.toc ol{display:flex;flex-wrap:wrap;gap:2px 14px;border:0}
+  nav.toc a{border:0;padding:4px 0}
+}
+
+/* ── hero ── */
+.hero{background:linear-gradient(135deg,#0F1B3D 0%,#1E40AF 90%);color:#fff;border-radius:16px;
+  padding:34px 34px 30px;margin-bottom:28px}
+.hero .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:#FCD34D;margin:0 0 10px}
+.hero h1{font-family:var(--title);font-weight:800;font-size:clamp(24px,4vw,34px);
+  letter-spacing:-.02em;line-height:1.15;margin:0 0 12px}
+.hero p{max-width:62ch;margin:0;color:#DBEAFE;font-size:15.5px}
+.hero .path{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:18px}
+.hero .path span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  border-radius:999px;padding:5px 14px;font-size:12.5px;font-weight:600}
+.hero .path svg{color:#93C5FD}
+@media (max-width:640px){.hero{padding:24px 20px}}
+
+/* ── sections / steps ── */
+section{margin-bottom:44px}
+.step-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.step-num{width:40px;height:40px;border-radius:12px;background:var(--primary);color:#fff;
+  font-family:var(--mono);font-weight:600;font-size:16px;display:grid;place-items:center;flex:none}
+h2.step-title{font-family:var(--title);font-weight:800;font-size:21px;color:var(--fg);
+  letter-spacing:-.01em;margin:0}
+.step-sub{color:var(--gray);font-size:14px;margin:0 0 16px;padding-left:54px}
+@media (max-width:640px){.step-sub{padding-left:0}}
+h3{font-family:var(--title);font-size:15.5px;font-weight:700;color:var(--fg);margin:22px 0 8px}
+p{margin:8px 0}
+ul.tight{margin:6px 0;padding-left:20px}
+ul.tight li{margin:5px 0}
+
+/* ── callout cards ── */
+.note{display:flex;gap:10px;border-radius:10px;padding:12px 14px;font-size:13.5px;margin:14px 0;
+  border:1px solid var(--border);background:#fff}
+.note.info{background:var(--info-bg);border-color:#BFDBFE;color:#1E3A8A}
+.note.warn{background:var(--warn-bg);border-color:#FDE68A;color:var(--warn)}
+.note svg{margin-top:2px}
+
+/* ── illustration frames ── */
+figure.frame{margin:18px 0 6px;border:1px solid var(--border);border-radius:14px;background:#fff;
+  box-shadow:var(--shadow);overflow:hidden}
+.frame-bar{display:flex;align-items:center;gap:6px;background:var(--muted);
+  border-bottom:1px solid var(--border);padding:8px 12px}
+.frame-bar i{width:9px;height:9px;border-radius:50%;background:#CBD5E1;display:block}
+.frame-bar span{font-family:var(--mono);font-size:11px;color:var(--gray);margin-left:8px}
+.frame-body{padding:18px;position:relative;background:var(--bg)}
+figcaption{font-size:12.5px;color:var(--gray);padding:9px 14px;background:#fff;border-top:1px solid var(--border)}
+.legend{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.legend li{display:flex;gap:10px;align-items:baseline;font-size:13.5px}
+
+/* numbered callout badges */
+.dot{width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;
+  font-family:var(--mono);font-weight:600;font-size:11px;display:inline-grid;place-items:center;flex:none;
+  box-shadow:0 0 0 3px #FEF3C7}
+.pin{position:absolute;z-index:5}
+
+/* ── mini-UI building blocks (replicas of dashboard components) ── */
+.m-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px 14px;box-shadow:var(--shadow)}
+.m-card h4{font-family:var(--title);font-size:12.5px;font-weight:700;color:var(--fg);margin:0 0 6px}
+.m-meta{font-size:11.5px;color:var(--gray);line-height:1.6}
+.m-meta b{color:var(--text)}
+.m-chip{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;
+  padding:2px 8px;border-radius:999px;line-height:1.5}
+.m-chip.ok{background:var(--ok-bg);color:var(--ok)}
+.m-chip.warn{background:var(--warn-bg);color:var(--warn)}
+.m-chip.fail{background:var(--fail-bg);color:var(--fail)}
+.m-chip.idle{background:var(--muted);color:#475569}
+.m-chip.run{background:var(--info-bg);color:var(--primary)}
+.m-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--body);font-size:11.5px;font-weight:600;
+  border:1px solid var(--border);background:#fff;color:var(--text);border-radius:8px;padding:5px 12px}
+.m-btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.m-btn.ghost{background:transparent}
+.m-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.m-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.m-seg{display:inline-flex;border:1px solid var(--border);border-radius:9px;overflow:hidden;background:#fff}
+.m-seg b{font-size:11.5px;font-weight:600;padding:6px 13px;color:var(--gray)}
+.m-seg b.on{background:var(--primary);color:#fff}
+.m-banner{border-radius:8px;padding:8px 12px;font-size:11.5px;border:1px solid var(--border);background:#fff}
+.m-banner.warn{background:var(--warn-bg);border-color:#FDE68A;color:var(--warn)}
+.m-step{list-style:none;margin:0;padding:0;font-size:11.5px}
+.m-step li{display:flex;align-items:center;gap:8px;padding:4px 0;color:var(--text)}
+.m-step .ic{width:15px;height:15px;border-radius:50%;display:inline-grid;place-items:center;font-size:9px;flex:none}
+.m-step .ic.ok{background:var(--ok-bg);color:var(--ok)}
+.m-step .ic.run{background:var(--info-bg);color:var(--primary)}
+.m-step .ic.pend{background:var(--muted);color:var(--gray)}
+.m-step .dtl{color:var(--gray);font-size:10.5px;margin-left:auto;font-family:var(--mono)}
+.m-kpi{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.m-kpi .k{font-size:10px;color:var(--gray)}
+.m-kpi .v{font-family:var(--mono);font-weight:600;font-size:17px;color:var(--fg)}
+.m-kpi .d{font-size:10px;font-weight:600}
+.m-kpi .d.up{color:var(--ok)} .m-kpi .d.down{color:var(--fail)}
+.m-tabs{display:flex;gap:6px}
+.m-tab{font-size:11px;font-weight:600;border:1px solid var(--border);border-bottom:0;background:var(--muted);
+  color:var(--gray);border-radius:8px 8px 0 0;padding:5px 12px}
+.m-tab.on{background:#fff;color:var(--fg)}
+.m-panel{border:1px solid var(--border);border-radius:0 10px 10px 10px;background:#fff;padding:12px}
+.m-chart{height:74px;border:1px dashed var(--border);border-radius:8px;position:relative;overflow:hidden;background:#fff}
+.m-chart svg{position:absolute;inset:0;width:100%;height:100%}
+.m-table{width:100%;border-collapse:collapse;font-size:10.5px;font-family:var(--mono)}
+.m-table th,.m-table td{border:1px solid var(--border);padding:3px 8px;text-align:right;white-space:nowrap}
+.m-table th{background:var(--muted);color:var(--fg);font-weight:600}
+.m-table td:first-child,.m-table th:first-child{text-align:left}
+.m-textarea{border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--gray);
+  font-size:11.5px;padding:8px 10px;min-height:38px}
+
+/* flow diagram (lifecycle) */
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0}
+.flow .st{border:1px solid var(--border);background:#fff;border-radius:999px;padding:5px 14px;
+  font-size:12px;font-weight:600}
+.flow .st.q{background:var(--warn-bg);color:var(--warn);border-color:#FDE68A}
+.flow .st.r{background:var(--info-bg);color:var(--primary);border-color:#BFDBFE}
+.flow .st.d{background:var(--ok-bg);color:var(--ok);border-color:#BBF7D0}
+.flow .st.f{background:var(--fail-bg);color:var(--fail);border-color:#FECACA}
+.flow svg{color:var(--gray)}
+
+/* glossary table */
+table.gloss{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px;background:#fff;
+  border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+table.gloss th,table.gloss td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+table.gloss th{background:var(--muted);color:var(--fg);font-size:12px}
+table.gloss tr:last-child td{border-bottom:0}
+
+/* FAQ */
+details.faq{background:#fff;border:1px solid var(--border);border-radius:10px;margin:8px 0;box-shadow:var(--shadow)}
+details.faq summary{cursor:pointer;font-weight:700;font-family:var(--title);font-size:14px;color:var(--fg);
+  padding:13px 16px;list-style:none;display:flex;align-items:center;gap:10px}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary svg{transition:transform var(--t);color:var(--gray)}
+details.faq[open] summary svg{transform:rotate(90deg)}
+details.faq .a{padding:0 16px 14px 42px;font-size:13.5px;color:var(--text)}
+@media (max-width:640px){details.faq .a{padding-left:16px}}
+
+footer{border-top:1px solid var(--border);margin-top:48px;padding-top:18px;display:flex;
+  justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--gray);font-size:12.5px}
+footer .mk{color:var(--accent);font-weight:800}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+
+<header class="topbar">
+  <div class="brand"><span class="mark" aria-hidden="true">&#9654;</span> DataZymes <span class="sep">&middot;</span> Query-to-Slide <span class="sep">&middot;</span> User Guide</div>
+</header>
+
+<div class="wrap">
+<nav class="toc" aria-label="Guide contents">
+  <h2>On this page</h2>
+  <ol>
+    <li><a href="#start"><b>01</b>The top bar</a></li>
+    <li><a href="#datasets"><b>02</b>Is my data current?</a></li>
+    <li><a href="#refresh"><b>03</b>Update your reports</a></li>
+    <li><a href="#views"><b>04</b>Re-run a report</a></li>
+    <li><a href="#results"><b>05</b>Read your results</a></li>
+    <li><a href="#engine"><b>06</b>Ask a new question</a></li>
+    <li><a href="#chips"><b>07</b>What the labels mean</a></li>
+    <li><a href="#faq"><b>08</b>If something looks wrong</a></li>
+  </ol>
+</nav>
+
+<main id="content">
+
+<div class="hero">
+  <p class="eyebrow">QUERY-TO-SLIDE &middot; DASHBOARD GUIDE</p>
+  <h1>How to use the dashboard, step by step</h1>
+  <p>This dashboard keeps your prescription-trend reports current. It tells you when new data
+     has arrived, refreshes your saved reports with one click, shows the results as headline
+     numbers, charts and tables, and lets you ask brand-new questions in plain English &mdash;
+     no spreadsheets, no formulas, no code. Your team will give you the link; it opens in any
+     browser.</p>
+  <div class="path" aria-label="The typical workflow">
+    <span>Check data</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    <span>Update reports</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    <span>Read results</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    <span>Ask new questions</span>
+  </div>
+</div>
+
+<!-- ════════════════ STEP 1 ════════════════ -->
+<section id="start" aria-labelledby="h-start">
+  <div class="step-head"><span class="step-num" aria-hidden="true">01</span><h2 class="step-title" id="h-start">Start with the top bar &mdash; your three signals</h2></div>
+  <p class="step-sub">The strip at the top of the screen answers one question at a glance: is everything normal right now?</p>
+
+  <figure class="frame">
+    <div class="frame-bar"><i></i><i></i><i></i><span>Top bar</span></div>
+    <div class="frame-body">
+      <div class="m-card" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <strong style="font-family:var(--title);color:var(--fg);font-size:13px"><span style="color:var(--accent)">&#9654;</span> DataZymes &middot; Query-to-Slide <span style="color:var(--gray);font-size:10px">v2</span></strong>
+        <span class="m-row">
+          <span style="position:relative"><span class="dot pin" style="top:-26px;left:14px">1</span><span class="m-chip warn">demo data active</span></span>
+          <span style="position:relative"><span class="dot pin" style="top:-26px;left:6px">2</span><span class="m-chip idle">idle</span></span>
+          <span style="position:relative;font-family:var(--mono);font-size:10.5px;color:var(--gray)"><span class="dot pin" style="top:-26px;left:30px">3</span>Latest data: 2026-06-05</span>
+        </span>
+      </div>
+    </div>
+    <figcaption>The top bar stays visible wherever you scroll.</figcaption>
+  </figure>
+  <ol class="legend">
+    <li><span class="dot">1</span><span><em>Practice-mode label</em> &mdash; only appears when the dashboard is running on practice data (see Step 02). If you don&rsquo;t see it, you&rsquo;re looking at the real numbers.</span></li>
+    <li><span class="dot">2</span><span><em>Activity light</em> &mdash; says <q>idle</q> when nothing is running, <q>pipeline running</q> while the dashboard is busy updating reports. You can keep working while it runs.</span></li>
+    <li><span class="dot">3</span><span><em>Latest data date</em> &mdash; the most recent date in any of your data. If a meeting asks &ldquo;how fresh is this?&rdquo;, this is the answer.</span></li>
+  </ol>
+</section>
+
+<!-- ════════════════ STEP 2 ════════════════ -->
+<section id="datasets" aria-labelledby="h-datasets">
+  <div class="step-head"><span class="step-num" aria-hidden="true">02</span><h2 class="step-title" id="h-datasets">Check whether your data is current</h2></div>
+  <p class="step-sub">The Datasets section shows one card per data source. Thirty seconds here tells you whether anything needs updating.</p>
+
+  <figure class="frame">
+    <div class="frame-bar"><i></i><i></i><i></i><span>Datasets</span></div>
+    <div class="frame-body">
+      <div class="m-row" style="justify-content:flex-end;margin-bottom:14px;position:relative;padding-top:10px">
+        <span class="dot pin" style="top:-6px;right:210px;position:absolute">3</span>
+        <label style="font-size:11px;color:var(--gray)">Simulate new data</label>
+        <span class="m-btn">+4 weeks &#9662;</span>
+        <span class="m-btn primary">Add</span>
+        <span class="m-btn ghost" style="position:relative">Reset demo data<span class="dot pin" style="top:-26px;right:-6px">4</span></span>
+      </div>
+      <div class="m-grid">
+        <div class="m-card" style="position:relative">
+          <span class="dot pin" style="top:10px;right:10px">1</span>
+          <h4>Weekly prescriptions</h4>
+          <div class="m-meta">One line per product, per week<br><b>Covers:</b> May 2024 &rarr; Jun 2026<br><b>Updated:</b> weekly</div>
+          <div class="m-row" style="margin-top:8px;position:relative"><span class="dot pin" style="top:-4px;left:-30px">2</span><span class="m-chip ok">in sync</span><span class="m-chip ok">no nulls</span></div>
+        </div>
+        <div class="m-card">
+          <h4>Monthly prescriptions by indication</h4>
+          <div class="m-meta">One line per indication, product and month<br><b>Covers:</b> May 2020 &rarr; May 2026<br><b>Updated:</b> monthly</div>
+          <div class="m-row" style="margin-top:8px"><span class="m-chip warn">data updated</span><span class="m-chip ok">no nulls</span></div>
+        </div>
+      </div>
+    </div>
+    <figcaption>Two data sources, each with its coverage dates and freshness labels.</figcaption>
+  </figure>
+  <ol class="legend">
+    <li><span class="dot">1</span><span><em>Data card</em> &mdash; what the source contains, the period it covers, and how often new data arrives.</span></li>
+    <li><span class="dot">2</span><span><em>Freshness labels</em> &mdash; <q>in sync</q> means your reports already reflect this data. <q>data updated</q> means new figures have arrived and your reports haven&rsquo;t caught up yet &mdash; that&rsquo;s your cue to go to Step 03. <q>no nulls</q> is an automatic quality check confirming no missing numbers.</span></li>
+    <li><span class="dot">3</span><span><em>Simulate new data</em> &mdash; a practice button. It adds pretend future weeks so you can rehearse the update routine safely. Real reports and real data are untouched.</span></li>
+    <li><span class="dot">4</span><span><em>Reset demo data</em> &mdash; removes the pretend weeks and puts everything back exactly as it was. You cannot break anything with these two buttons.</span></li>
+  </ol>
+</section>
+
+<!-- ════════════════ STEP 3 ════════════════ -->
+<section id="refresh" aria-labelledby="h-refresh">
+  <div class="step-head"><span class="step-num" aria-hidden="true">03</span><h2 class="step-title" id="h-refresh">Update your reports &mdash; three buttons, three depths</h2></div>
+  <p class="step-sub">When new data arrives, the Refresh section brings everything up to date. Start with Check &mdash; it only looks, never changes.</p>
+
+  <figure class="frame">
+    <div class="frame-bar"><i></i><i></i><i></i><span>Refresh</span></div>
+    <div class="frame-body">
+      <div class="m-row" style="position:relative;margin-bottom:12px;padding-top:8px">
+        <span class="dot pin" style="top:-6px;left:60px">1</span>
+        <span class="m-seg"><b class="on">Check</b><b>Data refresh</b><b>Full pipeline</b></span>
+        <span class="m-btn primary">Run</span>
+        <span style="font-size:11px;color:var(--gray)">Compare live data against the last acknowledged snapshot. Read-only.</span>
+      </div>
+      <div class="m-banner warn" style="position:relative;margin-bottom:12px">
+        <span class="dot pin" style="top:-10px;right:8px">2</span>
+        Data has updated (Weekly prescriptions). 2 report(s) out of date: Tremfya IBD split, Skyrizi IBD split.
+      </div>
+      <div class="m-card" style="position:relative">
+        <span class="dot pin" style="top:10px;right:10px">3</span>
+        <ol class="m-step">
+          <li><span class="ic ok">&#10003;</span>Check the data is well-formed<span class="dtl">all clear</span></li>
+          <li><span class="ic ok">&#10003;</span>Update: Tremfya IBD split<span class="dtl">done &middot; passed checks</span></li>
+          <li><span class="ic run">&#8635;</span>Update: Skyrizi IBD split<span class="dtl">working&hellip;</span></li>
+          <li><span class="ic pend">&middot;</span>Rebuild slide decks</li>
+        </ol>
+      </div>
+    </div>
+    <figcaption>Pick a depth, press Run, then watch the progress list tick through.</figcaption>
+  </figure>
+  <ol class="legend">
+    <li><span class="dot">1</span><span><em>The three depths.</em> <q>Check</q> &mdash; just tell me what&rsquo;s new; looks, changes nothing. <q>Data refresh</q> &mdash; accept the new data so the cards update, but don&rsquo;t recalculate reports yet. <q>Full pipeline</q> &mdash; recalculate every out-of-date report, re-check the numbers, and rebuild the slide decks. The grey hint text always explains the selected option.</span></li>
+    <li><span class="dot">2</span><span><em>The answer banner</em> &mdash; after Check, a sentence tells you exactly where you stand: nothing new, or which reports are out of date.</span></li>
+    <li><span class="dot">3</span><span><em>Progress list</em> &mdash; during a full update, each step shows a tick when finished. You don&rsquo;t need to stay on the page; a summary message appears when it&rsquo;s done.</span></li>
+  </ol>
+
+  <div class="note info">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    <span><em>Full pipeline always asks first.</em> Before doing anything heavy, it shows you which reports will be recalculated and waits for you to confirm. If nothing is out of date, it simply tells you so and stops. You can&rsquo;t accidentally launch a long job.</span>
+  </div>
+</section>
+
+<!-- ════════════════ STEP 4 ════════════════ -->
+<section id="views" aria-labelledby="h-views">
+  <div class="step-head"><span class="step-num" aria-hidden="true">04</span><h2 class="step-title" id="h-views">Choose and re-run saved reports</h2></div>
+  <p class="step-sub">The Views section lists every saved report. Click the ones you want, then press Run selected.</p>
+
+  <figure class="frame">
+    <div class="frame-bar"><i></i><i></i><i></i><span>Views</span></div>
+    <div class="frame-body">
+      <div class="m-row" style="justify-content:flex-end;margin-bottom:14px;position:relative;padding-top:8px">
+        <span class="dot pin" style="top:-6px;right:118px;position:absolute">3</span>
+        <label style="font-size:11px;color:var(--gray)"><input type="checkbox" disabled> Select all</label>
+        <span class="m-btn primary">Run selected</span>
+      </div>
+      <div class="m-grid">
+        <div class="m-card" style="outline:2px solid var(--primary);outline-offset:1px;position:relative">
+          <span class="dot pin" style="top:10px;right:10px">1</span>
+          <h4>Tremfya &mdash; IBD indication split</h4>
+          <div class="m-meta">Weekly prescriptions split across UC / CD.<br>last run 10 Jun 2026</div>
+          <div class="m-row" style="margin-top:8px;position:relative"><span class="dot pin" style="top:-4px;left:-30px">2</span><span class="m-chip warn">stale</span><span class="m-chip ok">validation pass</span><span class="m-chip ok">deck</span></div>
+        </div>
+        <div class="m-card" style="border-style:dashed;position:relative">
+          <span class="dot pin" style="top:10px;right:10px">4</span>
+          <h4 style="color:var(--gray)">Stelara &mdash; IBD indication split</h4>
+          <div class="m-meta">Same analysis, not built yet.</div>
+          <div class="m-row" style="margin-top:8px"><span class="m-chip idle">Capability ready</span><span class="m-btn">Ask engine to build</span></div>
+        </div>
+        <div class="m-card" style="border-style:dashed;position:relative">
+          <span class="dot pin" style="top:10px;right:10px">5</span>
+          <h4 style="color:var(--gray)">Payer mix</h4>
+          <div class="m-meta">Needs payer data we don&rsquo;t have today.</div>
+          <div class="m-row" style="margin-top:8px"><span class="m-chip fail">Data gap</span></div>
+        </div>
+      </div>
+    </div>
+    <figcaption>A selected report (blue outline), one that can be built on request, and one that honestly can&rsquo;t.</figcaption>
+  </figure>
+  <ol class="legend">
+    <li><span class="dot">1</span><span><em>Report card</em> &mdash; click anywhere on the card to select it; the blue outline confirms it. Click again to deselect.</span></li>
+    <li><span class="dot">2</span><span><em>Report labels</em> &mdash; <q>fresh</q> means the result already reflects the latest data; <q>stale</q> means data moved since it last ran. <q>validation pass</q> means the numbers passed their automatic quality checks. <q>deck</q> means a ready-made PowerPoint is waiting for you.</span></li>
+    <li><span class="dot">3</span><span><em>Run selected</em> &mdash; recalculates the selected reports against today&rsquo;s data and opens each one&rsquo;s result below. <q>Select all</q> grabs every report at once.</span></li>
+    <li><span class="dot">4</span><span><em>&ldquo;Capability ready&rdquo; card</em> &mdash; a report we know how to build but haven&rsquo;t yet. Press <q>Ask engine to build</q> and it&rsquo;s queued automatically; when finished it becomes a normal report card.</span></li>
+    <li><span class="dot">5</span><span><em>&ldquo;Data gap&rdquo; card</em> &mdash; a report that honestly cannot be built with the data we have. The card says what&rsquo;s missing, so nobody wastes time wondering.</span></li>
+  </ol>
+
+  <div class="note info">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    <span><em>Re-running is always safe.</em> It repeats the exact same approved calculation on the newest data &mdash; the method never changes behind your back.</span>
+  </div>
+</section>
+
+<!-- ════════════════ STEP 5 ════════════════ -->
+<section id="results" aria-labelledby="h-results">
+  <div class="step-head"><span class="step-num" aria-hidden="true">05</span><h2 class="step-title" id="h-results">Read your results, top to bottom</h2></div>
+  <p class="step-sub">Each report you run opens as a tab. Read it like a one-page briefing: headline numbers, then the trend, then what changed, then the proof.</p>
+
+  <figure class="frame">
+    <div class="frame-bar"><i></i><i></i><i></i><span>Results</span></div>
+    <div class="frame-body">
+      <div class="m-tabs" style="position:relative;padding-top:8px"><span class="dot pin" style="top:-6px;left:-8px">1</span>
+        <span class="m-tab on">Tremfya &mdash; IBD indication split</span><span class="m-tab">Skyrizi &mdash; IBD indication split</span>
+      </div>
+      <div class="m-panel">
+        <div class="m-grid" style="grid-template-columns:repeat(3,1fr);position:relative;margin-bottom:10px;padding-top:6px">
+          <span class="dot pin" style="top:-8px;left:-8px">2</span>
+          <div class="m-kpi"><div class="k">Latest total (5 Jun 2026)</div><div class="v">7,180</div><div class="d up">&#9650; 2.2% vs last week</div></div>
+          <div class="m-kpi"><div class="k">Ulcerative colitis</div><div class="v">3,174</div><div class="d up">44.2% of total</div></div>
+          <div class="m-kpi"><div class="k">Crohn&rsquo;s disease</div><div class="v">4,006</div><div class="d up">55.8% of total</div></div>
+        </div>
+        <div class="m-row" style="margin-bottom:10px;position:relative">
+          <span style="font-size:10.5px;color:var(--gray)">Run against data through <b style="color:var(--text)">5 Jun 2026</b></span>
+          <span class="m-btn" style="margin-left:auto;position:relative">Download deck (.pptx)<span class="dot pin" style="top:-24px;right:-6px">3</span></span>
+        </div>
+        <div class="m-chart" aria-hidden="true">
+          <svg viewBox="0 0 300 74" preserveAspectRatio="none">
+            <line x1="0" y1="60" x2="300" y2="60" stroke="#E2E8F0"/><line x1="0" y1="35" x2="300" y2="35" stroke="#E2E8F0"/><line x1="0" y1="10" x2="300" y2="10" stroke="#E2E8F0"/>
+            <polyline points="0,52 50,44 100,38 150,33 200,30 250,26 300,22" fill="none" stroke="#1E40AF" stroke-width="2"/>
+            <polyline points="0,58 50,52 100,44 150,34 200,27 250,20 300,14" fill="none" stroke="#D97706" stroke-width="2"/>
+          </svg>
+          <span class="dot pin" style="top:6px;left:6px">4</span>
+        </div>
+        <div class="m-grid" style="grid-template-columns:1fr 1fr;margin-top:10px">
+          <div class="m-card" style="position:relative"><span class="dot pin" style="top:8px;right:8px">5</span>
+            <h4>What changed vs previous run</h4>
+            <div class="m-meta"><span class="m-chip ok">NEW</span> 4 new week(s) of data added<br><span class="m-chip ok">OK</span> earlier figures unchanged</div>
+          </div>
+          <div class="m-card" style="position:relative"><span class="dot pin" style="top:8px;right:8px">6</span>
+            <h4>Quality checks &mdash; passed</h4>
+            <div class="m-meta"><span class="m-chip ok">OK</span> right number of rows &middot; <span class="m-chip ok">OK</span> no missing values<br><span class="m-chip ok">OK</span> no duplicated rows</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;position:relative"><span class="dot pin" style="top:-10px;left:-8px;position:absolute">7</span>
+        <table class="m-table">
+          <tr><th>Week ending</th><th>UC</th><th>CD</th><th>Total</th></tr>
+          <tr><td>29 May 2026</td><td>3,141</td><td>3,962</td><td>7,103</td></tr>
+          <tr><td>5 Jun 2026</td><td>3,174</td><td>4,006</td><td>7,180</td></tr>
+        </table></div>
+      </div>
+    </div>
+    <figcaption>One result, read top to bottom. Between the panels and the table you&rsquo;ll also find the written takeaways and a preview of the slide.</figcaption>
+  </figure>
+  <ol class="legend">
+    <li><span class="dot">1</span><span><em>Tabs</em> &mdash; one per report you&rsquo;ve opened. Click to switch between them.</span></li>
+    <li><span class="dot">2</span><span><em>Headline numbers</em> &mdash; the latest total with its change versus the previous period, then each segment with its share of the total.</span></li>
+    <li><span class="dot">3</span><span><em>Download deck</em> &mdash; a presentation-ready PowerPoint slide of this result, built from the same numbers you see on screen. The line next to it states exactly which data date the result is based on &mdash; useful for footnotes.</span></li>
+    <li><span class="dot">4</span><span><em>Trend chart</em> &mdash; hover anywhere to read exact values for every line at that date. Click a legend entry to hide or show that line.</span></li>
+    <li><span class="dot">5</span><span><em>What changed</em> &mdash; compares this run with the previous one: how many new periods arrived, and whether any earlier figures moved. No surprises hiding in a refresh.</span></li>
+    <li><span class="dot">6</span><span><em>Quality checks</em> &mdash; every result is automatically checked (right number of rows, no missing values, no duplicates) before it&rsquo;s shown. If a check fails, the report is flagged instead of silently delivered.</span></li>
+    <li><span class="dot">7</span><span><em>The full table</em> &mdash; every number behind the chart, in plain rows. What you present is always traceable to this table.</span></li>
+  </ol>
+</section>
+
+<!-- ════════════════ STEP 6 ════════════════ -->
+<section id="engine" aria-labelledby="h-engine">
+  <div class="step-head"><span class="step-num" aria-hidden="true">06</span><h2 class="step-title" id="h-engine">Ask a brand-new question</h2></div>
+  <p class="step-sub">Need something no saved report covers? Type the question the way you&rsquo;d say it in a meeting. The analysis engine does the rest.</p>
+
+  <figure class="frame">
+    <div class="frame-bar"><i></i><i></i><i></i><span>Ask the engine</span></div>
+    <div class="frame-body">
+      <div class="m-card" style="margin-bottom:10px;position:relative">
+        <span class="dot pin" style="top:10px;right:10px">1</span>
+        <div style="font-size:11px;color:var(--gray);margin-bottom:5px">Business question (plain English)</div>
+        <div class="m-textarea">I need monthly Humira prescriptions split by indication for the latest 6 months</div>
+        <div class="m-row" style="margin-top:12px">
+          <label style="font-size:11px;color:var(--gray);position:relative"><input type="checkbox" disabled> Build slide deck too<span class="dot pin" style="top:-26px;left:30px">2</span></label>
+          <span class="m-btn primary" style="margin-left:auto">Send to engine</span>
+        </div>
+      </div>
+      <div class="m-card" style="position:relative">
+        <span class="dot pin" style="top:10px;right:10px">3</span>
+        <h4>I need monthly Humira prescriptions split by indication for the latest 6 months</h4>
+        <div class="m-meta">10 Jun 2026 &middot; RA / JIA remains Humira&rsquo;s largest indication at 49,379 TRx&hellip;</div>
+        <div class="m-row" style="margin-top:8px"><span class="m-chip ok">done</span><span class="m-btn">Open result</span></div>
+      </div>
+    </div>
+    <figcaption>Type, send, and watch the question move from queued to answered.</figcaption>
+  </figure>
+  <ol class="legend">
+    <li><span class="dot">1</span><span><em>The question box</em> &mdash; write naturally: product names, time periods and breakdowns in your own words. You don&rsquo;t need exact data terms; the engine works out what you mean and uses the agreed business definitions.</span></li>
+    <li><span class="dot">2</span><span><em>Build slide deck too</em> &mdash; tick this only if you want a PowerPoint as well. Either way you get the numbers, the chart and the written takeaways.</span></li>
+    <li><span class="dot">3</span><span><em>Your question card</em> &mdash; shows progress and, when done, a one-line answer. <q>Open result</q> opens the full result exactly like a saved report (Step 05), and the new report joins your Views list for future re-runs.</span></li>
+  </ol>
+
+  <h3>What you&rsquo;ll see while you wait</h3>
+  <div class="flow" role="img" aria-label="Lifecycle: queued, then running, then done or failed">
+    <span class="st q">queued</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    <span class="st r">running&hellip;</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    <span class="st d">done</span>
+    <span style="color:var(--gray);font-size:12px">or</span>
+    <span class="st f">failed</span>
+  </div>
+  <p>The page checks for progress every few seconds on its own &mdash; no need to refresh your browser.</p>
+
+  <div class="note warn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+    <span><em>Questions are answered by the analysis engine, which your analytics team keeps running.</em> If a question sits on <q>queued</q> for a long while, the engine isn&rsquo;t listening at that moment &mdash; ping your analytics contact and ask them to start it. Your question is saved; nothing is lost by waiting.</span>
+  </div>
+</section>
+
+<!-- ════════════════ CHIP GLOSSARY ════════════════ -->
+<section id="chips" aria-labelledby="h-chips">
+  <div class="step-head"><span class="step-num" aria-hidden="true">07</span><h2 class="step-title" id="h-chips">What every colored label means</h2></div>
+  <p class="step-sub">The whole dashboard speaks in small colored labels. Here is the complete dictionary.</p>
+  <table class="gloss">
+    <thead><tr><th style="width:200px">Label</th><th style="width:140px">Where you see it</th><th>Plain-English meaning</th></tr></thead>
+    <tbody>
+      <tr><td><span class="m-chip ok">in sync</span> <span class="m-chip warn">data updated</span></td><td>Data cards</td><td>Reports already reflect this data / new figures arrived, reports need an update.</td></tr>
+      <tr><td><span class="m-chip ok">no nulls</span> <span class="m-chip warn">3 nulls</span></td><td>Data cards</td><td>Quality check: no missing numbers / some values are missing &mdash; mention it to your analytics contact.</td></tr>
+      <tr><td><span class="m-chip ok">fresh</span> <span class="m-chip warn">stale</span></td><td>Report cards</td><td>Result is current / data has moved since this report last ran &mdash; re-run it before presenting.</td></tr>
+      <tr><td><span class="m-chip ok">validation pass</span> <span class="m-chip fail">validation fail</span></td><td>Report cards</td><td>The automatic quality checks passed / something failed and the result is deliberately held back.</td></tr>
+      <tr><td><span class="m-chip ok">deck</span></td><td>Report cards</td><td>A ready-made PowerPoint slide is available to download from the result.</td></tr>
+      <tr><td><span class="m-chip idle">idle</span> <span class="m-chip run">pipeline running</span></td><td>Top bar</td><td>Nothing running / an update is in progress (you can keep working).</td></tr>
+      <tr><td><span class="m-chip warn">queued</span> <span class="m-chip run">running&hellip;</span> <span class="m-chip ok">done</span> <span class="m-chip fail">failed</span></td><td>Your questions</td><td>Waiting its turn / being worked on / answered / couldn&rsquo;t be answered &mdash; the card says why.</td></tr>
+      <tr><td><span class="m-chip warn">demo data active</span></td><td>Top bar</td><td>Practice data is loaded. Press <q>Reset demo data</q> to return to the real numbers.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ════════════════ FAQ ════════════════ -->
+<section id="faq" aria-labelledby="h-faq">
+  <div class="step-head"><span class="step-num" aria-hidden="true">08</span><h2 class="step-title" id="h-faq">If something looks wrong</h2></div>
+  <p class="step-sub">Six situations that look like problems but usually aren&rsquo;t &mdash; and what to do in each.</p>
+
+  <details class="faq">
+    <summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>A banner says the data arrived in an unexpected shape (&ldquo;schema drift&rdquo;)</summary>
+    <div class="a">The latest data file doesn&rsquo;t match the agreed format, so the dashboard pauses on purpose rather than risk wrong numbers. Nothing for you to fix &mdash; forward it to your analytics contact and hold off on updates until they clear it.</div>
+  </details>
+  <details class="faq">
+    <summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>Data cards say &ldquo;in sync&rdquo; but reports still say &ldquo;stale&rdquo;</summary>
+    <div class="a">Normal half-way state: the new data has been accepted, but the reports haven&rsquo;t been recalculated yet. Run <em>Full pipeline</em> in the Refresh section, or select the stale reports and press <em>Run selected</em>.</div>
+  </details>
+  <details class="faq">
+    <summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>My question has said &ldquo;queued&rdquo; for a long time</summary>
+    <div class="a">The analysis engine isn&rsquo;t listening right now. Your question is saved and will be picked up as soon as the engine is back &mdash; ask your analytics contact to start it. No need to re-type anything.</div>
+  </details>
+  <details class="faq">
+    <summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>A message says contact with a running job was lost</summary>
+    <div class="a">Your browser briefly lost touch with the dashboard &mdash; the update itself is usually still running in the background. Wait a moment and reload the page; finished work will appear on the report cards.</div>
+  </details>
+  <details class="faq">
+    <summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>&ldquo;Open result&rdquo; says the report isn&rsquo;t ready yet</summary>
+    <div class="a">The answer is done but its report card is still being registered. Wait a few seconds and click again. If it persists, mention it to your analytics contact.</div>
+  </details>
+  <details class="faq">
+    <summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>I was practicing and want the real numbers back</summary>
+    <div class="a">Press <em>Reset demo data</em> in the Datasets section. The practice weeks vanish, the originals come back exactly as they were, and the <q>demo data active</q> label disappears. Practicing never touches the real reports.</div>
+  </details>
+</section>
+
+<footer>
+  <span><span class="mk">&#9654;</span> DataZymes &middot; Query-to-Slide dashboard &mdash; user guide</span>
+  <span>Inside the app, this page lives at <code>/guide/</code></span>
+</footer>
+
+</main>
+</div>
+</body>
+</html>
