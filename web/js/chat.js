@@ -71,7 +71,9 @@ function wireDynamic() {
   });
   const reset = $('#chat-reset');
   if (reset) reset.onclick = async () => {
-    await api('POST', '/api/chat/reset-turn'); stalled = false; lastThreadJson = ''; lastKey = ''; await loadChat();
+    try { await api('POST', '/api/chat/reset-turn'); }
+    catch (e) { toast(e.message, 'fail'); return; }
+    stalled = false; lastThreadJson = ''; lastKey = ''; await loadChat();
   };
 }
 

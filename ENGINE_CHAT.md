@@ -42,7 +42,8 @@ turn=user, stop.
    (build_deck_pptx.py default; monthly_multiline→build_deck_monthly.py;
    holdout_segments→build_deck_holdout.py), set deck:true in views.yaml +
    deck_available:true in run_meta, append `deck_ready`
-   `{deck_url:"/api/views/<view_id>/deck"}`. turn=user.
+   `{kind:"deck_ready", text:"Deck ready.", deck_url:"/api/views/<view_id>/deck"}`
+   (the client renders `text` as the bubble caption above the Download link). turn=user.
    DECK "No": short `text` ack. turn=user.
 5. FOLLOW-UP (analysis change): new run_id, base_plan = current run, deltas only;
    re-run; update thread run_folder/view_id; append result + deck_offer.
