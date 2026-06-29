@@ -124,3 +124,13 @@ def test_api_new_force_and_guard(repo_copy):
         assert c.post("/api/chat/new").status_code == 409
         assert c.post("/api/chat/new", json={"force": True}).json() == {"thread_id": None}
         assert c.get("/api/chat").json() == {"thread_id": None}
+
+
+def test_assert_within_output(repo_copy):
+    import pytest
+    from server import config
+    assert config.assert_within_output("output/run_2026-06-08_001").name == "run_2026-06-08_001"
+    with pytest.raises(ValueError):
+        config.assert_within_output("../../Windows/System32")
+    with pytest.raises(ValueError):
+        config.assert_within_output("output/../../etc")

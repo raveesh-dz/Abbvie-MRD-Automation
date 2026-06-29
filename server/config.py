@@ -22,6 +22,16 @@ def output_dir() -> Path:
     return get_root() / "output"
 
 
+def assert_within_output(folder: str) -> Path:
+    """Resolve `folder` (relative to the repo root) and assert it is the output
+    directory or contained within it. Raises ValueError on `..`/absolute escape."""
+    root = output_dir().resolve()
+    p = (get_root() / folder).resolve()
+    if p != root and root not in p.parents:
+        raise ValueError(f"path escapes output dir: {folder}")
+    return p
+
+
 def scripts_dir() -> Path:
     return get_root() / "scripts"
 

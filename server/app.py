@@ -91,7 +91,10 @@ def create_app() -> FastAPI:
         v = views.view_by_id(vid)
         if not v or v.get("status") != "built":
             raise HTTPException(404, "no such built view")
-        folder = config.get_root() / v["folder"]
+        try:
+            folder = config.assert_within_output(v["folder"])
+        except ValueError:
+            raise HTTPException(400, "invalid view folder")
         rp = folder / "result.csv"
         if not rp.exists():
             raise HTTPException(404, "not run yet")
@@ -139,7 +142,10 @@ def create_app() -> FastAPI:
         v = views.view_by_id(vid)
         if not v:
             raise HTTPException(404, "no such view")
-        deck = config.get_root() / v["folder"] / "deck.pptx"
+        try:
+            deck = config.assert_within_output(v["folder"]) / "deck.pptx"
+        except ValueError:
+            raise HTTPException(400, "invalid view folder")
         if not deck.exists():
             raise HTTPException(404, "no deck")
         return FileResponse(deck, filename=f"{vid}.pptx")
