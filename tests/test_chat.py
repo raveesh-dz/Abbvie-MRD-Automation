@@ -134,3 +134,49 @@ def test_assert_within_output(repo_copy):
         config.assert_within_output("../../Windows/System32")
     with pytest.raises(ValueError):
         config.assert_within_output("output/../../etc")
+
+
+def test_engine_written_fields_survive_user_send(repo_copy):
+    """brainstorm_phase + skill_invocations are engine-written, non-rendered, and
+    additive; the unchanged server broker must preserve them across a user send."""
+    from server import chat
+    # Engine owns the file and has written durable state + handed the turn back.
+    chat._dir()
+    chat._atomic_write({
+        "thread_id": "chat_20260629_000000000000",
+        "created_at": "2026-06-29T00:00:00",
+        "status": "awaiting_user", "turn": "user", "engine_status": None,
+        "run_folder": "output/run_2026-06-29_001", "view_id": "v1",
+        "brainstorm_phase": "approved",
+        "skill_invocations": [{"skill": "superpowers:brainstorming", "seq": 1}],
+        "messages": [{"seq": 1, "role": "engine", "ts": "2026-06-29T00:00:00",
+                      "kind": "question", "text": "Approve?", "options": ["Approve", "Revise"]}],
+    })
+    thread = chat.post_message("Approve", in_reply_to=1, chosen="Approve")
+    assert thread["brainstorm_phase"] == "approved"
+    assert thread["skill_invocations"] == [{"skill": "superpowers:brainstorming", "seq": 1}]
+    assert thread["run_folder"] == "output/run_2026-06-29_001"
+    assert thread["turn"] == "engine"        # server still flipped the turn
+    assert thread["messages"][-1]["chosen"] == "Approve"
+    # prove the fields survived the read->mutate->write cycle to disk, not just in-memory
+    reread = chat.get_active()
+    assert reread["brainstorm_phase"] == "approved"
+    assert reread["skill_invocations"] == [{"skill": "superpowers:brainstorming", "seq": 1}]
+
+
+def test_durable_fields_survive_reset_turn(repo_copy):
+    from server import chat
+    chat._dir()
+    chat._atomic_write({
+        "thread_id": "chat_20260629_000001000000",
+        "created_at": "2026-06-29T00:00:01",
+        "status": "awaiting_engine", "turn": "engine", "engine_status": "thinking…",
+        "run_folder": None, "view_id": None,
+        "brainstorm_phase": "gathering", "skill_invocations": [],
+        "messages": [{"seq": 1, "role": "user", "ts": "2026-06-29T00:00:01",
+                      "kind": "text", "text": "weekly tremfya by indication"}],
+    })
+    thread = chat.reset_turn()
+    assert thread["turn"] == "user"
+    assert thread["engine_status"] is None
+    assert thread["brainstorm_phase"] == "gathering"   # reset must not drop it
