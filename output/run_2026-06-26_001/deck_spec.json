@@ -1,7 +1,7 @@
 {
   "chart_kind": "holdout_segments",
   "section_strip": "SKYRIZI HOLDOUT  ·  CROHN'S NEW PRESCRIBING (NBRX, LAST 13 WEEKS)",
-  "statement_title": "1,040 Crohn's HCPs Narrow to a {switch_n}-Prescriber STELARA Switch List",
+  "statement_title": "{total:,} Crohn's HCPs Narrow to a {switch_n}-Prescriber STELARA Switch List",
   "dek_template": "Every in-scope gastro HCP classified by SKYRIZI vs STELARA Crohn's NBRx over the last 13 weeks. Most Holdouts are not actively prescribing; the real conversion target is small and specific.",
   "callouts": [
     {"accent": "gray", "head": "{no_cd_nbrx:,} are silent",

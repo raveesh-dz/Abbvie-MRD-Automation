@@ -1,0 +1,26 @@
+{
+  "total": 700,
+  "groups": {
+    "no_cd_nbrx": 426,
+    "skyrizi_only": 243,
+    "stelara_only": 17,
+    "both_lean_stelara": 13,
+    "both_lean_skyrizi": 1
+  },
+  "holdout_status": {
+    "Holdout": 456,
+    "Non-Holdout": 244
+  },
+  "active": 274,
+  "switch_n": 30,
+  "sky_total": 436,
+  "stel_total": 32,
+  "mult": 13.6,
+  "bar_widths_pct": {
+    "no_cd_nbrx": 100.0,
+    "skyrizi_only": 57.0,
+    "stelara_only": 4.0,
+    "both_lean_stelara": 3.1,
+    "both_lean_skyrizi": 0.2
+  }
+}
