@@ -197,3 +197,14 @@ tbody tr:hover{background:#F1F5F9}
 @keyframes slidein{from{transform:translateY(8px);opacity:0}}
 .hidden{display:none}
 details summary{cursor:pointer;font-size:13px;color:var(--gray);margin-top:12px}
+
+/* ── chat / brainstorm ── */
+.engine-mode { display:flex; align-items:center; gap:1rem; margin-bottom:.75rem; }
+.chat-transcript { display:flex; flex-direction:column; gap:.5rem; max-height:48vh; overflow-y:auto; padding:.25rem; }
+.chat-transcript .msg { padding:.5rem .75rem; border-radius:.6rem; max-width:80%; white-space:pre-wrap; }
+.chat-transcript .msg.user { align-self:flex-end; background:#1f6feb22; }
+.chat-transcript .msg.eng { align-self:flex-start; background:#8b949e22; }
+.chat-transcript .msg.eng.err { background:#f8514922; }
+.chat-transcript .chip-row { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.4rem; }
+.chip-btn { padding:.3rem .6rem; border-radius:.5rem; border:1px solid currentColor; background:transparent; cursor:pointer; font:inherit; color:inherit; text-decoration:none; }
+.chip-btn:hover { background:#ffffff14; }

@@ -75,17 +75,34 @@
 
     <section id="sec-engine">
       <h2>Ask the engine</h2>
-      <div class="ask card">
-        <label for="ask-q">Business question (plain English)</label>
-        <textarea id="ask-q" rows="2"
-          placeholder="e.g. weekly HUMIRA TRx split by indication for the IBD market"></textarea>
-        <div class="ask-row">
-          <label class="chk"><input type="checkbox" id="ask-deck" /> Build slide deck too</label>
-          <button id="btn-ask" class="btn primary">Send to engine</button>
-        </div>
-        <p class="hint">Questions queue to <code>engine_inbox/</code> and are processed by the live Claude Code session.</p>
+      <div class="engine-mode">
+        <label><input type="radio" name="engine-mode" value="quick" checked /> Quick ask</label>
+        <label><input type="radio" name="engine-mode" value="chat" /> Brainstorm chat</label>
+        <button id="chat-new" class="btn" style="margin-left:auto">New chat</button>
       </div>
-      <div id="engine-items" class="grid"></div>
+
+      <div id="engine-quick">
+        <div class="ask card">
+          <label for="ask-q">Business question (plain English)</label>
+          <textarea id="ask-q" rows="2"
+            placeholder="e.g. weekly HUMIRA TRx split by indication for the IBD market"></textarea>
+          <div class="ask-row">
+            <label class="chk"><input type="checkbox" id="ask-deck" /> Build slide deck too</label>
+            <button id="btn-ask" class="btn primary">Send to engine</button>
+          </div>
+          <p class="hint">Questions queue to <code>engine_inbox/</code> and are processed by the live Claude Code session.</p>
+        </div>
+        <div id="engine-items" class="grid"></div>
+      </div>
+
+      <div id="engine-chat" class="card" style="display:none">
+        <div id="chat-transcript" class="chat-transcript"></div>
+        <div class="ask-row">
+          <textarea id="chat-input" rows="2" placeholder="Ask a question, or reply…"></textarea>
+          <button id="chat-send" class="btn primary">Send</button>
+        </div>
+        <p class="hint">Chats the live Claude Code session via <code>engine_chat/</code> — it asks follow-ups, runs the analysis, and offers a deck.</p>
+      </div>
     </section>
   </main>
 

@@ -5,7 +5,12 @@ export async function api(method, path, body) {
   const r = await fetch(path, body
     ? { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
     : { method });
-  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).detail || `HTTP ${r.status}`);
+  if (!r.ok) {
+    const detail = (await r.json().catch(() => ({}))).detail;
+    const err = new Error(detail || `HTTP ${r.status}`);
+    err.status = r.status;
+    throw err;
+  }
   return r.headers.get('content-type')?.includes('json') ? r.json() : r;
 }
 
