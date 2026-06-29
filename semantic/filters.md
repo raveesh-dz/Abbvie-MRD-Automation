@@ -35,8 +35,8 @@
 - formula: >
     gastro = gastro[gastro.abv_customer_id.isin(set(holdout.abbott_customer_id))]
 - caveats: >
-    The Holdout id set currently EQUALS the full gastro universe (1,040 / 1,040), so
-    this filter is a no-op today — but apply it anyway so analyses stay correct if a
-    future cut narrows the universe. Do not confuse "holdout" here with an experimental
-    control arm.
+    The Holdout id set is a strict SUBSET of the gastro universe (700 of 1,040 HCPs),
+    so this filter MATERIALLY restricts HCP analyses — it is no longer a no-op. Apply
+    it unconditionally on any gastro HCP analysis. Do not confuse "holdout" here with
+    an experimental control arm; it is the analyzable scope.
 - provenance: auto-saved | 2026-06-26 | R | run_id=discussion

@@ -32,8 +32,9 @@ relationships:
 #
 # It DOES join, on the HCP key, to the two HCP reference tables below. The HCP key is
 # the same value space across all three: gastro abv_customer_id == HCP_demographics
-# .abbott_customer_id == Holdout_HCP_Universe.abbott_customer_id (verified: identical
-# 1,040-id set). HCP_demographics MUST be deduped to one row per HCP (RULE-009) before
+# .abbott_customer_id == Holdout_HCP_Universe.abbott_customer_id (join-compatible; the
+# holdout now covers 700 of the universe's 1,040 ids — a strict subset, not full).
+# HCP_demographics MUST be deduped to one row per HCP (RULE-009) before
 # any of its edges are used, or the join fans out (raw demo is up to 3 rows/HCP).
 
   - left: HCP_demographics.abbott_customer_id
@@ -49,9 +50,9 @@ relationships:
     right: Gastro_prod_sales_260605.abv_customer_id
     type: one-to-one
     notes: >
-      Analyzable-universe membership. Use to RESTRICT gastro HCP analyses to in-scope
-      HCPs (RULE-102). Currently the id set equals the universe exactly (no-op today),
-      but it is the authoritative scope if a future cut narrows it.
+      The holdout is a strict subset (700 of the 1,040 universe ids), so this RESTRICTS
+      gastro HCP analyses to in-scope HCPs (RULE-102) — material, not a no-op. The edge
+      is 1:1 on matched ids; it simply no longer covers the whole universe.
 
   - left: HCP_demographics.abbott_customer_id
     right: Holdout_HCP_Universe.abbott_customer_id
