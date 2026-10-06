@@ -1,0 +1,23 @@
+mrd init session log
+============================================================
+started   : 2026-06-16T09:28:18.209538+00:00
+completed : 2026-06-16T09:28:33.952012+00:00
+final stage: done
+
+Onboarded this session (1):
+  - territory_dim
+
+Reviewed/promoted (1):
+  - territory_dim
+
+Accepted joins (0):
+
+Validation:
+  active: 5
+  excluded: 0
+  warnings: 0
+  errors: 0
+  exit_code: 0
+
+User choices (audit trail, 1 events):
+  [2026-06-16T09:28:18.380276+00:00] s0_inventory :: menu = 2

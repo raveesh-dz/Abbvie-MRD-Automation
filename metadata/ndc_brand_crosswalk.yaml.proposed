@@ -5,14 +5,14 @@ source:
   type: csv_local
   object: ndc_brand_crosswalk.csv
   cache_path: data\_cache\ndc_brand_crosswalk.parquet
-  fetched_at: '2026-06-09T11:35:37.799796+00:00'
+  fetched_at: '2026-06-10T10:30:08.588313+00:00'
   row_count_at_onboard: 60
   column_hash: sha256:0ea50e7efd9e79296398d42b67137b58f1c5571dfe939c3eabafdc805d4ad1c9
 description: AUTO-GENERATED (heuristic). Replace with a one-sentence business description
   of what ndc_brand_crosswalk represents.
 grain: AUTO-GUESS PENDING. Confirm the natural primary-key combination.
 row_count_at_onboard: 60
-onboarded_at: '2026-06-09T11:35:37.903382+00:00'
+onboarded_at: '2026-06-10T10:30:09.156808+00:00'
 known_issues:
 - '''PRODUCT'' contains rollup-like values (e.g. ''ACTEMRA BIOSIMILARS SQ TOTAL'')
   -- verify whether to exclude when aggregating.'

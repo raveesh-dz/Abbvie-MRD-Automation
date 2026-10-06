@@ -36,3 +36,7 @@ relationships:
   right: ndc_brand_crosswalk.PRODUCT
   type: many_to_many
   notes: auto-discovered. name_match=exact, jaccard=0.2472, overlap=0.7857.
+- left: ndc_brand_crosswalk.PRODUCT
+  right: Weekly_Data_Tabular.PRODUCT
+  type: many_to_many
+  notes: auto-discovered. name_match=exact, jaccard=0.875, overlap=1.0.

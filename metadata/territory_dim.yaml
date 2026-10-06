@@ -1,0 +1,62 @@
+table: territory_dim
+fqn: territory_dim.csv
+source:
+  connector: csv_local
+  type: csv_local
+  object: territory_dim.csv
+  cache_path: data\_cache\territory_dim.parquet
+  fetched_at: '2026-06-16T09:28:18.626866+00:00'
+  row_count_at_onboard: 20
+  column_hash: sha256:81baa20b8be6373fe6015e3e8d32deaa3a1d01ca422986279cc33f67e90a3a16
+description: AUTO-GENERATED (heuristic). Replace with a one-sentence business description
+  of what territory_dim represents.
+grain: AUTO-GUESS PENDING. Confirm the natural primary-key combination.
+row_count_at_onboard: 20
+onboarded_at: '2026-06-16T09:28:18.715172+00:00'
+known_issues:
+- (none auto-detected -- confirm with user)
+columns:
+- name: TERRITORY_ID
+  type: string
+  description: key -- dtype object, 20 distinct, 0.0% null.
+  role_guess: key
+  synonyms: []
+  sample_values:
+  - T001
+  - T002
+  - T003
+  - T004
+  - T005
+- name: TERRITORY_NAME
+  type: string
+  description: key -- dtype object, 20 distinct, 0.0% null.
+  role_guess: key
+  synonyms: []
+  sample_values:
+  - North-East
+  - North-West
+  - South-East
+  - South-West
+  - Mid-Atlantic
+- name: REGION
+  type: string
+  description: dimension -- dtype object, 9 distinct, 0.0% null.
+  role_guess: dimension
+  synonyms: []
+  sample_values:
+  - NE
+  - NW
+  - SE
+  - SW
+  - MA
+- name: REP_COUNT
+  type: integer
+  description: dimension -- dtype int64, 13 distinct, 0.0% null.
+  role_guess: dimension
+  synonyms: []
+  sample_values:
+  - '12'
+  - '8'
+  - '15'
+  - '10'
+  - '9'

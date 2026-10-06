@@ -90,7 +90,7 @@ _PROMPT_TEMPLATE = """\
 You are profiling a dataset for an analytics engine. Read the JSON profile below
 and propose a metadata dictionary. Output ONLY valid YAML, no prose, no fences.
 
-Required top-level keys:
+{project_context_section}{user_context_section}Required top-level keys:
   table: <string>
   fqn: <string>
   description: <one-sentence business description of what this table represents>
@@ -107,10 +107,11 @@ Required top-level keys:
 
 Rules:
   - Be domain-specific: this is pharma TRx / patient-claims data.
+  - USER-SUPPLIED CONTEXT (above, if present) is the highest authority. Never contradict it.
   - Synonyms only when likely (e.g. "PRODUCT": ["brand","drug"]). Empty list OK.
   - For *_CD / *_ID columns, note the coding system if recognisable (NDC, ICD, NPI).
   - For date columns, capture format/granularity if visible (yyyymm vs yyyy-mm-dd).
-  - Don't invent business rules; only flag what the profile evidences.
+  - Don't invent business rules; only flag what the profile evidences OR what user context states.
   - Skip top_values that are clearly noise.
 
 Profile JSON:
@@ -125,14 +126,53 @@ Now emit the YAML.
 """
 
 
+def _resolve_project_context(repo_root: Path | None) -> str:
+    """
+    Auto-include project-wide context from semantic/context.md so every metadata
+    proposal sees the standing business rules without per-call repetition.
+    """
+    if repo_root is None:
+        return ""
+    p = repo_root / "semantic" / "context.md"
+    if not p.exists():
+        return ""
+    try:
+        txt = p.read_text(encoding="utf-8").strip()
+    except OSError:
+        return ""
+    if not txt:
+        return ""
+    return (
+        "PROJECT-WIDE CONTEXT (from semantic/context.md — applies to every table):\n"
+        f"{txt}\n\n"
+    )
+
+
+def _format_user_context(user_context: str | None) -> str:
+    if not user_context or not user_context.strip():
+        return ""
+    return (
+        "USER-SUPPLIED CONTEXT FOR THIS TABLE (highest priority — incorporate verbatim):\n"
+        f"{user_context.strip()}\n\n"
+    )
+
+
 def _claude_cli_available() -> bool:
     return shutil.which("claude") is not None
 
 
 def propose_via_claude_cli(table: str, fqn: str, profile: dict[str, Any],
                            source: dict[str, Any], timeout: int = 240,
-                           model: str | None = None) -> dict[str, Any]:
-    """Call `claude -p` headless; expect YAML on stdout."""
+                           model: str | None = None,
+                           user_context: str | None = None,
+                           repo_root: Path | None = None) -> dict[str, Any]:
+    """Call `claude -p` headless; expect YAML on stdout.
+
+    user_context : free-text hints the caller provides about THIS table
+                   (lifecycle, taxonomy, traps, definitions). Highest priority.
+    repo_root    : if given, semantic/context.md is auto-included as project-wide
+                   context so every proposal sees the standing business rules.
+    """
     claude_path = shutil.which("claude")
     if not claude_path:
         raise RuntimeError("`claude` CLI not on PATH. Install Claude Code or use heuristic backend.")
@@ -144,6 +184,8 @@ def propose_via_claude_cli(table: str, fqn: str, profile: dict[str, Any],
         if isinstance(c.get("sample"), list):
             c["sample"] = c["sample"][:5]
     prompt = _PROMPT_TEMPLATE.format(
+        project_context_section=_resolve_project_context(repo_root),
+        user_context_section=_format_user_context(user_context),
         profile_json=json.dumps(slim, default=str, indent=2),
         table=table,
         fqn=fqn,
@@ -203,15 +245,38 @@ def propose_via_anthropic_api(*args, **kwargs) -> dict[str, Any]:
 # dispatch                                                                     #
 # --------------------------------------------------------------------------- #
 def propose(table: str, fqn: str, profile: dict[str, Any], source: dict[str, Any],
-            backend: str = "claude_cli") -> dict[str, Any]:
+            backend: str = "claude_cli",
+            user_context: str | None = None,
+            repo_root: Path | None = None) -> dict[str, Any]:
+    """
+    Generate a metadata dictionary proposal.
+
+    user_context : per-table hints from the caller. Used by LLM backends.
+                   Stored on the proposal under `user_context` so it lands in the
+                   final .yaml for audit, even with the heuristic backend.
+    repo_root    : root of the repo. Lets the proposer auto-load
+                   semantic/context.md as project-wide standing context.
+    """
     if backend == "heuristic":
-        return propose_heuristic(table, fqn, profile, source)
-    if backend == "claude_cli":
+        out = propose_heuristic(table, fqn, profile, source)
+    elif backend == "claude_cli":
         try:
-            return propose_via_claude_cli(table, fqn, profile, source)
+            out = propose_via_claude_cli(
+                table, fqn, profile, source,
+                user_context=user_context, repo_root=repo_root,
+            )
         except Exception as exc:
             print(f"[warn] claude CLI failed, falling back to heuristic: {exc}", file=sys.stderr)
-            return propose_heuristic(table, fqn, profile, source)
-    if backend == "anthropic_api":
-        return propose_via_anthropic_api(table, fqn, profile, source)
-    raise ValueError(f"Unknown proposer backend {backend!r}")
+            out = propose_heuristic(table, fqn, profile, source)
+    elif backend == "anthropic_api":
+        out = propose_via_anthropic_api(
+            table, fqn, profile, source,
+            user_context=user_context, repo_root=repo_root,
+        )
+    else:
+        raise ValueError(f"Unknown proposer backend {backend!r}")
+
+    # Persist the context used so the final dictionary stays auditable.
+    if user_context and user_context.strip():
+        out["user_context"] = user_context.strip()
+    return out

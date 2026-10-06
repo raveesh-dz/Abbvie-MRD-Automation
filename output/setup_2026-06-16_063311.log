@@ -1,0 +1,29 @@
+mrd init session log
+============================================================
+started   : 2026-06-16T06:31:57.104338+00:00
+completed : 2026-06-16T06:33:11.603159+00:00
+final stage: done
+
+Onboarded this session (0):
+
+Reviewed/promoted (0):
+
+Accepted joins (2):
+  + Monthly_Data_Tabular.ROW_TYPE  <->  Weekly_Data_Tabular.ROW_TYPE   (many_to_many)
+  + ndc_brand_crosswalk.PRODUCT  <->  Weekly_Data_Tabular.PRODUCT   (many_to_many)
+
+Rejected joins (4):
+  - Monthly_Data_Tabular.NON_APPROVED_FLAG  <->  Weekly_Data_Tabular.NON_APPROVED_FLAG   (many_to_many)
+  - ADHOC_FINAL_TABLE.NDC_CD  <->  ndc_brand_crosswalk.NDC_CD   (many_to_one)
+  - Monthly_Data_Tabular.PRODUCT  <->  Weekly_Data_Tabular.PRODUCT   (many_to_many)
+  - Monthly_Data_Tabular.PRODUCT  <->  ndc_brand_crosswalk.PRODUCT   (many_to_many)
+
+Validation:
+  active: 4
+  excluded: 0
+  warnings: 0
+  errors: 0
+  exit_code: 0
+
+User choices (audit trail, 1 events):
+  [2026-06-16T06:31:57.789592+00:00] s0_inventory :: menu = 1

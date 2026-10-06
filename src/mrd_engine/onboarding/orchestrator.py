@@ -35,6 +35,7 @@ def onboard(
     table_name: str | None = None,
     backend: str = "claude_cli",
     row_cap: int = 10_000_000,
+    user_context: str | None = None,
 ) -> dict[str, Any]:
     conn_cfg = _load_connector_yaml(repo, connector_name)
     ctype = conn_cfg["type"]
@@ -73,7 +74,12 @@ def onboard(
     proposed_path = repo / "metadata" / f"{table_name}.yaml.proposed"
     print(f"[3/4] proposing metadata ({backend}) -> {proposed_path.relative_to(repo)}")
     fqn = source_object if ctype == "snowflake" else str(Path(source_object).name)
-    proposal = propose(table_name, fqn, profile, source_block, backend=backend)
+    proposal = propose(
+        table_name, fqn, profile, source_block,
+        backend=backend,
+        user_context=user_context,
+        repo_root=repo,
+    )
     proposed_path.write_text(
         yaml.safe_dump(proposal, sort_keys=False, allow_unicode=True),
         encoding="utf-8",

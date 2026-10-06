@@ -5,14 +5,14 @@ source:
   type: snowflake
   object: SNDBX_DB.ADHOC.ADHOC_FINAL_TABLE
   cache_path: data\_cache\ADHOC_FINAL_TABLE.parquet
-  fetched_at: '2026-06-09T11:34:04.914358+00:00'
+  fetched_at: '2026-06-10T10:33:18.901416+00:00'
   row_count_at_onboard: 736763
   column_hash: sha256:1edf5b59fa56ad004a2c966a68035d7beeaaf2ea9af0747203c01e8b19c41da8
 description: AUTO-GENERATED (heuristic). Replace with a one-sentence business description
   of what ADHOC_FINAL_TABLE represents.
 grain: AUTO-GUESS PENDING. Confirm the natural primary-key combination.
 row_count_at_onboard: 736763
-onboarded_at: '2026-06-09T11:34:42.868912+00:00'
+onboarded_at: '2026-06-10T10:34:08.544337+00:00'
 known_issues:
 - '''BRD_NM'' contains rollup-like values (e.g. ''ALL OTHER BETA AGONIST-ORAL'') --
   verify whether to exclude when aggregating.'

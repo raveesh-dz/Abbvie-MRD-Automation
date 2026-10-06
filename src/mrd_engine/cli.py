@@ -35,11 +35,36 @@ from mrd_engine.onboarding.join_recommender import (
     accept_candidates, add_rationales, discover, to_jsonable,
 )
 from mrd_engine.onboarding.orchestrator import onboard as orchestrate
+from mrd_engine.wizard.init import run as wizard_run
 
 app = typer.Typer(help="mrd -- data layer CLI", no_args_is_help=True)
 joins_app = typer.Typer(help="join discovery & writeback", no_args_is_help=True)
 app.add_typer(joins_app, name="joins")
 console = Console()
+
+
+# --------------------------------------------------------------------------- #
+@app.command()
+def init(
+    resume: bool = typer.Option(False, "--resume",
+        help="resume the previous wizard session (reads profiles/_wizard_state.json)"),
+    auto_metadata: bool = typer.Option(False, "--auto-metadata",
+        help="skip metadata review (auto-accept all proposals)"),
+    no_joins: bool = typer.Option(False, "--no-joins",
+        help="skip join discovery + manual edge stages"),
+    review_mode: str = typer.Option("inline", "--review-mode",
+        help="metadata review mode: inline | editor | auto"),
+    backend: str = typer.Option("claude_cli", "--backend",
+        help="metadata proposer: claude_cli | heuristic | anthropic_api"),
+    dry_run: bool = typer.Option(False, "--dry-run",
+        help="for destructive ops (e.g. --reset), show without writing"),
+):
+    """Interactive data-layer setup wizard (onboard -> review -> joins -> validate)."""
+    rc = wizard_run(
+        REPO, resume=resume, auto_metadata=auto_metadata, no_joins=no_joins,
+        review_mode=review_mode, backend=backend, dry_run=dry_run,
+    )
+    raise typer.Exit(rc)
 
 
 def _load_connector_cfg(name: str) -> dict:
@@ -48,6 +73,22 @@ def _load_connector_cfg(name: str) -> dict:
         console.print(f"[red]connectors/{name}.yaml not found[/red]")
         raise typer.Exit(1)
     return yaml.safe_load(p.read_text(encoding="utf-8"))
+
+
+def _resolve_user_context(context: str | None, context_file: str | None) -> str | None:
+    """Concatenate --context literal + --context-file contents (either may be None)."""
+    parts: list[str] = []
+    if context:
+        parts.append(context.strip())
+    if context_file:
+        p = Path(context_file)
+        if not p.is_absolute():
+            p = REPO / context_file
+        if not p.exists():
+            console.print(f"[red]--context-file {context_file} not found[/red]")
+            raise typer.Exit(1)
+        parts.append(p.read_text(encoding="utf-8").strip())
+    return "\n\n".join(parts) if parts else None
 
 
 # --------------------------------------------------------------------------- #
@@ -70,10 +111,16 @@ def onboard(
     table: str = typer.Option(None, help="override the derived table name"),
     backend: str = typer.Option("claude_cli", help="claude_cli | heuristic | anthropic_api"),
     row_cap: int = typer.Option(10_000_000, help="abort if source has more rows than this"),
+    context: str = typer.Option(None, "--context",
+        help="free-text context for the LLM (highest-priority hints about this table)"),
+    context_file: str = typer.Option(None, "--context-file",
+        help="path to a file whose contents will be used as table context"),
 ):
     """Fetch -> profile -> propose metadata. Writes .yaml.proposed for review."""
+    user_context = _resolve_user_context(context, context_file)
     result = orchestrate(REPO, connector, source_object, table_name=table,
-                         backend=backend, row_cap=row_cap)
+                         backend=backend, row_cap=row_cap,
+                         user_context=user_context)
     console.print(f"\n[green]onboarded {result['table']}[/green]")
     console.print(f"  proposed metadata: {Path(result['proposed_metadata_path']).relative_to(REPO)}")
     console.print(f"  profile:           {Path(result['profile_path']).relative_to(REPO)}")

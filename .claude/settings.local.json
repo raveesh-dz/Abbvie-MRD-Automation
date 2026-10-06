@@ -15,5 +15,9 @@
       "Bash(py -3 -m pip install pandas pyyaml python-dotenv)",
       "Bash(py *)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "playwright-mcp",
+    "postgres-mcp"
+  ]
 }
